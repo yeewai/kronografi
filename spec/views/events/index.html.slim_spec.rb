@@ -36,7 +36,7 @@ describe "Events Index", :js => true do
     visit root_path
     
     within "#e_#{e.id}" do
-      click_on "Show more"
+      click_on "Details"
       expect(page).to have_content e.details
     end
   end
@@ -118,11 +118,14 @@ describe "Events Index", :js => true do
         expect(page).to have_content summary
       end
     end
+    
+    it "wysiwig editor"
+    it "parses text for characters (waaaaaay later)"
   end
   
   describe "editing an event" do
     it "can drag and drop events to change when it happened"
-    it "in place editing"
+    it "in place editing???"
   end
   
 end

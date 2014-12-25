@@ -10,7 +10,7 @@ class EventsController < ApplicationController
   
   def years
     @start_event = Event.find_by_summary "Story Starts"
-    #@events = Event.where.not summary: "Story Starts"
+    @events = Event.where.not( summary: "Story Starts").group_by(&:happened_key)
     
     render layout: false
   end

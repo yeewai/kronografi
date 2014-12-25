@@ -1,0 +1,27 @@
+# Place all the behaviors and hooks related to the matching controller here.
+# All this logic will automatically be available in application.js.
+# You can use CoffeeScript in this file: http://coffeescript.org/
+
+window.load_remote_parts = ->
+  $("[data-remote-load=true]").each ->
+    div = $(this)
+    #div.append('<%=image_tag "loading.gif" %><br /> <h5>Loading...</h5>')
+    div.append('<br /> <h5>Loading...</h5>')
+    $.get div.data("remote-url"), (data) ->
+      div.html(data)
+
+$(document).ready ->
+  if $("#events_index").length > 0
+    #Show start date modal if it doesn't already exist
+    $("#start_event").modal()
+    
+    $("#new_event_modal").on "show.bs.modal", (event) ->
+      button = $(event.relatedTarget) 
+      if button.data("year")
+        d = button.data("year") + "-" + button.data("month") + "-" + button.data("day")
+      else
+        d = ''
+      modal = $(this)
+      modal.find("#event_happened_on").val(d) 
+      
+    load_remote_parts()

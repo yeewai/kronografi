@@ -1,0 +1,21 @@
+-if @start_event
+  ul.years
+    -year_range.each do |y|
+      li id=="year#{y}"
+        span.year=y
+        ul.months
+          -[1,4,7,10].each do |m|
+            li.month
+              =link_to "", "#", data: {month: sprintf("%02d", m), year: sprintf("%04d", y), day: "01", toggle: "modal", target: "#new_event_modal"} 
+              -Event.for_year_and_month(y, m).each do |e|
+              
+                .panel.panel-default.event id=="e_#{e.id}" 
+                  .panel-heading 
+                    =e.summary
+                    =link_to "Show more", "#ebody_#{e.id}" , class: "pull-right", data: { toggle: "collapse"}
+                  .panel-body.collapse id=="ebody_#{e.id}" 
+                    =e.details
+                    
+                -nextday = e.happened_on + 1.day
+                =link_to "", "#", data: {month: sprintf("%02d", nextday.month), year: sprintf("%04d", nextday.year), day: sprintf("%02d", nextday.day), toggle: "modal", target: "#new_event_modal"} 
+    

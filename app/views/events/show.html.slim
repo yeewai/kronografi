@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  b Summary:
+  = @event.summary
+p
+  b Details:
+  = @event.details
+p
+  b Happened on:
+  = @event.happened_on
+
+= link_to 'Edit', edit_event_path(@event)
+'|
+= link_to 'Back', events_path

@@ -1,0 +1,10 @@
+.modal.fade#start_event
+  .modal-dialog.modal-sm
+    .modal-content
+      .modal-header
+        h4.modal-title When does the story start?
+      .modal-body
+        =form_for @start_event, remote: true do |f|
+          =f.hidden_field :summary
+          =f.date_field :happened_on
+          =f.submit 'Set Date', class: "btn btn-primary"

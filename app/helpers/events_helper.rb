@@ -8,4 +8,8 @@ module EventsHelper
       []
     end
   end
+  
+  def format_date(y,m,d)
+    "#{sprintf("%.4d", y)}-#{sprintf("%02d", m)}-#{sprintf("%02d", d)}"
+  end
 end

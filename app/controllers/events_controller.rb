@@ -27,6 +27,7 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
+    render partial: "form", layout: false
   end
 
   # POST /events
@@ -53,6 +54,7 @@ class EventsController < ApplicationController
       if @event.update(event_params)
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
+        format.js {render "create"}
       else
         format.html { render :edit }
         format.json { render json: @event.errors, status: :unprocessable_entity }

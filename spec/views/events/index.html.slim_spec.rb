@@ -66,7 +66,7 @@ describe "Events Index", :js => true do
     (start_event.happened_on.year-5..start_event.happened_on.year+5).each do |y|
       within "#year#{y}" do
         [1,4,7,10].each do |m|
-          expect(page).to have_css '[data-month="' + sprintf("%02d", m) + '"]'
+          expect(page).to have_css '[data-date="' + sprintf("%.4d", y) + "-" + sprintf("%02d", m) + '-01"]'
         end
       end
     end
@@ -92,7 +92,7 @@ describe "Events Index", :js => true do
     end
     
     it "autofills month and year based on timeslot clicked" do
-      find('[data-year="2014"][data-month="01"]').click
+      find('[data-date="2014-01-01"]').click
       
       expect(page).to have_field('event_happened_on', :with => '2014-01-01')
       #find_field('event_happened_on').value.should eq '2014-01-01'
@@ -102,7 +102,7 @@ describe "Events Index", :js => true do
     it "validates form"
     it "datepicker???? ¯\\ (o.°) /¯"
     it "creates an event and puts it in the timeline" do
-      find('[data-year="2014"][data-month="01"]').click
+      find('[data-date="2014-01-01"]').click
       summary = Faker::Lorem.characters(12)
       details = Faker::Lorem.characters(12)
       
@@ -124,8 +124,32 @@ describe "Events Index", :js => true do
   end
   
   describe "editing an event" do
+    before :each do
+      @start_event = create :start_event
+      @event = create :event
+      visit root_path
+    end
+    
     it "can drag and drop events to change when it happened"
-    it "in place editing???"
+    it "can edit" do
+      within "#e_#{@event.id}" do
+        click_link "Edit"
+      end
+
+      summary = Faker::Lorem.characters(12)
+      details = Faker::Lorem.characters(12)
+      
+      within "#edit_event_modal" do
+        fill_in 'Summary', with: summary
+        fill_in 'Details', with: details
+        
+        click_button "Save Event"
+      end
+      
+      within "#year2014" do
+        expect(page).to have_content summary
+      end
+    end
   end
   
 end

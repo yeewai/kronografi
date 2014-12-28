@@ -1,0 +1,10 @@
+menu: 
+  - none
+toolbar:
+  - formatselect bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | undo redo | uploadimage | link | removeformat
+plugins:
+  - image
+  - link
+  - uploadimage
+skin:
+  - light

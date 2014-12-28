@@ -51,6 +51,8 @@ gem 'compass'
 gem "twitter-bootstrap-rails"
 gem 'paperclip'
 gem 'jquery-ui-rails'
+gem 'tinymce-rails'
+gem 'tinymce-rails-imageupload', '~> 4.0.0.beta'
 
 #TDD/BDD
 group :development, :test do

@@ -12,7 +12,8 @@
       li 
         btn type="button" class="btn btn-link" data-toggle="modal" data-target="#start_event" Set Start Date
       li 
-        btn type="button" class="btn btn-link" data-toggle="modal" data-target="#new_event_modal" New Event
+        =link_to "New Event", "#", data: {toggle: "modal", target: "#new_event_modal", e_url: new_event_path}
+        
 
 /table
 /  tr

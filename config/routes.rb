@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  post 'tinymce_assets' => 'media#create'
+
   get "events/years"
   post "events/update_happened"
   resources :events

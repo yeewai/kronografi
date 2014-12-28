@@ -104,12 +104,10 @@ describe "Events Index", :js => true do
     it "creates an event and puts it in the timeline" do
       find('[data-date="2014-01-01"]').click
       summary = Faker::Lorem.characters(12)
-      details = Faker::Lorem.characters(12)
       
       within "#new_event_modal" do
         
         fill_in 'Summary', with: summary
-        fill_in 'Details', with: details
         
         click_button "Save Event"
       end
@@ -137,11 +135,9 @@ describe "Events Index", :js => true do
       end
 
       summary = Faker::Lorem.characters(12)
-      details = Faker::Lorem.characters(12)
       
       within "#edit_event_modal" do
         fill_in 'Summary', with: summary
-        fill_in 'Details', with: details
         
         click_button "Save Event"
       end
@@ -150,6 +146,9 @@ describe "Events Index", :js => true do
         expect(page).to have_content summary
       end
     end
+    
+    it "cancel edit"
   end
   
+  it "versioning"
 end

@@ -21,9 +21,10 @@ class EventsController < ApplicationController
   end
 
   # GET /events/new
-  #def new
-  #  @event = Event.new
-  #end
+  def new
+    @event = Event.new
+    render partial: "form", layout: false
+  end
 
   # GET /events/1/edit
   def edit

@@ -6,7 +6,7 @@
         ul.months
           -[1,4,7,10].each do |m|
             li.month data-when==Event.generate_key(y,m)
-              =link_to "", "#", class: "timeslot", data: {date: format_date(y,m,"01"), next_date: format_date(y,m,"02"), toggle: "modal", target: "#new_event_modal"} 
+              =link_to "", "#", class: "timeslot", data: {date: format_date(y,m,"01"), next_date: format_date(y,m,"02"), toggle: "modal", target: "#new_event_modal", e_url: new_event_path} 
               -Array(@events[Event.generate_key(y,m)]).each do |e|
                 /------------Refactor this out later probably???-----------
                 .panel.panel-default.event id=="e_#{e.id}" data-id==e.id
@@ -15,9 +15,8 @@
                     small=link_to "Details", "#ebody_#{e.id}" , class: "pull-right", data: { toggle: "collapse"}
                     small=link_to "Edit", "#" , class: "pull-right", data: {toggle: "modal", target: "#edit_event_modal", e_url: edit_event_path(e)}
                   .panel-body.collapse id=="ebody_#{e.id}" 
-                    =e.details
+                    =e.details.html_safe
                 /-------------------------------------------------------
                 -nextday = e.happened_on + 1.day
                 -dayafter = nextday + 1.day
-                =link_to "", "#", class: "timeslot", data: {date: format_date(nextday.year, nextday.month,nextday.day), next_date: format_date(dayafter.year, dayafter.month,dayafter.day), toggle: "modal", target: "#new_event_modal"}
-    
+                =link_to "", "#", class: "timeslot", data: {date: format_date(nextday.year, nextday.month,nextday.day), next_date: format_date(dayafter.year, dayafter.month,dayafter.day), toggle: "modal", target: "#new_event_modal", e_url: new_event_path}

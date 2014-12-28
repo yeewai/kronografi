@@ -14,5 +14,6 @@
 //= require jquery_ujs
 //= require jquery-ui/droppable
 //= require twitter/bootstrap
+//= require tinymce-jquery
 //= require turbolinks
 //= require_tree .

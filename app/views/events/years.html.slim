@@ -1,23 +1,23 @@
 -if @start_event
-  ul.years
+  ul.years data-update-happened==events_update_happened_path
     -year_range.each do |y|
       li id=="year#{y}"
         span.year=y
         ul.months
           -[1,4,7,10].each do |m|
             li.month data-when==Event.generate_key(y,m)
-              =link_to "", "#", data: {date: format_date(y,m,"01"), toggle: "modal", target: "#new_event_modal"} 
+              =link_to "", "#", class: "timeslot", data: {date: format_date(y,m,"01"), next_date: format_date(y,m,"02"), toggle: "modal", target: "#new_event_modal"} 
               -Array(@events[Event.generate_key(y,m)]).each do |e|
-              
-                /==render "event", e: e
-                .panel.panel-default.event id=="e_#{e.id}" 
+                /------------Refactor this out later probably???-----------
+                .panel.panel-default.event id=="e_#{e.id}" data-id==e.id
                   .panel-heading 
                     =e.summary
                     small=link_to "Details", "#ebody_#{e.id}" , class: "pull-right", data: { toggle: "collapse"}
                     small=link_to "Edit", "#" , class: "pull-right", data: {toggle: "modal", target: "#edit_event_modal", e_url: edit_event_path(e)}
                   .panel-body.collapse id=="ebody_#{e.id}" 
                     =e.details
-                    
+                /-------------------------------------------------------
                 -nextday = e.happened_on + 1.day
-                =link_to "", "#", data: {date: format_date(nextday.year, nextday.month,nextday.day), toggle: "modal", target: "#new_event_modal"} 
+                -dayafter = nextday + 1.day
+                =link_to "", "#", class: "timeslot", data: {date: format_date(nextday.year, nextday.month,nextday.day), next_date: format_date(dayafter.year, dayafter.month,dayafter.day), toggle: "modal", target: "#new_event_modal"}
     

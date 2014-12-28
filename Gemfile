@@ -50,6 +50,7 @@ gem 'slim-rails'
 gem 'compass'
 gem "twitter-bootstrap-rails"
 gem 'paperclip'
+gem 'jquery-ui-rails'
 
 #TDD/BDD
 group :development, :test do

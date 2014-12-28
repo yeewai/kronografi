@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :update_happened, :destroy]
 
   # GET /events
   # GET /events.json
@@ -60,6 +60,11 @@ class EventsController < ApplicationController
         format.json { render json: @event.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  def update_happened
+    @event.update_attribute :happened_on, params["happened_on"]
+    head :ok, content_type: "text/html"
   end
 
   # DELETE /events/1

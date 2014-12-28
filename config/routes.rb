@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   
-   get "events/years"
+  get "events/years"
+  post "events/update_happened"
   resources :events
 
   # The priority is based upon order of creation: first created -> highest priority.

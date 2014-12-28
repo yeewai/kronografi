@@ -9,6 +9,48 @@ window.load_remote_parts = ->
     div.append('<br /> <h5>Loading...</h5>')
     $.get div.data("remote-url"), (data) ->
       div.html(data)
+      drag_events()
+      
+next_date = (d) ->
+  d_arr = d.match(/(.+)-(\d\d)-(\d\d)/)
+  if parseInt(d_arr[3]) < 28 
+    return d_arr[1] + "-" + d_arr[2] + "-" + ("0"+(parseInt(d_arr[3]) + 1)).slice(-2)
+  else if parseInt(d_arr[2]) < 12
+    return d_arr[1] + "-" + ("0"+(parseInt(d_arr[2]) + 1)).slice(-2) + "-01"
+  else
+    return d
+        
+drag_events = ->
+  $(".event").draggable({ revert: "invalid" })
+  $(".timeslot").droppable
+    activeClass: "ui-state-default"
+    hoverClass: "ui-state-hover"
+    drop: (event, ui) ->
+      item = ui.draggable
+      item.css {
+        "top": 0,
+        "left": 0
+      }
+      $(this).after item
+
+      #Add timeslot after
+      d = next_date($(this).data("next-date"))
+      item.after $(this).clone().attr({
+        "data-date": d,
+        "data-next-date": next_date(d)
+      })
+      
+      #merge timeslots
+      $("a.timeslot").each ->
+        if $(this).next().hasClass("timeslot")
+          $(this).next().remove()
+      
+      #Update item
+      $.post( $("ul.years").data("update-happened"), {id: item.data("id"), happened_on: $(this).data("next-date")}).fail ->
+        alert "error"
+        load_remote_parts()
+      
+      return
 
 $(document).ready ->
   if $("#events_index").length > 0
@@ -27,3 +69,5 @@ $(document).ready ->
         modal.find(".modal-body").html(data)
       
     load_remote_parts()
+    
+    

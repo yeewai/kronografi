@@ -10,7 +10,6 @@
     
 .col-lg-3
   .well.sidebar-nav
-    h3 Sidebar
     ul.nav.nav-list
       li 
         btn type="button" class="btn btn-link" data-toggle="modal" data-target="#start_event" Set Start Date
@@ -41,3 +40,22 @@
 
 ==render "form_modal", kind: "New"
 ==render "form_modal", kind: "Edit"
+
+.modal.fade#year_display
+  .modal-dialog.modal-sm
+    .modal-content
+      .modal-header
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+        h4.modal-title Display years as
+          
+      .modal-body
+        form.form-inline
+        span#original_year
+        |  as 
+        .form-group
+          =number_field :year, :as, class: "form-control col-sm-2"
+        =submit_tag "Set", class: "btn btn-primary"
+
+
+  

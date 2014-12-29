@@ -1,6 +1,6 @@
 -@year_range.each do |y|
   li id=="year#{y}" data-year=y
-    span.year=y
+    =link_to y, "#", class: "year", data: {toggle: "modal", target: "#year_display"}
     ul.months
       -[1,4,7,10].each do |m|
         li.month data-when==Event.generate_key(y,m)

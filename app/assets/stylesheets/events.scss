@@ -30,7 +30,15 @@ ul.years {
       margin-top: 0;
       margin-bottom: 0;
       float: left;
+      color: white;
       font-size: 30px;
+    }
+    
+    .o_year {
+      clear: both;
+      color: rgba(255,255,255,.3);
+      display: block;
+      float: left;
     }
   
     ul.months {

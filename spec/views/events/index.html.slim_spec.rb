@@ -101,7 +101,20 @@ describe "Events Index", :js => true do
     end
   end
   
-  it "changes display years relatively"
+  it "changes display years relatively" do
+    start_event = create :start_event
+    visit root_path
+      
+    click_on "2009"
+    within "#year_display" do
+      fill_in "year_as", with: "0"
+      click_on "Set"
+    end
+    
+    10.times do |i|
+      expect(page).to have_content i
+    end
+  end
   
   describe "creating an event" do
     before :each do

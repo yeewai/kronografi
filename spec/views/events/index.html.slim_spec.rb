@@ -158,7 +158,6 @@ describe "Events Index", :js => true do
     it "can edit" do
       within "#e_#{@event.id}" do
         click_link "Edit"
-        sleep(2)
       end
 
       summary = Faker::Lorem.characters(12)
@@ -174,8 +173,6 @@ describe "Events Index", :js => true do
         expect(page).to have_content summary
       end
     end
-    
-    it "cancel edit"
   end
   
   describe "removing events" do

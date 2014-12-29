@@ -3,7 +3,10 @@
     ==render "start_form"
     
   h1 Listing events
-  = content_tag :div, "", id: "events_years", data: {remote_load: true, remote_url: events_years_path}
+  -if @start_event
+    =link_to "See 10 years earlier", "#", class: "btn btn-default btn-block", id: "addearlieryears", data: {y_url: events_years_path}
+    = content_tag "ul", "", class: "years", id: "events_years", data: {remote_load: true, remote_url: events_years_path, update_happened: events_update_happened_path}
+    =link_to "See 10 years later", "#", class: "btn btn-default btn-block", id: "addlateryears", data: {y_url: events_years_path}
     
 .col-lg-3
   .well.sidebar-nav

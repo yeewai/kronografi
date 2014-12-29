@@ -10,6 +10,20 @@ window.load_remote_parts = ->
     $.get div.data("remote-url"), (data) ->
       div.html(data)
       drag_events()
+      load_add_years_buttons()
+      
+load_add_years_buttons = ->
+  $("#addearlieryears").click (e) ->
+    e.preventDefault()
+    y = parseInt($("ul.years li:first").data("year"))
+    $.get $(this).data("y-url"), {start_year: y - 10, end_year: y-1}, (data) ->
+      $("ul.years").prepend(data)
+      
+  $("#addlateryears").click (e) ->
+    e.preventDefault()
+    y = parseInt($("ul.years > li:last").data("year"))
+    $.get $(this).data("y-url"), {start_year: y + 1, end_year: y+10}, (data) ->
+      $("ul.years").append(data)
       
 next_date = (d) ->
   d_arr = d.match(/(.+)-(\d\d)-(\d\d)/)

@@ -20,6 +20,8 @@ describe "Events Index", :js => true do
     end
   end
   
+  it "changes start date"
+  
   it "displays all events" do
     start_event = create :start_event
     @events = create_list :event, 5
@@ -82,7 +84,23 @@ describe "Events Index", :js => true do
     expect(page).to have_css "#year2050"
   end
   
-  it "infinite scrolls timeslots"
+  describe "expanding the timeline" do
+    before :each do
+      start_event = create :start_event
+      visit root_path
+    end
+    
+    it "adds 10 years before the timeline" do
+      click_on "See 10 years earlier"
+      expect(page).to have_css "a[data-date='1999-01-01']"
+    end
+    
+    it "adds 10 years after the timeline" do
+      click_on "See 10 years later"
+      expect(page).to have_css "a[data-date='2019-01-01']"
+    end
+  end
+  
   it "changes display years relatively"
   
   describe "creating an event" do

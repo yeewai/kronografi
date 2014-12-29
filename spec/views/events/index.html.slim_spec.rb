@@ -20,7 +20,20 @@ describe "Events Index", :js => true do
     end
   end
   
-  it "changes start date"
+  it "changes start date" do
+    start_event = create :start_event
+    visit root_path
+    click_on "Change Start Date"
+    
+    within "#start_event" do
+      fill_in 'event_happened_on', :with => '01/01/0100'
+      click_on "Set Date"
+    end
+    
+    within "#year100" do
+      expect(page).to have_content 'Story Starts'
+    end
+  end
   
   it "displays all events" do
     start_event = create :start_event

@@ -1,7 +1,4 @@
 .col-lg-9
-  -if @start_event.new_record?
-    ==render "start_form"
-    
   h1 Listing events
   -if @start_event
     =link_to "See 10 years earlier", "#", class: "btn btn-default btn-block", id: "addearlieryears", data: {y_url: events_years_path}
@@ -12,7 +9,7 @@
   .well.sidebar-nav
     ul.nav.nav-list
       li 
-        btn type="button" class="btn btn-link" data-toggle="modal" data-target="#start_event" Set Start Date
+        =link_to "Change Start Date", "#", data: {toggle: "modal", target: "#start_event"}
       li 
         =link_to "New Event", "#", data: {toggle: "modal", target: "#new_event_modal", e_url: new_event_path}
         
@@ -38,6 +35,7 @@
 /br
 
 
+==render "start_form"
 ==render "form_modal", kind: "New"
 ==render "form_modal", kind: "Edit"
 

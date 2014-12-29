@@ -10,11 +10,11 @@ class EventsController < ApplicationController
   
   def years
     @start_event = Event.find_by_summary "Story Starts"
-    @events = Event.where.not( summary: "Story Starts").group_by(&:happened_key)
+    @events = Event.all.group_by(&:happened_key)
     if params[:start_year] && params[:end_year]
       @year_range = params[:start_year].to_i..params[:end_year].to_i
     elsif @start_event
-      start = [@start_event.happened_on.year-5, Event.order(:happened_on).first.happened_on.year].min
+      start = [@start_event.happened_on.year-5, Event.all.sort_by(&:happened_on).first.happened_on.year].min
       finish = [@start_event.happened_on.year+5, Event.order(:happened_on).last.happened_on.year].max
       @year_range = start..finish
     else

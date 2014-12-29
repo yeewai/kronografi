@@ -95,12 +95,38 @@ describe "Events Index", :js => true do
       find('[data-date="2014-01-01"]').click
       
       expect(page).to have_field('event_happened_on', :with => '2014-01-01')
-      #find_field('event_happened_on').value.should eq '2014-01-01'
-      #expect(page).to have_selector("input[value='2014-01-01']")
     end
     
-    it "validates form"
-    it "datepicker???? ¯\\ (o.°) /¯"
+    describe "validating the form" do
+      before :each do
+        @start_event = create :start_event
+        visit root_path
+        click_on "New Event"
+      end
+      
+      it "does not let you submit the form if there is no summary" do
+        within "#new_event_modal" do
+          fill_in "event_happened_on", with: "2014-01-01"
+          expect(page).to have_button('Save Event', disabled: true)
+        end
+      end
+      
+      it "does not let you submit the form if there is no date" do
+        within "#new_event_modal" do
+          fill_in "event_summary", with: Faker::Lorem.characters(12)
+          expect(page).to have_button('Save Event', disabled: true)
+        end
+      end
+      
+      it "does not let you submit the form if the date is not formatted correctly" do
+        within "#new_event_modal" do
+          fill_in "event_summary", with: Faker::Lorem.characters(12)
+          fill_in "event_happened_on", with: "2014/01/01"
+          expect(page).to have_button('Save Event', disabled: true)
+        end
+      end
+    end
+    
     it "creates an event and puts it in the timeline" do
       find('[data-date="2014-01-01"]').click
       summary = Faker::Lorem.characters(12)
@@ -132,14 +158,16 @@ describe "Events Index", :js => true do
     it "can edit" do
       within "#e_#{@event.id}" do
         click_link "Edit"
+        sleep(2)
       end
 
       summary = Faker::Lorem.characters(12)
       
       within "#edit_event_modal" do
         fill_in 'Summary', with: summary
-        
-        click_button "Save Event"
+
+        save_screenshot "/Users/yeeeeeeeee/Documents/plotter.png"
+        click_on "Save Event"
       end
       
       within "#year2014" do

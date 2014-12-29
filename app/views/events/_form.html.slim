@@ -2,7 +2,7 @@
   .form-group
     = f.label :summary, class: "col-sm-2 control-label"
     .col-sm-10
-      = f.text_field :summary, class: "form-control"
+      = f.text_field :summary, class: "form-control", data: {validate: "presence"}
   .form-group
     = f.label :details, class: "col-sm-2 control-label"
     .col-sm-10
@@ -10,7 +10,7 @@
   .form-group
     = f.label :happened_on, class: "col-sm-2 control-label"
     .col-sm-10
-      = f.text_field :happened_on, class: "form-control", placeholder: "yyyy-mm-dd", data: {provide: "datepicker", :"date-format"=>"yyyy-mm-dd", :"date-orientation"=>"top auto"}
+      = f.text_field :happened_on, class: "form-control", placeholder: "yyyy-mm-dd", data: {provide: "datepicker", :"date-format"=>"yyyy-mm-dd", :"date-orientation"=>"top auto", validate: "presence dateformat"}
   .form-group
     .col-md-offset-2.col-sm-10
       =f.submit 'Save Event', class: "btn btn-primary"

@@ -51,9 +51,43 @@ drag_events = ->
       $.post( $("ul.years").data("update-happened"), {id: item.data("id"), happened_on: $(this).data("next-date")}).fail ->
         alert "error"
         load_remote_parts()
-      
       return
-
+      
+#Validations
+failInput = (input, msg) ->
+  unless $(input).next().text() is msg
+    $(input).after "<span class=\"help-inline\">" + msg + "</span>"
+    $(input).closest(".form-group").addClass "has-error"
+  $(input).closest("form").find("[type=submit]").prop "disabled", true
+clearInputHelp = (input) ->
+  $(input).parent().find(".help-inline").remove()
+  $(input).closest(".form-group").removeClass "has-error"
+  $(input).closest("form").find("[type=submit]").prop "disabled", false      
+window.setValidationCheck = ->
+  $("[data-validate]").keyup ->
+    clearInputHelp this
+    $(this).closest("form").find("[data-validate]").each ->
+      input = this
+      validations = $(this).data("validate").split(" ")
+      $.each validations, (index, val) ->
+        switch val
+          when "presence"
+            failInput input, "Can not be blank"  if input.value.length < 1
+          when "dateformat"
+            failInput input, "Date must be formatted like yyyy-mm-dd" if !input.value.match(/-?\d{4}-\d{2}-\d{2}/)
+          #when "validdaymonth"
+          #  d = input.value.trim()
+          #  dd = new Date(d.substr(d.length - 5))
+          #  failInput input, "Date is invalid" if !dd.getMonth()
+          when "remote"
+            url = $(input).data("remote-url")
+            if url
+              $.post url,
+                val: input.value
+                id: $(input).data("id")
+              , (data) ->
+                failInput input, data.msg  unless data.success
+                
 $(document).ready ->
   if $("#events_index").length > 0
     #Show start date modal if it doesn't already exist
@@ -65,12 +99,14 @@ $(document).ready ->
       $.get button.data("e-url"), (data) ->
         modal.find(".modal-body").html(data)
         modal.find("#event_happened_on").val(button.data("date")) 
+        setValidationCheck()
         
     $("#edit_event_modal").on "show.bs.modal", (event) ->
       button = $(event.relatedTarget) 
       modal = $(this)
       $.get button.data("e-url"), (data) ->
         modal.find(".modal-body").html(data)
+        setValidationCheck()
           
     $(".modal").on 'hide.bs.modal', ->
       tinyMCE.editors=[];

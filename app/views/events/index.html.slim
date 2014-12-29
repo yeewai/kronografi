@@ -7,34 +7,15 @@
     
 .col-lg-3
   .well.sidebar-nav
-    ul.nav.nav-list
+    ul.nav.nav-list#sidenav
       li 
         =link_to "Change Start Date", "#", data: {toggle: "modal", target: "#start_event"}
       li 
         =link_to "New Event", "#", data: {toggle: "modal", target: "#new_event_modal", e_url: new_event_path}
+      li
+        =link_to "&#9654; Tags".html_safe, "#tag_list", data: {toggle: "collapse"}
+        = content_tag "form", "", class: "collapse", id: "tag_list", data: {remote_load: true, remote_url: tags_index_path}
         
-
-/table
-/  tr
-/    th Summary
-/    th Details
-/    th Happened on
-/    th
-/    th
-/    th
-/
-/  - @events.each do |event|
-/    tr
-/      td= event.summary
-/      td= event.details
-/      td= event.happened_on
-/      td= link_to 'Show', event
-/      td= link_to 'Edit', edit_event_path(event)
-/      td= link_to 'Destroy', event, :confirm => 'Are you sure?', :method => :delete
-/
-/br
-
-
 ==render "start_form"
 ==render "form_modal", kind: "New"
 ==render "form_modal", kind: "Edit"

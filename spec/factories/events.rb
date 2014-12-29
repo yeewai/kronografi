@@ -6,6 +6,8 @@ FactoryGirl.define do
     summary {generate(:random_string)}
     details {generate(:random_string)}
     happened_on "2014-12-24"
+    tags {[FactoryGirl.create(:tag)]}
+    
     
     factory :start_event do
       summary "Story Starts"

@@ -6,11 +6,12 @@ class EventsController < ApplicationController
   def index
     @start_event = Event.find_or_initialize_by summary: "Story Starts"
     @event = Event.new
+    @tags = Tag.all
   end
   
   def years
     @start_event = Event.find_by_summary "Story Starts"
-    @events = Event.all.group_by(&:happened_key)
+    @events = Event.all.includes(:tags).group_by(&:happened_key)
     if params[:start_year] && params[:end_year]
       @year_range = params[:start_year].to_i..params[:end_year].to_i
     elsif @start_event
@@ -96,6 +97,6 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:summary, :details, :happened_on)
+      params.require(:event).permit(:summary, :details, :happened_on, :set_tags)
     end
 end

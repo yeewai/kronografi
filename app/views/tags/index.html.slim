@@ -1,0 +1,6 @@
+
+-@tags.each do |tag|
+  .checkbox
+    label
+      =check_box_tag tag.content, 1, false, data: {slug: tag.slug}
+      =tag.content

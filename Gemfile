@@ -51,6 +51,7 @@ gem 'compass'
 gem "twitter-bootstrap-rails"
 gem 'paperclip'
 gem 'jquery-ui-rails'
+gem 'select2-rails'
 gem 'tinymce-rails'
 gem 'tinymce-rails-imageupload', '~> 4.0.0.beta'
 

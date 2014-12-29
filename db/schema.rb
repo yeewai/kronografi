@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141228054144) do
+ActiveRecord::Schema.define(version: 20141229184112) do
 
   create_table "bootsy_image_galleries", force: :cascade do |t|
     t.integer  "bootsy_resource_id"
@@ -36,6 +36,14 @@ ActiveRecord::Schema.define(version: 20141228054144) do
     t.string   "happened_key"
   end
 
+  create_table "events_tags", id: false, force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "tag_id"
+  end
+
+  add_index "events_tags", ["event_id"], name: "index_events_tags_on_event_id"
+  add_index "events_tags", ["tag_id"], name: "index_events_tags_on_tag_id"
+
   create_table "media", force: :cascade do |t|
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
@@ -43,6 +51,14 @@ ActiveRecord::Schema.define(version: 20141228054144) do
     t.string   "content_content_type"
     t.integer  "content_file_size"
     t.datetime "content_updated_at"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "content"
+    t.text     "description"
+    t.string   "slug"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
 end

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  get 'tags/index'
+
   post 'tinymce_assets' => 'media#create'
 
   get "events/years"

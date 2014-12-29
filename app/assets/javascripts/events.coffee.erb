@@ -11,8 +11,10 @@ window.load_remote_parts = ->
       div.html(data)
       drag_events()
       load_add_years_buttons()
+      set_event_filters()
       
 load_add_years_buttons = ->
+  $("#addearlieryears, #addlateryears").unbind "click"
   $("#addearlieryears").click (e) ->
     e.preventDefault()
     y = parseInt($("ul.years li:first").data("year"))
@@ -101,7 +103,45 @@ window.setValidationCheck = ->
                 id: $(input).data("id")
               , (data) ->
                 failInput input, data.msg  unless data.success
-                
+
+
+set_event_filters = ->
+  $("#tag_list input[type=checkbox]").change ->
+    checked = $("#tag_list input:checked")
+    if checked.length > 0
+      $(".event").hide()
+      $(".event").next().hide()
+      checked.each ->
+        $(".event[data-tags*='" + $(this).data("slug") + "']").show()
+        $(".event[data-tags*='" + $(this).data("slug") + "']").next().show()
+    else
+      $(".event").show()  
+      $(".event").next().show()
+      
+set_select2 = ->
+  $.get $("#tag_list").data('remote-url') + ".json", (data) ->
+    $(".select2_me").select2
+      placeholder: "Comma separated list of tags"
+      selectOnBlur: true,
+      createSearchChoice: (term, data) ->
+          if $(data).filter(->
+            this.text.localeCompare(term) is 0
+          ).length is 0
+            id: term
+            text: term
+      multiple: true
+      data: data
+      initSelection: (element, callback) ->
+        data = []
+        $(element.val().split(",")).each ->
+          data.push
+            id: this
+            text: this
+        callback data
+        
+    
+  $(".select2-choices").addClass("form-control")
+        
 $(document).ready ->
   if $("#events_index").length > 0
     #Show start date modal if it doesn't already exist
@@ -114,6 +154,7 @@ $(document).ready ->
         modal.find(".modal-body").html(data)
         modal.find("#event_happened_on").val(button.data("date")) if button.data("date")
         setValidationCheck()
+        set_select2()
           
     $("#new_event_modal, #edit_event_modal").on 'hide.bs.modal', (e) ->
       #if !confirm("Any changes will be lost. Are you sure you want to close this box?")
@@ -131,5 +172,7 @@ $(document).ready ->
       $("#year_display").modal('hide')
       
     load_remote_parts()
+    
+    
     
     

@@ -20,6 +20,11 @@ next_date = (d) ->
   else
     return d
         
+window.merge_timeslots = ->
+  $("a.timeslot").each ->
+    if $(this).next().hasClass("timeslot")
+      $(this).next().remove()
+      
 drag_events = ->
   $(".event").draggable({ revert: "invalid" })
   $(".timeslot").droppable
@@ -40,10 +45,7 @@ drag_events = ->
         "data-next-date": next_date(d)
       })
       
-      #merge timeslots
-      $("a.timeslot").each ->
-        if $(this).next().hasClass("timeslot")
-          $(this).next().remove()
+      merge_timeslots()
       
       #Update item
       $.post( $("ul.years").data("update-happened"), {id: item.data("id"), happened_on: $(this).data("next-date")}).fail ->

@@ -14,6 +14,7 @@
                     =e.summary
                     small=link_to "Details", "#ebody_#{e.id}" , class: "pull-right", data: { toggle: "collapse"}
                     small=link_to "Edit", "#" , class: "pull-right", data: {toggle: "modal", target: "#edit_event_modal", e_url: edit_event_path(e)}
+                    small= link_to 'Remove',  e, class: "pull-right",  method: :delete, data: { confirm: 'Are you sure?', remote: true }
                   .panel-body.collapse id=="ebody_#{e.id}" 
                     =e.details.html_safe
                 /-------------------------------------------------------

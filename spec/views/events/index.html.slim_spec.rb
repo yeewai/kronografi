@@ -150,5 +150,21 @@ describe "Events Index", :js => true do
     it "cancel edit"
   end
   
+  describe "removing events" do
+    before :each do
+      @start_event = create :start_event
+      @event = create :event
+      visit root_path
+    end
+    
+    it "doesn't show the removed event" do
+      within "#e_#{@event.id}" do
+        click_link "Remove"
+      end
+      
+      expect(page).to_not have_content @event.summary
+    end
+  end
+  
   it "versioning"
 end

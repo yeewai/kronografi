@@ -1,4 +1,4 @@
-.panel.panel-default.event id=="e_#{e.id}" data-id==e.id class==("panel-primary" if e.summary == "Story Starts") data-tags==e.tags.map(&:slug).join(" ")
+.panel.panel-default.event id=="e_#{e.id}" data-id==e.id class==("panel-primary" if e.summary == "Story Starts") data-tags==e.tags.map(&:slug).join(" ") data-chars==e.characters.map(&:slug).join(" ")
   .panel-heading 
     =replace_chars(e.summary).html_safe
     -unless e.summary == "Story Starts"

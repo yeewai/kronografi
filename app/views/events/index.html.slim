@@ -14,7 +14,15 @@
         =link_to "New Event", "#", data: {toggle: "modal", target: "#new_event_modal", e_url: new_event_path}
       li
         =link_to "&#9654; Tags".html_safe, "#tag_list", data: {toggle: "collapse"}
-        = content_tag "form", "", class: "collapse", id: "tag_list", data: {remote_load: true, remote_url: tags_index_path}
+        = content_tag "form", "", class: "filter_list collapse", id: "tag_list", data: {remote_load: true, remote_url: tags_index_path}
+      li
+        =link_to "&#9654; Characters".html_safe, "#char_list", data: {toggle: "collapse"}
+        form.collapse.filter_list#char_list
+          -@characters.each do |char|
+            .checkbox
+              label
+                =check_box_tag char.name, 1, false, data: {slug: char.slug}
+                =char.name
         
 ==render "start_form"
 ==render "form_modal", kind: "New"

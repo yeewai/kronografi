@@ -110,14 +110,16 @@ window.setValidationCheck = ->
 
 
 set_event_filters = ->
-  $("#tag_list input[type=checkbox]").change ->
-    checked = $("#tag_list input:checked")
+  $(".filter_list input[type=checkbox]").change ->
+    checked = $(".filter_list input:checked")
     if checked.length > 0
       $(".event").hide()
       $(".event").next().hide()
+      shown = $(".event")
       checked.each ->
-        $(".event[data-tags*='" + $(this).data("slug") + "']").show()
-        $(".event[data-tags*='" + $(this).data("slug") + "']").next().show()
+        shown = shown.filter $("[data-tags~='" + $(this).data("slug") + "'], [data-chars~='" + $(this).data("slug") + "']")
+      shown.show()
+      shown.next().show()
     else
       $(".event").show()  
       $(".event").next().show()

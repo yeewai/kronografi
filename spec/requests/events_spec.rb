@@ -229,6 +229,8 @@ describe "Events Index", :js => true do
         click_link "Remove"
       end
       
+      save_screenshot("/Users/yeeeeeeeee/Documents/plotter.png")
+      
       expect(page).to_not have_content @event.summary
     end
   end

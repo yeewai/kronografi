@@ -19,7 +19,7 @@ class Event < ActiveRecord::Base
     tags_arr = str.squish.split(",")
     
     tags_arr.each do |t|
-      self.tags << Tag.find_or_create_by(content: t)
+      self.tags << Tag.find_or_create_by(content: t.squish)
     end
   end
   

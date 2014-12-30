@@ -7,6 +7,7 @@ class EventsController < ApplicationController
     @start_event = Event.find_or_initialize_by summary: "Story Starts"
     @event = Event.new
     @tags = Tag.all
+    @characters = Character.all
   end
   
   def years

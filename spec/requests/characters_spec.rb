@@ -162,6 +162,19 @@ describe "Characters", js: true do
         
       end
       
+      it "links to event if matching case insensitive name is found" do
+        n = Faker::Lorem.characters(12) 
+        e = create :event, details: "@[#{n.downcase}]"
+        visit new_character_path
+
+        fill_in "Age", with: "1"
+        fill_in "Name", with: n
+        click_on "Save"
+        
+        expect(page).to have_content e.summary
+        
+      end
+      
       it "links to event if matching nickname is found" do
         n = Faker::Lorem.characters(12) 
         e = create :event, details: "@[#{n}]"

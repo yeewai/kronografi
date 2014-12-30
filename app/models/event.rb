@@ -38,8 +38,8 @@ class Event < ActiveRecord::Base
     if summary && details
       self.characters.clear
       (summary.scan(CHAR_PATTERN) + details.scan(CHAR_PATTERN)).flatten.each do |name|
-        unless char = Character.find_by_name(name)
-          n = Alias.find_by_name name
+        unless char = Character.where('lower(name) = ?', name.downcase).first
+          n = Alias.where('lower(name) = ?', name.downcase).first
           char = n.character if n
         end
         self.characters << char if char && !self.characters.include?(char)

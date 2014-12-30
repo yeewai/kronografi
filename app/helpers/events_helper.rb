@@ -18,8 +18,8 @@ module EventsHelper
   end
   
   def generate_link_for(char)
-    unless c = Character.find_by_name(char)
-      n = Alias.find_by_name char 
+    unless c = Character.where('lower(name) = ?', char.downcase).first
+      n = Alias.where('lower(name) = ?', char.downcase).first
       c = n.character if n
     end
     

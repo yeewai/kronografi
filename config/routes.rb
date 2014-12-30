@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   get "events/years"
   post "events/update_happened"
+  post "events/valid_date"
   resources :events
 
   # The priority is based upon order of creation: first created -> highest priority.

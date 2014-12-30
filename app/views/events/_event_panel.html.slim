@@ -9,7 +9,7 @@
         | Tags: 
         =e.tags.map(&:content).join(", ") 
       .pull-right
-        small.when=e.happened_on
+        small.when=format_date(e.happened_on)
       .char_list
         | Characters: 
         -e.characters.each do |c|

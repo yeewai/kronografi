@@ -27,23 +27,25 @@ load_add_years_buttons = ->
     $.get $(this).data("y-url"), {start_year: y + 1, end_year: y+10}, (data) ->
       $("ul.years").append(data)
       
-next_date = (d) ->
-  d_arr = d.match(/(.+)-(\d\d)-(\d\d)/)
-  if parseInt(d_arr[3]) < 28 
-    return d_arr[1] + "-" + d_arr[2] + "-" + ("0"+(parseInt(d_arr[3]) + 1)).slice(-2)
-  else if parseInt(d_arr[2]) < 12
-    return d_arr[1] + "-" + ("0"+(parseInt(d_arr[2]) + 1)).slice(-2) + "-01"
-  else
-    return d
+next_date = (d, quanta) ->
+  quanta = quanta || 1
+  d_arr = d.match(/(.+?)-(.+)/)
+  if parsed =  Date.parse(d_arr[2])
+    return d_arr[1] + "-" + parsed.addHours(quanta).toString("MM-dd HH:mm")
+  #if parseInt(d_arr[3]) < 28 
+  #  return d_arr[1] + "-" + d_arr[2] + "-" + ("0"+(parseInt(d_arr[3]) + 1)).slice(-2)
+  #else if parseInt(d_arr[2]) < 12
+  #  return d_arr[1] + "-" + ("0"+(parseInt(d_arr[2]) + 1)).slice(-2) + "-01"
+  #else
+  #  return d
         
 window.merge_timeslots = ->
   $("a.timeslot").each ->
     if $(this).next().hasClass("timeslot")
       $(this).next().remove()
       
-drag_events = ->
-  $(".event").draggable({ revert: "invalid" })
-  $(".timeslot").droppable
+set_droppable = (target) ->
+  target.droppable
     activeClass: "ui-state-default"
     hoverClass: "ui-state-hover"
     drop: (event, ui) ->
@@ -55,20 +57,27 @@ drag_events = ->
       $(this).after item
 
       #Add timeslot after
-      d = next_date($(this).data("next-date"))
+      d = next_date($(this).data("date"))
       item.after $(this).clone().attr({
-        "data-date": d,
-        "data-next-date": next_date(d)
+        "data-date": d
       })
-      
+      set_droppable item.next()
       merge_timeslots()
       
       #Update item
-      $.post( $("ul.years").data("update-happened"), {id: item.data("id"), happened_on: $(this).data("next-date")}).fail ->
+      $.post( $("ul.years").data("update-happened"), {id: item.data("id"), happened_on: $(this).data("date")}).fail ->
         alert "error"
         load_remote_parts()
-      item.find(".when").text($(this).data("next-date"))
-      return
+      item.find(".when").text($(this).data("date"))
+      
+
+      item.prev().attr({
+        "data-date": next_date(item.prev().data("date"), -1)
+      })
+      
+drag_events = ->
+  $(".event").draggable({ revert: "invalid" })
+  set_droppable($(".timeslot"))
       
 #Validations
 failInput = (input, msg) ->
@@ -90,12 +99,6 @@ window.setValidationCheck = ->
         switch val
           when "presence"
             failInput input, "Can not be blank"  if input.value.length < 1
-          when "dateformat"
-            failInput input, "Date must be formatted like yyyy-mm-dd" if !input.value.match(/-?\d{4}-\d{2}-\d{2}/)
-          #when "validdaymonth"
-          #  d = input.value.trim()
-          #  dd = new Date(d.substr(d.length - 5))
-          #  failInput input, "Date is invalid" if !dd.getMonth()
           when "remote"
             url = $(input).data("remote-url")
             if url
@@ -149,7 +152,7 @@ window.set_event_edit_modals = ->
     modal = $(this)
     $.get button.data("e-url"), (data) ->
       modal.find(".modal-body").html(data)
-      modal.find("#event_happened_on").val(button.data("date")) if button.data("date")
+      modal.find("#event_set_happened").val(button.data("date")) if button.data("date")
       setValidationCheck()
       set_select2()
         

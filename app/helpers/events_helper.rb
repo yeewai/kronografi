@@ -9,8 +9,12 @@ module EventsHelper
     end
   end
   
-  def format_date(y,m,d)
-    "#{sprintf("%.4d", y)}-#{sprintf("%02d", m)}-#{sprintf("%02d", d)}"
+  def format_date(y,m=nil,d=nil)
+    if y.is_a?(String) || y.is_a?(Integer)
+      "#{sprintf("%.4d", y)}-#{sprintf("%02d", m)}-#{sprintf("%02d", d)} 12:00"
+    else
+      y.strftime("%Y-%m-%d %H:%M")
+    end
   end
   
   def generate_link_for(char)

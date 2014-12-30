@@ -88,6 +88,20 @@ class EventsController < ApplicationController
       format.js
     end
   end
+  
+  def valid_date
+    begin
+       Date.parse(params[:val])
+    rescue ArgumentError
+       bad_date = true
+    end
+    
+    if bad_date
+      render :json => { :success => false, :msg => "Invalid Date" }
+    else
+      render :json => { :success => true }
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -97,6 +111,6 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:summary, :details, :happened_on, :set_tags)
+      params.require(:event).permit(:summary, :details, :set_happened, :happened_on, :set_tags)
     end
 end

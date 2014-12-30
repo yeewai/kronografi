@@ -12,7 +12,7 @@ describe "Events Index", :js => true do
     
     it "creates the starting event" do
       within("#start_event") do
-        fill_in 'event_happened_on', :with => '01/01/0001'
+        fill_in 'event_set_happened', :with => '01/01/0001'
         click_on "Set Date"
       end
       
@@ -26,7 +26,7 @@ describe "Events Index", :js => true do
     click_on "Change Start Date"
     
     within "#start_event" do
-      fill_in 'event_happened_on', :with => '01/01/0100'
+      fill_in 'event_set_happened', :with => '01/01/0100'
       click_on "Set Date"
     end
     
@@ -81,7 +81,7 @@ describe "Events Index", :js => true do
     (start_event.happened_on.year-5..start_event.happened_on.year+5).each do |y|
       within "#year#{y}" do
         [1,4,7,10].each do |m|
-          expect(page).to have_css '[data-date="' + sprintf("%.4d", y) + "-" + sprintf("%02d", m) + '-01"]'
+          expect(page).to have_css '[data-date="' + sprintf("%.4d", y) + "-" + sprintf("%02d", m) + '-01 12:00"]'
         end
       end
     end
@@ -105,12 +105,12 @@ describe "Events Index", :js => true do
     
     it "adds 10 years before the timeline" do
       click_on "See 10 years earlier"
-      expect(page).to have_css "a[data-date='1999-01-01']"
+      expect(page).to have_css "a[data-date='1999-01-01 12:00']"
     end
     
     it "adds 10 years after the timeline" do
       click_on "See 10 years later"
-      expect(page).to have_css "a[data-date='2019-01-01']"
+      expect(page).to have_css "a[data-date='2019-01-01 12:00']"
     end
   end
   
@@ -136,9 +136,9 @@ describe "Events Index", :js => true do
     end
     
     it "autofills month and year based on timeslot clicked" do
-      find('[data-date="2014-01-01"]').click
+      find('[data-date="2014-01-01 12:00"]').click
       
-      expect(page).to have_field('event_happened_on', :with => '2014-01-01')
+      expect(page).to have_field('event_set_happened', :with => '2014-01-01 12:00')
     end
     
     describe "validating the form" do
@@ -150,7 +150,7 @@ describe "Events Index", :js => true do
       
       it "does not let you submit the form if there is no summary" do
         within "#new_event_modal" do
-          fill_in "event_happened_on", with: "2014-01-01"
+          fill_in "Happened On", with: "2014-01-01"
           expect(page).to have_button('Save Event', disabled: true)
         end
       end
@@ -165,14 +165,14 @@ describe "Events Index", :js => true do
       it "does not let you submit the form if the date is not formatted correctly" do
         within "#new_event_modal" do
           fill_in "event_summary", with: Faker::Lorem.characters(12)
-          fill_in "event_happened_on", with: "2014/01/01"
+          fill_in "event_set_happened", with: "2014/01/01"
           expect(page).to have_button('Save Event', disabled: true)
         end
       end
     end
     
     it "creates an event and puts it in the timeline" do
-      find('[data-date="2014-01-01"]').click
+      find('[data-date="2014-01-01 12:00"]').click
       summary = Faker::Lorem.characters(12)
       
       within "#new_event_modal" do

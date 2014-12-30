@@ -3,6 +3,17 @@ class Event < ActiveRecord::Base
   has_and_belongs_to_many :characters
   before_save :cache_data
   
+  
+  def set_happened=(s)
+    if d = DateTime.parse(s)
+      self.happened_on = d 
+    end
+  end
+   
+  def set_happened
+    happened_on.strftime("%d/%m/%Y %I:%M%p") if happened_on
+  end
+  
   def set_tags=(str)
     self.tags.clear
     tags_arr = str.squish.split(",")

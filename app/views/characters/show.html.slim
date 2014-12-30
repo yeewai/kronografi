@@ -1,0 +1,27 @@
+p#notice = notice
+
+h1
+  =@character.name
+  = link_to 'Edit', edit_character_path(@character), class: "btn btn-default btn-xs pull-right"
+hr
+.row
+  .col-sm-3
+    =image_tag @character.avatar, class: "img-responsive"
+    table.table
+      tr
+        td Nicknames
+        td=@character.nicknames
+      tr
+        td Age
+        td=@character.age
+  .col-sm-9
+    =@character.description.html_safe
+.row
+  h2 Biography
+  -@character.events.order(:happened_on).each do |e|
+    ==render "events/event_panel", e: e
+  
+  
+= link_to 'Back', characters_path
+
+==render "events/form_modal", kind: "Edit"

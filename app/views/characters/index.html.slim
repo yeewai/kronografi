@@ -1,0 +1,19 @@
+h1 Listing characters
+
+ul.char_list.list-group
+  -@characters.each do |char|
+    li.list-group-item
+      .row
+        .col-sm-2
+          =link_to char do
+            =image_tag char.avatar, class: "img-responsive"
+        .col-sm-10
+          h2
+            =link_to char.name, char
+            |    
+            small=char.nicknames
+          = link_to 'Edit', edit_character_path(char), class: "btn btn-default btn-xs"
+          = link_to 'Destroy', char, :confirm => 'Are you sure?', :method => :delete, class: "btn btn-default btn-xs"
+        
+
+= link_to 'New Character', new_character_path, class: "btn btn-primary"

@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   
+  post 'aliases/match', as: "aliases"
+  resources :characters
+
   get 'tags/index'
 
   post 'tinymce_assets' => 'media#create'

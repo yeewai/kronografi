@@ -1,6 +1,7 @@
 class Event < ActiveRecord::Base
   has_and_belongs_to_many :tags
-  before_save :cache_happened
+  has_and_belongs_to_many :characters
+  before_save :cache_data
   
   def set_tags=(str)
     self.tags.clear
@@ -20,7 +21,20 @@ class Event < ActiveRecord::Base
   end
   
   private
-  def cache_happened
+  def cache_data
     self.happened_key = Event.generate_key(happened_on.year, happened_on.month)
+    
+    if summary && details
+      self.characters.clear
+      (summary.scan(CHAR_PATTERN) + details.scan(CHAR_PATTERN)).flatten.each do |name|
+        unless char = Character.find_by_name(name)
+          n = Alias.find_by_name name
+          char = n.character if n
+        end
+        self.characters << char if char && !self.characters.include?(char)
+      end
+    end
   end
 end
+
+CHAR_PATTERN = /@\[(.*?)\]/

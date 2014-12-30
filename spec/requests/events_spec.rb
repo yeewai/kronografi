@@ -208,8 +208,6 @@ describe "Events Index", :js => true do
       
       within "#edit_event_modal" do
         fill_in 'Summary', with: summary
-
-        save_screenshot "/Users/yeeeeeeeee/Documents/plotter.png"
         click_on "Save Event"
       end
       

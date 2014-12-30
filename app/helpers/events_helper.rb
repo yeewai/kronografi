@@ -12,4 +12,21 @@ module EventsHelper
   def format_date(y,m,d)
     "#{sprintf("%.4d", y)}-#{sprintf("%02d", m)}-#{sprintf("%02d", d)}"
   end
+  
+  def generate_link_for(char)
+    unless c = Character.find_by_name(char)
+      n = Alias.find_by_name char 
+      c = n.character if n
+    end
+    
+    if c
+      link_to char, c, class: "valid"
+    else
+      link_to char, new_character_path(name: char), class: "invalid"
+    end
+  end
+  
+  def replace_chars(text)
+    text.gsub(CHAR_PATTERN){ generate_link_for($1)}
+  end
 end

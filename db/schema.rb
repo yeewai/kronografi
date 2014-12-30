@@ -11,21 +11,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141229184112) do
+ActiveRecord::Schema.define(version: 20141230051623) do
 
-  create_table "bootsy_image_galleries", force: :cascade do |t|
-    t.integer  "bootsy_resource_id"
-    t.string   "bootsy_resource_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "aliases", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "character_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
-  create_table "bootsy_images", force: :cascade do |t|
-    t.string   "image_file"
-    t.integer  "image_gallery_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  add_index "aliases", ["character_id"], name: "index_aliases_on_character_id"
+
+  create_table "characters", force: :cascade do |t|
+    t.string   "name"
+    t.string   "slug"
+    t.text     "description"
+    t.integer  "age"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
+
+  create_table "characters_events", id: false, force: :cascade do |t|
+    t.integer "character_id"
+    t.integer "event_id"
+  end
+
+  add_index "characters_events", ["character_id"], name: "index_characters_events_on_character_id"
+  add_index "characters_events", ["event_id"], name: "index_characters_events_on_event_id"
 
   create_table "events", force: :cascade do |t|
     t.text     "summary"

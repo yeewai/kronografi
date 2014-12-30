@@ -17,5 +17,4 @@
 //= require select2
 //= require vendor_index
 //= require tinymce-jquery
-//= require turbolinks
 //= require_tree .

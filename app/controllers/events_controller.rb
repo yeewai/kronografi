@@ -11,7 +11,7 @@ class EventsController < ApplicationController
   
   def years
     @start_event = Event.find_by_summary "Story Starts"
-    @events = Event.all.includes(:tags).group_by(&:happened_key)
+    @events = Event.all.includes(:tags, :characters).group_by(&:happened_key)
     if params[:start_year] && params[:end_year]
       @year_range = params[:start_year].to_i..params[:end_year].to_i
     elsif @start_event

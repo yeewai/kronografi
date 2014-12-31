@@ -44,6 +44,8 @@ group :development, :test do
   gem 'spring'
 end
 
+gem 'devise'
+
 # Formatting
 gem 'slim'
 gem 'slim-rails'

@@ -2,7 +2,13 @@ require 'rails_helper'
 
 describe "Characters", js: true do
   before :each do
-    @world = create :world
+    @user = create :user
+    @user.confirm!
+    @world = create :world, user: @user
+    visit new_user_session_path
+    fill_in "Email", with: @user.email
+    fill_in "Password", with: "12345678"
+    click_on "Log in"
   end
   
   it "creates new characters" do

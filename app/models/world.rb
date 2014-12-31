@@ -1,4 +1,5 @@
 class World < ActiveRecord::Base
+  belongs_to :user
   has_many :characters
   has_many :aliases
   has_many :events

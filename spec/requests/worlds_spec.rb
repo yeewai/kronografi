@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 describe "Worlds" do
+  before :each do
+    @user = create :user
+    @user.confirm!
+    visit new_user_session_path
+    fill_in "Email", with: @user.email
+    fill_in "Password", with: "12345678"
+    click_on "Log in"
+  end
   describe "CRUD" do
     it "creates" do
       visit worlds_path
@@ -18,7 +26,7 @@ describe "Worlds" do
     end
     
     it "updates" do
-      w = create :world
+      w = create :world, user: @user
       visit worlds_path
       click_on "Edit"
       
@@ -34,7 +42,7 @@ describe "Worlds" do
     end
     
     it "destroys" do
-      w = create :world
+      w = create :world, user: @user
       visit worlds_path
       click_on "Destroy"
       
@@ -44,8 +52,8 @@ describe "Worlds" do
   
   describe "scope", :js => true do
     before :each do
-      @w1 = create :world
-      @w2 = create :world
+      @w1 = create :world, user: @user
+      @w2 = create :world, user: @user
       create :start_event, world: @w1
       create :start_event, world: @w2
     end

@@ -36,6 +36,9 @@ html lang="en"
                   p.navbar-text=">> #{@world.name} >>"
                 li= link_to "Events", world_events_path(@world)
                 li= link_to "Characters", world_characters_path(@world)
+              -if user_signed_in?
+                li=link_to "Settings", edit_user_registration_path
+                li.pull-right=link_to "Log Out", destroy_user_session_path, :method => :delete 
               
 
     .container

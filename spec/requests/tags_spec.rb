@@ -2,7 +2,13 @@ require 'rails_helper'
 
 describe "Tagging Events", :js => true do
   before :each do
-    @world = create :world
+    @user = create :user
+    @user.confirm!
+    @world = create :world, user: @user
+    visit new_user_session_path
+    fill_in "Email", with: @user.email
+    fill_in "Password", with: "12345678"
+    click_on "Log in"
     start_event = create :start_event, world: @world
     @event = create :event, world: @world
     visit world_events_path(@world)

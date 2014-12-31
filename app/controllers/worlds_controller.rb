@@ -1,10 +1,11 @@
 class WorldsController < ApplicationController
-  before_action :set_world, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action only: [:edit, :update, :destroy] {authenticate_world(params[:id])}
 
   # GET /worlds
   # GET /worlds.json
   def index
-    @worlds = World.all
+    @worlds = current_user.worlds.all
   end
 
   ## GET /worlds/1
@@ -25,6 +26,7 @@ class WorldsController < ApplicationController
   # POST /worlds.json
   def create
     @world = World.new(world_params)
+    @world.user = current_user
 
     respond_to do |format|
       if @world.save
@@ -62,11 +64,6 @@ class WorldsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_world
-      @world = World.find_by_token(params[:id])
-    end
-
     # Never trust parameters from the scary internet, only allow the white list through.
     def world_params
       params.require(:world).permit(:name, :description)

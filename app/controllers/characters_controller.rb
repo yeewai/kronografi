@@ -1,6 +1,7 @@
 class CharactersController < ApplicationController
   before_action :set_character, only: [:show, :edit, :update, :destroy]
-  before_action :set_world
+  before_action :authenticate_user!
+  before_action {authenticate_world(params[:world_id])}
 
   # GET /characters
   # GET /characters.json
@@ -67,10 +68,6 @@ class CharactersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_character
       @character = Character.find(params[:id])
-    end
-    
-    def set_world
-      @world = World.find_by_token(params[:world_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :update_happened, :destroy]
-  before_action :set_world
+  before_action :authenticate_user!
+  before_action {authenticate_world(params[:world_id])}
 
   # GET /events
   # GET /events.json
@@ -50,12 +51,12 @@ class EventsController < ApplicationController
     @event.world = @world
     respond_to do |format|
       if @event.save
-        format.html { redirect_to @event, notice: 'Event was successfully created.' }
-        format.json { render :show, status: :created, location: @event }
+        #format.html { redirect_to @event, notice: 'Event was successfully created.' }
+        #format.json { render :show, status: :created, location: @event }
         format.js
       else
-        format.html { render :new }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
+        #format.html { render :new }
+        #format.json { render json: @event.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -109,10 +110,6 @@ class EventsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_event
       @event = Event.find(params[:id])
-    end
-    
-    def set_world
-      @world = World.find_by_token(params[:world_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -26,6 +26,9 @@
               label
                 =check_box_tag char.name, 1, false, data: {slug: char.slug}
                 =char.name
+      li
+        small=link_to "Expand All Events", "#", id: "expand_event_button", class: "event_button"
+        small=link_to "Collapse All Events", "#", id: "collapse_event_button", class: "event_button"
         
 ==render "start_form"
 ==render "form_modal", kind: "New"

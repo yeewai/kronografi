@@ -1,21 +1,11 @@
 h1 Listing worlds
 
-table
-  tr
-    th Name
-    th Description
-    th
-    th
-    th
+ul.worlds_list.list-group
+  -@worlds.each do |world|
+    li.list-group-item id=="w_#{world.token}"
+      h2=link_to world.name, world_events_path(world)
+      = link_to 'Show', world_events_path(world), class: "btn btn-default btn-xs"
+      = link_to 'Edit', edit_world_path(world), class: "btn btn-default btn-xs"
+      /= link_to 'Destroy', world, :confirm => 'Are you sure?', :method => :delete, class: "btn btn-default btn-xs"
 
-  - @worlds.each do |world|
-    tr id=="w_#{world.token}"
-      td= world.name
-      td= world.description
-      td= link_to 'Show', world_events_path(world)
-      td= link_to 'Edit', edit_world_path(world)
-      td= link_to 'Destroy', world, :confirm => 'Are you sure?', :method => :delete
-
-br
-
-= link_to 'New World', new_world_path
+= link_to 'New World', new_world_path, class: "btn btn-primary"

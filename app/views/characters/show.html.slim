@@ -17,11 +17,11 @@ hr
   .col-sm-9
     =@character.description.html_safe
 .row
-  h2 Biography
+  h2 
+    | Biography 
+    =link_to "Expand All Events", "#", id: "expand_event_button", class: "btn btn-default btn-sm pull-right"
+    =link_to "Collapse All Events", "#", id: "collapse_event_button", class: "btn btn-default btn-sm pull-right"
   -@character.events.order(:happened_on).each do |e|
     ==render "events/event_panel", e: e
-  
-  
-= link_to 'Back', world_characters_path(@world)
 
 ==render "events/form_modal", kind: "Edit"

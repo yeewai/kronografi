@@ -181,6 +181,15 @@ $(document).ready ->
       $("#year_display").modal('hide')
       
     load_remote_parts()
+  
+  if $("#events_index, #characters_show")
+    $("#expand_event_button").click (e)->
+      e.preventDefault()
+      $(".panel-body").collapse("show")
+    
+    $("#collapse_event_button").click (e)->
+      e.preventDefault()
+      $(".panel-body").collapse("hide")
     
     
     

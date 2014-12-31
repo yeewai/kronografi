@@ -2,9 +2,11 @@
   .panel-heading 
     =replace_chars(e.summary).html_safe
     -unless e.summary == "Story Starts"
-      small=link_to "Details", "#ebody_#{e.id}" , class: "pull-right", data: { toggle: "collapse"}
-      small=link_to "Edit", "#" , class: "pull-right", data: {toggle: "modal", target: "#edit_event_modal", e_url: edit_world_event_path(@world, e)}
-      small= link_to 'Remove',  world_event_path(@world, e), class: "pull-right",  method: :delete, data: { confirm: 'Are you sure?', remote: true }
+      small.pull-right
+        = link_to 'Remove',  world_event_path(@world, e), method: :delete, data: { confirm: 'Are you sure?', remote: true }
+        =link_to "Edit", "#" , data: {toggle: "modal", target: "#edit_event_modal", e_url: edit_world_event_path(@world, e)}
+        =link_to "Details", "#ebody_#{e.id}" , data: { toggle: "collapse"}
+        
       .tags
         | Tags: 
         =e.tags.map(&:content).join(", ") 

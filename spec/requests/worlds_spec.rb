@@ -9,7 +9,7 @@ describe "Worlds" do
     fill_in "Password", with: "12345678"
     click_on "Log in"
   end
-  describe "CRUD" do
+  describe "CRU" do
     it "creates" do
       visit worlds_path
       click_on "New World"
@@ -41,13 +41,13 @@ describe "Worlds" do
       expect(page).to have_content d
     end
     
-    it "destroys" do
-      w = create :world, user: @user
-      visit worlds_path
-      click_on "Destroy"
-      
-      expect(page).to_not have_content w.name
-    end
+    #it "destroys" do
+    #  w = create :world, user: @user
+    #  visit worlds_path
+    #  click_on "Destroy"
+    #  
+    #  expect(page).to_not have_content w.name
+    #end
   end
   
   describe "scope", :js => true do

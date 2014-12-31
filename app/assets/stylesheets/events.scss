@@ -4,6 +4,8 @@
 $red: #a94442;
 
 
+.max_width {width: 100%;}
+
 body {
   background-color: #444;
   color: #eee;
@@ -11,9 +13,18 @@ body {
   padding-top: 60px;
   
   .modal, .panel {color: rgb(51, 51, 51);}
+  
+  //ul.navbar-nav {width: 80%;}
 }
 
 .panel {margin-bottom: 0;}
+.panel-heading {
+  a { 
+    padding-right: .5em;
+    &:last-child { padding-right: 0;}
+  }
+
+}
 .ui-state-hover {background-color: rgba(255,255,255,.3);}
 
 .has-error .help-inline {
@@ -77,6 +88,10 @@ ul.years {
 .select2-container {
   width: 100%;
   
+}
+
+.event_button {
+  padding-left: 1em;
 }
 
 //Character links

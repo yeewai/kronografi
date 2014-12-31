@@ -4,7 +4,12 @@
     .col-sm-10
       = f.text_field :summary, class: "form-control", data: {validate: "presence"}
   .form-group
-    = f.label :details, class: "col-sm-2 control-label"
+    .col-sm-2 
+      = f.label :details, class: "control-label max_width"
+      .text-right
+        | Use
+        code @[Character Name]
+        | to reference characters you have created
     .col-sm-10
       = f.text_area :details, class: "form-control tinymce", id: "event_details_#{@event.id ? @event.id : "new"}"
   .form-group

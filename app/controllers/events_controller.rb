@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :update_happened, :destroy]
   before_action :authenticate_user!
-  before_action {authenticate_world(params[:world_id])}
+  before_action except: ["valid_date"] {authenticate_world(params[:world_id])}
 
   # GET /events
   # GET /events.json

@@ -13,7 +13,7 @@ ul.char_list.list-group
             |    
             small=char.nicknames
           = link_to 'Edit', edit_world_character_path(@world, char), class: "btn btn-default btn-xs"
-          = link_to 'Destroy', world_character_path(@world, char), :confirm => 'Are you sure?', :method => :delete, class: "btn btn-default btn-xs"
+          = link_to 'Destroy', world_character_path(@world, char), data: {:confirm => 'Are you sure?'}, :method => :delete, class: "btn btn-default btn-xs"
         
 
 = link_to 'New Character', new_world_character_path(@world), class: "btn btn-primary"

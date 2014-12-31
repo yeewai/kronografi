@@ -55,13 +55,13 @@ class WorldsController < ApplicationController
 
   # DELETE /worlds/1
   # DELETE /worlds/1.json
-  def destroy
-    @world.destroy
-    respond_to do |format|
-      format.html { redirect_to worlds_url, notice: 'World was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
+  #def destroy
+  #  @world.destroy
+  #  respond_to do |format|
+  #    format.html { redirect_to worlds_url, notice: 'World was successfully destroyed.' }
+  #    format.json { head :no_content }
+  #  end
+  #end
 
   private
     # Never trust parameters from the scary internet, only allow the white list through.

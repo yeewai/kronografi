@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   
   devise_for :users
-  resources :worlds, except: "show" do
+  resources :worlds, except: ["show", "destroy"] do
     post 'aliases/match', as: "aliases"
     resources :characters
     get 'tags/index'

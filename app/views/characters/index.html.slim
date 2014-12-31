@@ -5,15 +5,15 @@ ul.char_list.list-group
     li.list-group-item
       .row
         .col-sm-2
-          =link_to char do
+          =link_to world_character_path(@world, char) do
             =image_tag char.avatar, class: "img-responsive"
         .col-sm-10
           h2
-            =link_to char.name, char
+            =link_to char.name, world_character_path(@world, char)
             |    
             small=char.nicknames
-          = link_to 'Edit', edit_character_path(char), class: "btn btn-default btn-xs"
-          = link_to 'Destroy', char, :confirm => 'Are you sure?', :method => :delete, class: "btn btn-default btn-xs"
+          = link_to 'Edit', edit_world_character_path(@world, char), class: "btn btn-default btn-xs"
+          = link_to 'Destroy', world_character_path(@world, char), :confirm => 'Are you sure?', :method => :delete, class: "btn btn-default btn-xs"
         
 
-= link_to 'New Character', new_character_path, class: "btn btn-primary"
+= link_to 'New Character', new_world_character_path(@world), class: "btn btn-primary"

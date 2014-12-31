@@ -2,9 +2,10 @@ require 'rails_helper'
 
 describe "Tagging Events", :js => true do
   before :each do
-    start_event = create :start_event
-    @event = create :event
-    visit root_path
+    @world = create :world
+    start_event = create :start_event, world: @world
+    @event = create :event, world: @world
+    visit world_events_path(@world)
   end
   
   it "creates multiple tags separated by commas" #do
@@ -37,8 +38,8 @@ describe "Tagging Events", :js => true do
   #end
   
   it "shows all the tags on the sidebar" do
-    tags = create_list :tag, 5
-    visit root_path
+    tags = create_list :tag, 5, world: @world
+    visit world_events_path(@world)
     
     within "#sidenav" do
       click_on "Tags"
@@ -50,14 +51,15 @@ describe "Tagging Events", :js => true do
   
   describe "filter" do
     before :each do
-      @events = create_list :event, 3
+      @events = create_list :event, 3, world: @world
       @events.first.tags << @events.last.tags.first
-      visit root_path
+      visit world_events_path(@world)
     end
     
     it "shows only events of a tag" do
       within "#sidenav" do
         click_on "Tags"
+        #save_screenshot("/Users/yeeeeeeeee/Documents/plotter.png")
         check @events.first.tags.first.content
       end
     
@@ -91,12 +93,12 @@ describe "Tagging Events", :js => true do
     
     describe "characters" do
       before :each do
-        @c1 = create :character
-        @c2 = create :character
-        @e1 = create :event, details: "@[#{@c1.name}]"
-        @e2 = create :event, details: "@[#{@c2.name}]"
-        @e12 = create :event, details: "@[#{@c1.name}] @[#{@c2.name}]"
-        visit root_path
+        @c1 = create :character, world: @world
+        @c2 = create :character, world: @world
+        @e1 = create :event, details: "@[#{@c1.name}]", world: @world
+        @e2 = create :event, details: "@[#{@c2.name}]", world: @world
+        @e12 = create :event, details: "@[#{@c1.name}] @[#{@c2.name}]", world: @world
+        visit world_events_path(@world)
       end
       
       it "shows only events of a character" do

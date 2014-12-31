@@ -2,7 +2,7 @@ p#notice = notice
 
 h1
   =@character.name
-  = link_to 'Edit', edit_character_path(@character), class: "btn btn-default btn-xs pull-right"
+  = link_to 'Edit', edit_world_character_path(@world, @character), class: "btn btn-default btn-xs pull-right"
 hr
 .row
   .col-sm-3
@@ -22,6 +22,6 @@ hr
     ==render "events/event_panel", e: e
   
   
-= link_to 'Back', characters_path
+= link_to 'Back', world_characters_path(@world)
 
 ==render "events/form_modal", kind: "Edit"

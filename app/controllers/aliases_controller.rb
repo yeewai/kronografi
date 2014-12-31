@@ -1,5 +1,7 @@
 class AliasesController < ApplicationController
   def match
+    @world = World.find_by_token(params[:world_id])
+    
     char = Character.find_by_id params[:id]
     bad_names = []
     names = params[:val]

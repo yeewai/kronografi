@@ -1,7 +1,7 @@
 FactoryGirl.define do
-  factory :alias do
-    world
+  factory :world do
     name {generate(:random_string)}
+    description {generate(:random_string)}
   end
 
 end

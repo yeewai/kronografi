@@ -1,22 +1,28 @@
 Rails.application.routes.draw do
   
-  post 'aliases/match', as: "aliases"
-  resources :characters
+  resources :worlds, except: "show" do
+    post 'aliases/match', as: "aliases"
+    resources :characters
+    get 'tags/index'
+    get "events/years"
+    post "events/update_happened"
+    resources :events
+  end
 
-  get 'tags/index'
+  post "events/valid_date"
+  
+
+  
 
   post 'tinymce_assets' => 'media#create'
 
-  get "events/years"
-  post "events/update_happened"
-  post "events/valid_date"
-  resources :events
+  
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-   root 'events#index'
+   root 'worlds#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

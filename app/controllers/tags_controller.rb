@@ -1,6 +1,7 @@
 class TagsController < ApplicationController
   def index
-    @tags = Tag.all
+    @world = World.find_by_token(params[:world_id])
+    @tags = @world.tags.all
     
     respond_to do |format|
       format.html { render layout: false }

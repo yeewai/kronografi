@@ -1,9 +1,13 @@
 require 'rails_helper'
 
 describe "Events Index", :js => true do
+  before :each do
+    @world = create :world
+  end
+  
   describe "prompts for beginning of story if there are no events" do
     before :each do
-      visit "/"
+      visit world_events_path(@world)
     end
     
     it "asks to fill out the form" do
@@ -21,8 +25,8 @@ describe "Events Index", :js => true do
   end
   
   it "changes start date" do
-    start_event = create :start_event
-    visit root_path
+    start_event = create :start_event, world: @world
+    visit world_events_path(@world)
     click_on "Change Start Date"
     
     within "#start_event" do
@@ -36,9 +40,9 @@ describe "Events Index", :js => true do
   end
   
   it "displays all events" do
-    start_event = create :start_event
-    @events = create_list :event, 5
-    visit root_path
+    start_event = create :start_event, world: @world
+    @events = create_list :event, 5, world: @world
+    visit world_events_path(@world)
     
     @events.each do |event|
       expect(page).to have_content event.summary
@@ -46,9 +50,9 @@ describe "Events Index", :js => true do
   end
   
   it "expands to show event details" do
-    create :start_event
-    e = create :event
-    visit root_path
+    create :start_event, world: @world
+    e = create :event, world: @world
+    visit world_events_path(@world)
     
     within "#e_#{e.id}" do
       click_on "Details"
@@ -58,10 +62,10 @@ describe "Events Index", :js => true do
   
   it "displays events in order of happened_on" do 
     #Needs to be done better.......... 
-    create :start_event
-    e2014 = create :event, happened_on: "01-01-2014"
-    e2013 = create :event, happened_on: "01-01-2013"
-    visit root_path
+    create :start_event, world: @world
+    e2014 = create :event, happened_on: "01-01-2014", world: @world
+    e2013 = create :event, happened_on: "01-01-2013", world: @world
+    visit world_events_path(@world)
     
     within "#year2014" do
       expect(page).to have_content e2014.summary
@@ -75,8 +79,8 @@ describe "Events Index", :js => true do
   it "displays events in order of happened_on properly tested"
   
   it "displays time slots" do
-    start_event = create :start_event
-    visit root_path
+    start_event = create :start_event, world: @world
+    visit world_events_path(@world)
     
     (start_event.happened_on.year-5..start_event.happened_on.year+5).each do |y|
       within "#year#{y}" do
@@ -88,10 +92,10 @@ describe "Events Index", :js => true do
   end
   
   it "spans from earliest event to latest event" do 
-    create :start_event
-    e2014 = create :event, happened_on: "01-01-2000"
-    e2013 = create :event, happened_on: "01-01-2050"
-    visit root_path
+    create :start_event, world: @world
+    e2014 = create :event, happened_on: "01-01-2000", world: @world
+    e2013 = create :event, happened_on: "01-01-2050", world: @world
+    visit world_events_path(@world)
     
     expect(page).to have_css "#year2000"
     expect(page).to have_css "#year2050"
@@ -99,8 +103,8 @@ describe "Events Index", :js => true do
   
   describe "expanding the timeline" do
     before :each do
-      start_event = create :start_event
-      visit root_path
+      start_event = create :start_event, world: @world
+      visit world_events_path(@world)
     end
     
     it "adds 10 years before the timeline" do
@@ -115,8 +119,8 @@ describe "Events Index", :js => true do
   end
   
   it "changes display years relatively" do
-    start_event = create :start_event
-    visit root_path
+    start_event = create :start_event, world: @world
+    visit world_events_path(@world)
       
     click_on "2009"
     within "#year_display" do
@@ -131,8 +135,8 @@ describe "Events Index", :js => true do
   
   describe "creating an event" do
     before :each do
-      start_event = create :start_event
-      visit root_path
+      start_event = create :start_event, world: @world
+      visit world_events_path(@world)
     end
     
     it "autofills month and year based on timeslot clicked" do
@@ -143,8 +147,8 @@ describe "Events Index", :js => true do
     
     describe "validating the form" do
       before :each do
-        @start_event = create :start_event
-        visit root_path
+        @start_event = create :start_event, world: @world
+        visit world_events_path(@world)
         click_on "New Event"
       end
       
@@ -193,9 +197,9 @@ describe "Events Index", :js => true do
   
   describe "editing an event" do
     before :each do
-      @start_event = create :start_event
-      @event = create :event
-      visit root_path
+      @start_event = create :start_event, world: @world
+      @event = create :event, world: @world
+      visit world_events_path(@world)
     end
     
     it "can drag and drop events to change when it happened"
@@ -219,9 +223,9 @@ describe "Events Index", :js => true do
   
   describe "removing events" do
     before :each do
-      @start_event = create :start_event
-      @event = create :event
-      visit root_path
+      @start_event = create :start_event, world: @world
+      @event = create :event, world: @world
+      visit world_events_path(@world)
     end
     
     it "doesn't show the removed event" do
@@ -229,7 +233,7 @@ describe "Events Index", :js => true do
         click_link "Remove"
       end
       
-      save_screenshot("/Users/yeeeeeeeee/Documents/plotter.png")
+      #save_screenshot("/Users/yeeeeeeeee/Documents/plotter.png")
       
       expect(page).to_not have_content @event.summary
     end

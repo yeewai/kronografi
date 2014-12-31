@@ -3,10 +3,11 @@ FactoryGirl.define do
   sequence(:random_date) {|n| "2014-12-#{n}"}
   
   factory :event do
+    world
     summary {generate(:random_string)}
     details {generate(:random_string)}
     happened_on "2014-12-24"
-    tags {[FactoryGirl.create(:tag)]}
+    tags {[FactoryGirl.create(:tag, world: world)]}
     
     
     factory :start_event do

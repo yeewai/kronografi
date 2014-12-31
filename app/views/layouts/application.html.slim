@@ -30,8 +30,13 @@ html lang="en"
           a.navbar-brand href="#" Kronografi
           .navbar-collapse.collapse.navbar-responsive-collapse
             ul.nav.navbar-nav
-              li= link_to "Events", events_path
-              li= link_to "Characters", characters_path
+              li= link_to "Worlds", worlds_path
+              -if @world && !@world.new_record?
+                li
+                  p.navbar-text=">> #{@world.name} >>"
+                li= link_to "Events", world_events_path(@world)
+                li= link_to "Characters", world_characters_path(@world)
+              
 
     .container
       .row

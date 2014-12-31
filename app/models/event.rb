@@ -1,4 +1,5 @@
 class Event < ActiveRecord::Base
+  belongs_to :world
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :characters
   before_save :cache_data
@@ -19,7 +20,7 @@ class Event < ActiveRecord::Base
     tags_arr = str.squish.split(",")
     
     tags_arr.each do |t|
-      self.tags << Tag.find_or_create_by(content: t.squish)
+      self.tags << Tag.find_or_create_by(content: t.squish, world_id: self.world_id)
     end
   end
   
@@ -38,8 +39,8 @@ class Event < ActiveRecord::Base
     if summary && details
       self.characters.clear
       (summary.scan(CHAR_PATTERN) + details.scan(CHAR_PATTERN)).flatten.each do |name|
-        unless char = Character.where('lower(name) = ?', name.downcase).first
-          n = Alias.where('lower(name) = ?', name.downcase).first
+        unless char = self.world.characters.where('lower(name) = ?', name.downcase).first
+          n = self.world.aliases.where('lower(name) = ?', name.downcase).first
           char = n.character if n
         end
         self.characters << char if char && !self.characters.include?(char)

@@ -11,29 +11,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141230203447) do
+ActiveRecord::Schema.define(version: 20141230235050) do
 
   create_table "aliases", force: :cascade do |t|
     t.string   "name"
     t.integer  "character_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "world_id",     default: 1, null: false
   end
 
   add_index "aliases", ["character_id"], name: "index_aliases_on_character_id"
+  add_index "aliases", ["world_id"], name: "index_aliases_on_world_id"
 
   create_table "characters", force: :cascade do |t|
     t.string   "name"
     t.string   "slug"
     t.text     "description"
     t.integer  "age"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.string   "avatar_file_name"
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.integer  "world_id",            default: 1, null: false
   end
+
+  add_index "characters", ["world_id"], name: "index_characters_on_world_id"
 
   create_table "characters_events", id: false, force: :cascade do |t|
     t.integer "character_id"
@@ -47,10 +52,13 @@ ActiveRecord::Schema.define(version: 20141230203447) do
     t.text     "summary"
     t.text     "details"
     t.datetime "happened_on"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.string   "happened_key"
+    t.integer  "world_id",     default: 1, null: false
   end
+
+  add_index "events", ["world_id"], name: "index_events_on_world_id"
 
   create_table "events_tags", id: false, force: :cascade do |t|
     t.integer "event_id"
@@ -73,6 +81,17 @@ ActiveRecord::Schema.define(version: 20141230203447) do
     t.string   "content"
     t.text     "description"
     t.string   "slug"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "world_id",    default: 1, null: false
+  end
+
+  add_index "tags", ["world_id"], name: "index_tags_on_world_id"
+
+  create_table "worlds", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.string   "token"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

@@ -1,9 +1,12 @@
 .col-lg-9
-  h1 Listing events
+  h1 
+    =@world.name
+    =link_to "Edit World", edit_world_path(@world), class: "btn btn-default btn-xs"
+  .world_description = @world.description.html_safe
   -if @start_event
-    =link_to "See 10 years earlier", "#", class: "btn btn-default btn-block", id: "addearlieryears", data: {y_url: events_years_path}
-    = content_tag "ul", "", class: "years", id: "events_years", data: {remote_load: true, remote_url: events_years_path, update_happened: events_update_happened_path}
-    =link_to "See 10 years later", "#", class: "btn btn-default btn-block", id: "addlateryears", data: {y_url: events_years_path}
+    =link_to "See 10 years earlier", "#", class: "btn btn-default btn-block", id: "addearlieryears", data: {y_url: world_events_years_path(@world)}
+    = content_tag "ul", "", class: "years", id: "events_years", data: {remote_load: true, remote_url: world_events_years_path(@world), update_happened: world_events_update_happened_path(@world)}
+    =link_to "See 10 years later", "#", class: "btn btn-default btn-block", id: "addlateryears", data: {y_url: world_events_years_path(@world)}
     
 .col-lg-3
   .well.sidebar-nav
@@ -11,10 +14,10 @@
       li 
         =link_to "Change Start Date", "#", data: {toggle: "modal", target: "#start_event"}
       li 
-        =link_to "New Event", "#", data: {toggle: "modal", target: "#new_event_modal", e_url: new_event_path}
+        =link_to "New Event", "#", data: {toggle: "modal", target: "#new_event_modal", e_url: new_world_event_path}
       li
         =link_to "&#9654; Tags".html_safe, "#tag_list", data: {toggle: "collapse"}
-        = content_tag "form", "", class: "filter_list collapse", id: "tag_list", data: {remote_load: true, remote_url: tags_index_path}
+        = content_tag "form", "", class: "filter_list collapse", id: "tag_list", data: {remote_load: true, remote_url: world_tags_index_path}
       li
         =link_to "&#9654; Characters".html_safe, "#char_list", data: {toggle: "collapse"}
         form.collapse.filter_list#char_list

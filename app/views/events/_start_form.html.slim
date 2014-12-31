@@ -4,7 +4,7 @@
       .modal-header
         h4.modal-title When does the story start?
       .modal-body
-        =form_for @start_event, remote: true do |f|
+        =form_for [@world, @start_event], remote: true do |f|
           =f.hidden_field :summary
           = f.text_field :set_happened, class: "form-control", placeholder: "Preferred format: dd/mm/yyyy hh:mm am/pm (Other formats may be accepted)", data: {:"date-orientation"=>"top auto", validate: "presence remote", remote_url: events_valid_date_path}
           =f.submit 'Set Date', class: "btn btn-primary"

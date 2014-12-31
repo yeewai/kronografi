@@ -1,8 +1,12 @@
 require 'rails_helper'
 
 describe "Characters", js: true do
+  before :each do
+    @world = create :world
+  end
+  
   it "creates new characters" do
-    visit new_character_path
+    visit new_world_character_path(@world)
     
     n = Faker::Lorem.characters(12)
     n1 = Faker::Lorem.characters(12)
@@ -22,8 +26,8 @@ describe "Characters", js: true do
   
   it "doesn't let you use nonunique names" do
     n = Faker::Lorem.characters(12)
-    create :character, name: n
-    visit new_character_path
+    create :character, name: n, world: @world
+    visit new_world_character_path(@world)
 
     fill_in "Age", with: 1
     fill_in "Nicknames", with: n
@@ -32,8 +36,8 @@ describe "Characters", js: true do
   
   it "doesn't let you use nonunique nicknames" do
     n = Faker::Lorem.characters(12)
-    create :alias, name: n
-    visit new_character_path
+    create :alias, name: n, world: @world
+    visit new_world_character_path @world
 
     fill_in "Age", with: 1
     fill_in "Nicknames", with: n
@@ -41,8 +45,8 @@ describe "Characters", js: true do
   end
   
   it "edits characters" do
-    @char = create :character
-    visit character_path(@char)
+    @char = create :character, world: @world
+    visit world_character_path(@world, @char)
     click_on "Edit"
     
     n1 = Faker::Lorem.characters(12)
@@ -61,10 +65,10 @@ describe "Characters", js: true do
   
   describe "linking to events" do
     before :each do
-      @start_event = create :start_event
-      @char = create :character
-      @event = create :event
-      visit root_path
+      @start_event = create :start_event, world: @world
+      @char = create :character, world: @world
+      @event = create :event, world: @world
+      visit world_events_path(@world)
       
       within "#e_#{@event.id}" do
         click_link "Edit"
@@ -151,8 +155,8 @@ describe "Characters", js: true do
     describe "Creating a character previously mentioned" do
       it "links to event if matching name is found" do
         n = Faker::Lorem.characters(12) 
-        e = create :event, details: "@[#{n}]"
-        visit new_character_path
+        e = create :event, details: "@[#{n}]", world: @world
+        visit new_world_character_path(@world)
 
         fill_in "Age", with: "1"
         fill_in "Name", with: n
@@ -164,8 +168,8 @@ describe "Characters", js: true do
       
       it "links to event if matching case insensitive name is found" do
         n = Faker::Lorem.characters(12) 
-        e = create :event, details: "@[#{n.downcase}]"
-        visit new_character_path
+        e = create :event, details: "@[#{n.downcase}]", world: @world
+        visit new_world_character_path(@world)
 
         fill_in "Age", with: "1"
         fill_in "Name", with: n
@@ -177,8 +181,8 @@ describe "Characters", js: true do
       
       it "links to event if matching nickname is found" do
         n = Faker::Lorem.characters(12) 
-        e = create :event, details: "@[#{n}]"
-        visit new_character_path
+        e = create :event, details: "@[#{n}]", world: @world
+        visit new_world_character_path(@world)
         
         fill_in "Name", with: Faker::Lorem.characters(12) 
         fill_in "Age", with: "1"
@@ -190,8 +194,8 @@ describe "Characters", js: true do
     end
     
     it "unlinks characters if name changes" do
-      e = create :event, details: "@[#{@char.name}]"
-      visit character_path @char
+      e = create :event, details: "@[#{@char.name}]", world: @world
+      visit world_character_path @world, @char
       expect(page).to have_content e.summary
       within "h1" do
         click_on "Edit"
@@ -203,8 +207,8 @@ describe "Characters", js: true do
     end
     
     it "unlinks characters if nickname changes" do
-      e = create :event, details: "@[#{@char.aliases.first.name}]"
-      visit character_path @char
+      e = create :event, details: "@[#{@char.aliases.first.name}]", world: @world
+      visit world_character_path @world, @char
       expect(page).to have_content e.summary
       within "h1" do
         click_on "Edit"
@@ -217,8 +221,8 @@ describe "Characters", js: true do
     
     describe "biography" do
       before :each do
-        @events = create_list :event, 4, details: "@[#{@char.name}]"
-        visit character_path @char
+        @events = create_list :event, 4, details: "@[#{@char.name}]", world: @world
+        visit world_character_path @world, @char
       end
       
       it "Shows all the events that happened relevant to the character" do

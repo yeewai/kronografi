@@ -1,10 +1,11 @@
 class CharactersController < ApplicationController
   before_action :set_character, only: [:show, :edit, :update, :destroy]
+  before_action :set_world
 
   # GET /characters
   # GET /characters.json
   def index
-    @characters = Character.all
+    @characters = @world.characters
   end
 
   # GET /characters/1
@@ -26,10 +27,10 @@ class CharactersController < ApplicationController
   # POST /characters.json
   def create
     @character = Character.new(character_params)
-
+    @character.world = @world
     respond_to do |format|
       if @character.save
-        format.html { redirect_to @character, notice: 'Character was successfully created.' }
+        format.html { redirect_to world_character_path(@world, @character), notice: 'Character was successfully created.' }
         format.json { render :show, status: :created, location: @character }
       else
         format.html { render :new }
@@ -43,7 +44,7 @@ class CharactersController < ApplicationController
   def update
     respond_to do |format|
       if @character.update(character_params)
-        format.html { redirect_to @character, notice: 'Character was successfully updated.' }
+        format.html { redirect_to world_character_path(@world, @character), notice: 'Character was successfully updated.' }
         format.json { render :show, status: :ok, location: @character }
       else
         format.html { render :edit }
@@ -57,7 +58,7 @@ class CharactersController < ApplicationController
   def destroy
     @character.destroy
     respond_to do |format|
-      format.html { redirect_to characters_url, notice: 'Character was successfully destroyed.' }
+      format.html { redirect_to world_characters_url(@world), notice: 'Character was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -66,6 +67,10 @@ class CharactersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_character
       @character = Character.find(params[:id])
+    end
+    
+    def set_world
+      @world = World.find_by_token(params[:world_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

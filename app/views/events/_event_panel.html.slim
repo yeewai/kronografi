@@ -3,8 +3,8 @@
     =replace_chars(e.summary).html_safe
     -unless e.summary == "Story Starts"
       small=link_to "Details", "#ebody_#{e.id}" , class: "pull-right", data: { toggle: "collapse"}
-      small=link_to "Edit", "#" , class: "pull-right", data: {toggle: "modal", target: "#edit_event_modal", e_url: edit_event_path(e)}
-      small= link_to 'Remove',  e, class: "pull-right",  method: :delete, data: { confirm: 'Are you sure?', remote: true }
+      small=link_to "Edit", "#" , class: "pull-right", data: {toggle: "modal", target: "#edit_event_modal", e_url: edit_world_event_path(@world, e)}
+      small= link_to 'Remove',  world_event_path(@world, e), class: "pull-right",  method: :delete, data: { confirm: 'Are you sure?', remote: true }
       .tags
         | Tags: 
         =e.tags.map(&:content).join(", ") 
@@ -13,7 +13,7 @@
       .char_list
         | Characters: 
         -e.characters.each do |c|
-          =link_to c.name, c
+          =link_to c.name, world_character_path(@world, c)
   -unless e.summary == "Story Starts"
     .panel-body.collapse id=="ebody_#{e.id}" 
       =replace_chars(e.details).html_safe

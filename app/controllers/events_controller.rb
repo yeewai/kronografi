@@ -1,23 +1,24 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :update_happened, :destroy]
+  before_action :set_world
 
   # GET /events
   # GET /events.json
   def index
-    @start_event = Event.find_or_initialize_by summary: "Story Starts"
+    @start_event = @world.events.find_or_initialize_by summary: "Story Starts"
     @event = Event.new
-    @tags = Tag.all
-    @characters = Character.all
+    @tags = @world.tags
+    @characters = @world.characters
   end
   
   def years
-    @start_event = Event.find_by_summary "Story Starts"
-    @events = Event.all.includes(:tags, :characters).group_by(&:happened_key)
+    @start_event = @world.events.find_by_summary "Story Starts"
+    @events = @world.events.all.includes(:tags, :characters).group_by(&:happened_key)
     if params[:start_year] && params[:end_year]
       @year_range = params[:start_year].to_i..params[:end_year].to_i
     elsif @start_event
-      start = [@start_event.happened_on.year-5, Event.all.sort_by(&:happened_on).first.happened_on.year].min
-      finish = [@start_event.happened_on.year+5, Event.order(:happened_on).last.happened_on.year].max
+      start = [@start_event.happened_on.year-5, @world.events.all.sort_by(&:happened_on).first.happened_on.year].min
+      finish = [@start_event.happened_on.year+5, @world.events.order(:happened_on).last.happened_on.year].max
       @year_range = start..finish
     else
       @year_range = []
@@ -46,7 +47,7 @@ class EventsController < ApplicationController
   # POST /events.json
   def create
     @event = Event.new(event_params)
-
+    @event.world = @world
     respond_to do |format|
       if @event.save
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
@@ -108,6 +109,10 @@ class EventsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_event
       @event = Event.find(params[:id])
+    end
+    
+    def set_world
+      @world = World.find_by_token(params[:world_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

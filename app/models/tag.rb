@@ -1,4 +1,5 @@
 class Tag < ActiveRecord::Base
+  belongs_to :world
   has_and_belongs_to_many :events
   
   before_save :generate_slug

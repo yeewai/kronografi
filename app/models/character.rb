@@ -1,4 +1,5 @@
 class Character < ActiveRecord::Base
+  belongs_to :world
   has_many :aliases, :dependent => :delete_all
   has_and_belongs_to_many :events
   
@@ -13,7 +14,7 @@ class Character < ActiveRecord::Base
     a_arr = str.squish.split(",")
     
     a_arr.each do |a|
-      self.aliases << Alias.find_or_create_by(name: a.squish)
+      self.aliases << Alias.find_or_create_by(name: a.squish, world_id: self.world_id)
     end
   end
   

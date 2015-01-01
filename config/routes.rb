@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   devise_for :users
   resources :worlds, except: ["show", "destroy"] do
     post 'aliases/match', as: "aliases"
+    resources :aliases, except: ["show", "edit", "new", "create"]
+    get 'aliases/edit/:id/:what' => 'aliases#edit', as: "edit_aliases"
     resources :characters
     get 'tags/index'
     get "events/years"

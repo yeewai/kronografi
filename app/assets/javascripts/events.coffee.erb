@@ -90,7 +90,7 @@ clearInputHelp = (input) ->
   $(input).closest(".form-group").removeClass "has-error"
   $(input).closest("form").find("[type=submit]").prop "disabled", false      
 window.setValidationCheck = ->
-  $("[data-validate]").keyup ->
+  $("[data-validate]").change ->
     clearInputHelp this
     $(this).closest("form").find("[data-validate]").each ->
       input = this
@@ -99,6 +99,8 @@ window.setValidationCheck = ->
         switch val
           when "presence"
             failInput input, "Can not be blank"  if input.value.length < 1
+          when "checked"
+            failInput input, "" if $(input).prop("checked") == false
           when "remote"
             url = $(input).data("remote-url")
             if url

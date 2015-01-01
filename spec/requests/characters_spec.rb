@@ -53,20 +53,15 @@ describe "Characters", js: true do
   it "edits characters" do
     @char = create :character, world: @world
     visit world_character_path(@world, @char)
-    click_on "Edit"
+    click_on "Edit Info"
     
-    n1 = Faker::Lorem.characters(12)
-    n2 = Faker::Lorem.characters(12)
     age = Faker::Number.number(1)
 
     fill_in "Age", with: age
-    fill_in "Nicknames", with: "#{n1}, #{n2}"
     
     click_on "Save"
     
-    [n1, n2, age].each do |item|
-      expect(page).to have_content item
-    end
+    expect(page).to have_content age
   end
   
   describe "linking to events" do
@@ -81,19 +76,23 @@ describe "Characters", js: true do
       end
     end
     
-    it "links to events by mentioning character name in the details" #do
-    #  within "#edit_event_modal" do
-    #    #within_frame "event_details_#{@event.id}_ifr" do
-    #      find("[data-id='event_details_#{@event.id}']").set("@[#{@char.name}]")
-    #      #fill_in "event_details_#{@event.id}", :with =>"@[#{@char.name}]"
-    #      #end  
-    #    click_on "Save Event"
-    #  end
-    #  
-    #  within "#e_#{@event.id} .char_list" do
-    #    expect(page).to have_content @char.name
-    #  end
-    #end
+    it "links to events by mentioning character name in the details" do
+      #within "#edit_event_modal" do
+      #  #within_frame "event_details_#{@event.id}_ifr" do
+      #    find("[data-id='event_details_#{@event.id}']").set("@[#{@char.name}]")
+      #    #fill_in "event_details_#{@event.id}", :with =>"@[#{@char.name}]"
+      #    #end  
+      #  click_on "Save Event"
+      #end
+      @event.details = "@[#{@char.name}]"
+      @event.save!
+      
+      visit world_character_path(@world, @char)
+      
+      within "#e_#{@event.id} .char_list" do
+        expect(page).to have_content @char.name
+      end
+    end
     
     it "links to events by mentioning character name in the summary" do
       within "#edit_event_modal" do
@@ -199,30 +198,168 @@ describe "Characters", js: true do
       end
     end
     
-    it "unlinks characters if name changes" do
-      e = create :event, details: "@[#{@char.name}]", world: @world
-      visit world_character_path @world, @char
-      expect(page).to have_content e.summary
-      within "h1" do
-        click_on "Edit"
+    describe "destroying character" do
+      it "deletes character and unlinks events" do 
+        @event.details = "@[#{@char.name}]"
+        @event.save!
+        visit world_character_path(@world, @char)
+        
+        click_on "Delete Character"
+        within "#destroy_char_modal" do
+          check "confirm"
+          click_on "Delete #{@char.name}"
+        end
+        
+        visit world_events_path(@world)
+        within "#e_#{@event.id} .char_list" do
+          expect(page).to_not have_content @char.name
+        end
       end
-      fill_in "Name", with: "Something Else"
-      click_on "Save"
       
-      expect(page).to_not have_content e.summary
+      it "changes nicknames to name (if desired)" do
+        @event.details = "@[#{@char.aliases.first.name}]"
+        @event.save!
+        visit world_character_path(@world, @char)
+        
+        click_on "Delete Character"
+        within "#destroy_char_modal" do
+          check "confirm"
+          check "persist"
+          click_on "Delete #{@char.name}"
+        end
+        
+        visit world_events_path(@world)
+        within "#e_#{@event.id}" do
+          click_on "Details"
+          expect(page).to have_content @char.name
+        end
+      end
     end
     
-    it "unlinks characters if nickname changes" do
-      e = create :event, details: "@[#{@char.aliases.first.name}]", world: @world
-      visit world_character_path @world, @char
-      expect(page).to have_content e.summary
-      within "h1" do
-        click_on "Edit"
+    describe "editing names" do
+      it "changes name in events (if desired)" do
+        @event.details = "@[#{@char.name}]"
+        @event.save!
+        visit world_character_path(@world, @char)
+        
+        n = Faker::Lorem.characters(12) 
+        
+        click_on "Change Name"
+        within "#edit_name_modal" do
+          fill_in "Name", with: n
+          check "persist"
+          click_on "Save"
+        end
+        
+        within "#e_#{@event.id}" do
+          click_on "Details"
+          expect(page).to have_content n
+        end
       end
-      fill_in "Nicknames", with: "Something Else"
-      click_on "Save"
       
-      expect(page).to_not have_content e.summary
+      it "unlinks characters (if desired)" do
+        @event.details = "@[#{@char.name}]"
+        @event.save!
+        visit world_character_path(@world, @char)
+        
+        n = Faker::Lorem.characters(12) 
+        
+        click_on "Change Name"
+        within "#edit_name_modal" do
+          fill_in "Name", with: n
+          uncheck "persist"
+          click_on "Save"
+        end
+        
+        expect(page).to_not have_content @event.summary
+      end
+      
+      it "changes nicknames in events (if desired)" do
+        a = @char.aliases.first
+        @event.details = "@[#{a.name}]"
+        @event.save!
+        visit world_character_path(@world, @char)
+      
+        n = Faker::Lorem.characters(12) 
+        
+        within "#a_#{a.id}" do
+          click_on "Edit"
+        end
+        within "#edit_name_modal" do
+          fill_in "Name", with: n
+          check "persist"
+          click_on "Save"
+        end
+      
+        within "#e_#{@event.id}" do
+          click_on "Details"
+          expect(page).to have_content n
+        end
+      end
+      
+      it "unlinks characters if nickname changes (if desired)" do
+        a = @char.aliases.first
+        @event.details = "@[#{a.name}]"
+        @event.save!
+        visit world_character_path(@world, @char)
+      
+        n = Faker::Lorem.characters(12) 
+        
+        within "#a_#{a.id}" do
+          click_on "Edit"
+        end
+        within "#edit_name_modal" do
+          fill_in "Name", with: n
+          uncheck "persist"
+          click_on "Save"
+        end
+      
+        expect(page).to_not have_content @event.summary
+      end
+      
+      it "changes nickname in event to name if nickname is removed (if desired)" do
+        a = @char.aliases.first
+        @event.details = "@[#{a.name}]"
+        @event.save!
+        visit world_character_path(@world, @char)
+        
+        within "#a_#{a.id}" do
+          click_on "Remove"
+        end
+        
+        within "#edit_name_modal" do
+          check "persist"
+          click_on "Remove nickname"
+        end
+        
+        within "#e_#{@event.id}" do
+          click_on "Details"
+          expect(page).to have_content @char.name
+        end
+      end
+      
+      it "adds additional nicknames" do
+        visit world_character_path(@world, @char)
+        click_on "+ Add nickname(s)"
+        
+        n1 = Faker::Lorem.characters(12)
+        n2 = Faker::Lorem.characters(12)
+        @event.details = "@[#{n1}]"
+        @event.save!
+        
+        within "#new_name_modal" do
+          fill_in "Nicknames", with: "#{n1}, #{n2}"
+          click_on "Add nickname(s)"
+        end
+        
+        expect(page).to have_content n1
+        expect(page).to have_content n2
+        
+        within "#e_#{@event.id}" do
+          click_on "Details"
+          expect(page).to have_content n1
+        end
+      end
     end
     
     describe "biography" do
@@ -237,6 +374,7 @@ describe "Characters", js: true do
         end
       end
     end
+    
   end
   
 end

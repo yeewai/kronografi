@@ -44,9 +44,14 @@ class CharactersController < ApplicationController
   # PATCH/PUT /characters/1.json
   def update
     respond_to do |format|
+      old_name = @character.name if params[:persist]
+      
       if @character.update(character_params)
+        Event.change_names(@world, old_name, @character.name) if params[:persist]
+        
         format.html { redirect_to world_character_path(@world, @character), notice: 'Character was successfully updated.' }
         format.json { render :show, status: :ok, location: @character }
+        #format.js{}
       else
         format.html { render :edit }
         format.json { render json: @character.errors, status: :unprocessable_entity }
@@ -57,6 +62,11 @@ class CharactersController < ApplicationController
   # DELETE /characters/1
   # DELETE /characters/1.json
   def destroy
+    if params[:persist]
+      @character.aliases.each do |a|
+        Event.change_names(@world, a.name, @character.name) 
+      end
+    end
     @character.destroy
     respond_to do |format|
       format.html { redirect_to world_characters_url(@world), notice: 'Character was successfully destroyed.' }

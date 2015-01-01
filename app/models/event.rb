@@ -32,6 +32,15 @@ class Event < ActiveRecord::Base
     "y#{("n" if year < 0)}#{year.abs}m#{(month-1)/3}"
   end
   
+  
+  def self.change_names(world, old_name, new_name)
+    world.events.where("summary like ? OR details like ?", "%@[#{old_name}]%", "%@[#{old_name}]%").each do |e|
+      e.details = e.details.gsub(/@\[#{old_name}\]/, "@[#{new_name}]")
+      e.summary = e.summary.gsub(/@\[#{old_name}\]/, "@[#{new_name}]")
+      e.save!
+    end
+  end
+  
   private
   def cache_data
     self.happened_key = Event.generate_key(happened_on.year, happened_on.month)

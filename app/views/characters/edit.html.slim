@@ -1,8 +1,6 @@
-h1 Editing character
+h1=" Editing #{@character.name}"
 
 == render 'form'
 
-= link_to 'Show', world_character_path(@world, @character)
-'|
-= link_to 'Back', world_characters_path(@world)
+= link_to 'Back', world_character_path(@world, @character), class: "btn btn-default btn-sm"
 

@@ -10,7 +10,6 @@ class Character < ActiveRecord::Base
   
   
   def nicknames=(str)
-    self.aliases.clear
     a_arr = str.squish.split(",")
     
     a_arr.each do |a|
@@ -19,7 +18,8 @@ class Character < ActiveRecord::Base
   end
   
   def nicknames
-    self.aliases.pluck("name").join(", ")
+    ''
+    #self.aliases.pluck("name").join(", ")
   end
   
   private
@@ -28,21 +28,6 @@ class Character < ActiveRecord::Base
   end
   
   def link_events
-    event_ids = self.events.pluck(:id)
-    
-    self.events.each(&:save!)
-    
-    if self.name_changed?
-      Event.where("summary like ? OR details like ?", "%@[#{self.name}]%", "%@[#{self.name}]%").where.not(id: event_ids).each(&:save!)
-    end
-    
-    q = []
-    names = []
-    self.aliases.each do |a|
-      q.push "summary like ? OR details like ?"
-      names += ["%@[#{a.name}]%", "%@[#{a.name}]%"]
-    end
-    
-    Event.where(q.join(" OR "), *names).where.not(id: event_ids).each(&:save!)
+    (Event.where("summary like ? OR details like ?", "%@[#{self.name}]%", "%@[#{self.name}]%") + self.events).each(&:save!)
   end
 end

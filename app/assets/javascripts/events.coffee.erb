@@ -20,12 +20,15 @@ load_add_years_buttons = ->
     y = parseInt($("ul.years li:first").data("year"))
     $.get $(this).data("y-url"), {start_year: y - 10, end_year: y-1}, (data) ->
       $("ul.years").prepend(data)
+      change_year_display(year_diff)
       
   $("#addlateryears").click (e) ->
     e.preventDefault()
     y = parseInt($("ul.years > li:last").data("year"))
     $.get $(this).data("y-url"), {start_year: y + 1, end_year: y+10}, (data) ->
       $("ul.years").append(data)
+      change_year_display(year_diff)
+    
       
 next_date = (d, quanta) ->
   quanta = quanta || 1
@@ -164,6 +167,22 @@ window.set_event_edit_modals = ->
     #if !confirm("Any changes will be lost. Are you sure you want to close this box?")
     #  e.preventDefault()
     tinyMCE.editors=[];
+
+year_diff = 0
+change_year_display = (diff) ->
+  diff = diff || year_diff
+  $("ul.years > li a.year").each ->
+    $(this).html ($(this).closest("li").data("year") - diff)
+    $(this).after( "<small class='o_year'>" + $(this).closest("li").data("year") + "</small>") if !$(this).next().hasClass("o_year")
+  $("#year_display").modal('hide')
+
+first_load = false
+$(document).ajaxStop ->
+  if $("#events_index").length > 0 && !first_load 
+    $("html, body").animate
+      scrollTop: $(".start_story").offset().top - ($( window ).height()/ 2 ) + 100
+    , 500
+    first_load = true
     
 $(document).ready ->
   if $("#events_index").length > 0
@@ -174,15 +193,17 @@ $(document).ready ->
       
     $("#year_display").on "show.bs.modal", (event) ->
       $(this).find("#original_year").text($(event.relatedTarget).closest("li").data("year"))
+      $(this).find("#year_as").val($(event.relatedTarget).text())
     
     $("#year_display input[type=submit]").click ->
-      diff = parseInt($(this).closest(".modal").find("#original_year").text()) - parseInt($("#year_display #year_as").val())
-      $("ul.years > li a.year").each ->
-        $(this).html ($(this).closest("li").data("year") - diff)
-        $(this).after( "<small class='o_year'>" + $(this).closest("li").data("year") + "</small>") if !$(this).next().hasClass("o_year")
-      $("#year_display").modal('hide')
+      year_diff = parseInt($(this).closest(".modal").find("#original_year").text()) - parseInt($("#year_display #year_as").val())
+      change_year_display()
       
     load_remote_parts()
+    
+    
+      
+    $("#sidenav").sticky({topSpacing: "100px"});
   
   if $("#events_index, #characters_show")
     $("#expand_event_button").click (e)->
@@ -192,7 +213,6 @@ $(document).ready ->
     $("#collapse_event_button").click (e)->
       e.preventDefault()
       $(".panel-body").collapse("hide")
-    
     
     
     

@@ -26,14 +26,14 @@ hr
       tr
         td Age
         td=@character.age
-  .col-sm-9
-    =@character.description.html_safe
+  .col-sm-9.character_descriptions
+    ==replace_chars(@character.description).html_safe
 .row
   h2 
     | Biography 
     =link_to "Expand All Events", "#", id: "expand_event_button", class: "btn btn-default btn-sm pull-right"
     =link_to "Collapse All Events", "#", id: "collapse_event_button", class: "btn btn-default btn-sm pull-right"
-  -@character.events.order(:happened_on).each do |e|
+  -(@character.events + @world.events.where(summary: "Story Starts")).sort_by(&:happened_on).each do |e|
     ==render "events/event_panel", e: e
 
 hr

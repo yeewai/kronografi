@@ -1,4 +1,6 @@
-h1 Listing worlds
+h1 
+  | Listing worlds
+  = link_to 'New World', new_world_path, class: "btn btn-primary pull-right"
 
 ul.worlds_list.list-group
   -@worlds.each do |world|
@@ -8,4 +10,4 @@ ul.worlds_list.list-group
       = link_to 'Edit', edit_world_path(world), class: "btn btn-default btn-xs"
       /= link_to 'Destroy', world, :confirm => 'Are you sure?', :method => :delete, class: "btn btn-default btn-xs"
 
-= link_to 'New World', new_world_path, class: "btn btn-primary"
+

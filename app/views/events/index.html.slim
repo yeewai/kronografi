@@ -1,3 +1,4 @@
+=content_for(:title, "#{@world.name} | #{app_name}")
 .col-lg-9
   h1 
     =@world.name
@@ -29,6 +30,12 @@
       li
         small=link_to "Expand All Events", "#", id: "expand_event_button", class: "event_button"
         small=link_to "Collapse All Events", "#", id: "collapse_event_button", class: "event_button"
+      li
+        =link_to "&#9654; Scroll to".html_safe, "#scrollto_list", data: {toggle: "collapse"}
+        #scrollto_list.collapse
+          ul.scroll_to
+            -@world.events.where(kind: ["milestone", "start"]).each do |e|
+              li=link_to e.summary, "#e_#{e.id}"
         
 ==render "start_form"
 ==render "form_modal", kind: "New"

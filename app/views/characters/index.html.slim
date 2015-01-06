@@ -1,3 +1,4 @@
+=content_for(:title, "Characters (#{@world.name}) | #{app_name}")
 h1 
   | Listing characters
   = link_to 'New Character', new_world_character_path(@world), class: "btn btn-primary pull-right"

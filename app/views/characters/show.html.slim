@@ -1,3 +1,4 @@
+=content_for(:title, "#{@character.name} (#{@world.name}) | #{app_name}")
 p#notice = notice
 
 h1#char_name 
@@ -33,7 +34,7 @@ hr
     | Biography 
     =link_to "Expand All Events", "#", id: "expand_event_button", class: "btn btn-default btn-sm pull-right"
     =link_to "Collapse All Events", "#", id: "collapse_event_button", class: "btn btn-default btn-sm pull-right"
-  -(@character.events + @world.events.where(summary: "Story Starts")).sort_by(&:happened_on).each do |e|
+  -@events.sort_by(&:happened_on).each do |e|
     ==render "events/event_panel", e: e
 
 hr

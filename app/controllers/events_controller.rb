@@ -13,7 +13,7 @@ class EventsController < ApplicationController
   end
   
   def years
-    @start_event = @world.events.find_by_summary "Story Starts"
+    @start_event = @world.events.find_by_kind "start"
     @events = @world.events.all.includes(:tags, :characters).group_by(&:happened_key)
     if params[:start_year] && params[:end_year]
       @year_range = params[:start_year].to_i..params[:end_year].to_i
@@ -30,8 +30,8 @@ class EventsController < ApplicationController
 
   # GET /events/1
   # GET /events/1.json
-  def show
-  end
+  # def show
+  # end
 
   # GET /events/new
   def new
@@ -114,6 +114,6 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:summary, :details, :set_happened, :happened_on, :set_tags)
+      params.require(:event).permit(:summary, :details, :set_happened, :happened_on, :set_tags, :kind)
     end
 end

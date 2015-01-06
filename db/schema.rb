@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141231030721) do
+ActiveRecord::Schema.define(version: 20150106033343) do
 
   create_table "aliases", force: :cascade do |t|
     t.string   "name"
@@ -52,10 +52,11 @@ ActiveRecord::Schema.define(version: 20141231030721) do
     t.text     "summary"
     t.text     "details"
     t.datetime "happened_on"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.string   "happened_key"
-    t.integer  "world_id",     default: 1, null: false
+    t.integer  "world_id",     default: 1,         null: false
+    t.string   "kind",         default: "regular", null: false
   end
 
   add_index "events", ["world_id"], name: "index_events_on_world_id"

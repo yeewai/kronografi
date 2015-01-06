@@ -174,8 +174,8 @@ describe "Events Index", :js => true do
       
       it "does not let you submit the form if the date is not formatted correctly" do
         within "#new_event_modal" do
+          fill_in "event_set_happened", with: "2014/15/15"
           fill_in "event_summary", with: Faker::Lorem.characters(12)
-          fill_in "event_set_happened", with: "2014/01/01"
           expect(page).to have_button('Save Event', disabled: true)
         end
       end
@@ -194,6 +194,23 @@ describe "Events Index", :js => true do
       
       within "#year2014" do
         expect(page).to have_content summary
+      end
+    end
+    
+    it "creates a milestone and the event has milestone class" do
+      find('[data-date="2014-01-01 12:00"]').click
+      summary = Faker::Lorem.characters(12)
+      
+      within "#new_event_modal" do
+        
+        fill_in 'Summary', with: summary
+        select "Milestone", from: "event_kind"
+        
+        click_button "Save Event"
+      end
+      
+      within "#year2014" do
+        expect(page).to have_css ".milestone"
       end
     end
     

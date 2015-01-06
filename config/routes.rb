@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     get 'tags/index'
     get "events/years"
     post "events/update_happened"
-    resources :events
+    resources :events, except: ["show"]
   end
 
   post "events/valid_date"

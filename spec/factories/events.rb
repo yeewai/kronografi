@@ -12,6 +12,7 @@ FactoryGirl.define do
     
     factory :start_event do
       summary "Story Starts"
+      kind "start"
     end
   end
 

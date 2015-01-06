@@ -12,6 +12,7 @@ window.load_remote_parts = ->
       drag_events()
       load_add_years_buttons()
       set_event_filters()
+      set_scroll()
       
 load_add_years_buttons = ->
   $("#addearlieryears, #addlateryears").unbind "click"
@@ -93,7 +94,7 @@ clearInputHelp = (input) ->
   $(input).closest(".form-group").removeClass "has-error"
   $(input).closest("form").find("[type=submit]").prop "disabled", false      
 window.setValidationCheck = ->
-  $("[data-validate]").change ->
+  $("[data-validate]").on "keyup change", ->
     clearInputHelp this
     $(this).closest("form").find("[data-validate]").each ->
       input = this
@@ -175,13 +176,19 @@ change_year_display = (diff) ->
     $(this).html ($(this).closest("li").data("year") - diff)
     $(this).after( "<small class='o_year'>" + $(this).closest("li").data("year") + "</small>") if !$(this).next().hasClass("o_year")
   $("#year_display").modal('hide')
-
+  
+scroll_here = (to_here) ->
+  $("html, body").animate
+    scrollTop: $(to_here).offset().top - ($( window ).height()/ 2 ) + 100
+  , 500
+set_scroll = ->
+  $("ul.scroll_to a").click -> 
+    scroll_here($(this).attr("href"))
+  
 first_load = false
 $(document).ajaxStop ->
   if $("#events_index").length > 0 && !first_load 
-    $("html, body").animate
-      scrollTop: $(".start_story").offset().top - ($( window ).height()/ 2 ) + 100
-    , 500
+    scroll_here(".start_story")
     first_load = true
     
 $(document).ready ->
@@ -200,6 +207,8 @@ $(document).ready ->
       change_year_display()
       
     load_remote_parts()
+    
+    
     
     
       

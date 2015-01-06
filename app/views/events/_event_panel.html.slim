@@ -1,7 +1,7 @@
-.panel.panel-default.event id=="e_#{e.id}" data-id==e.id class==("panel-primary start_story" if e.summary == "Story Starts") data-tags==e.tags.map(&:slug).join(" ") data-chars==e.characters.map(&:slug).join(" ")
+.panel.panel-default.event id=="e_#{e.id}" data-id==e.id class=="#{("panel-primary start_story" if e.kind == "start")} #{("panel-info milestone" if e.kind == "milestone")}" data-tags==e.tags.map(&:slug).join(" ") data-chars==e.characters.map(&:slug).join(" ")
   .panel-heading 
     =replace_chars(e.summary).html_safe
-    -unless e.summary == "Story Starts"
+    -unless e.kind == "start"
       small.pull-right.actions
         = link_to 'Remove',  world_event_path(@world, e), method: :delete, data: { confirm: 'Are you sure?', remote: true }
         =link_to "Edit", "#" , data: {toggle: "modal", target: "#edit_event_modal", e_url: edit_world_event_path(@world, e)}
@@ -16,6 +16,6 @@
         | Characters: 
         -e.characters.each do |c|
           =link_to c.name, world_character_path(@world, c)
-  -unless e.summary == "Story Starts"
+  -unless e.kind == "start"
     .panel-body.collapse id=="ebody_#{e.id}" 
       =replace_chars(e.details).html_safe

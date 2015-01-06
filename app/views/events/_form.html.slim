@@ -20,6 +20,9 @@
     = f.label :set_tags, "Tags", class: "col-sm-2 control-label"
     .col-sm-10
       =f.hidden_field :set_tags, id: "event_set_tags_#{@event.id}", class: "select2_me"
+  .form-group
+    .col-md-offset-2.col-sm-10
+      =f.select :kind, [["Regular Event", "regular"], ["Milestone", "milestone"]], {}, class: "form-control"
       
   .form-group
     .col-md-offset-2.col-sm-10

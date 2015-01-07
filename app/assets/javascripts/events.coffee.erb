@@ -13,6 +13,7 @@ window.load_remote_parts = ->
       load_add_years_buttons()
       set_event_filters()
       set_scroll()
+      change_year_display()
       
 load_add_years_buttons = ->
   $("#addearlieryears, #addlateryears").unbind "click"
@@ -202,7 +203,13 @@ $(document).ready ->
       $(this).find("#original_year").text($(event.relatedTarget).closest("li").data("year"))
       $(this).find("#year_as").val($(event.relatedTarget).text())
     
-    $("#year_display input[type=submit]").click ->
+    $("#year_display #char_age_list a").click (e)->
+      e.preventDefault()
+      diff=parseInt($("#char_age_list").data("start")) - parseInt($(this).closest(".modal").find("#original_year").text())
+      $(this).closest(".modal").find("#year_as").val($(this).data("age") - diff)
+    
+    $("#year_display input[type=submit]").click (e)->
+      e.preventDefault()
       year_diff = parseInt($(this).closest(".modal").find("#original_year").text()) - parseInt($("#year_display #year_as").val())
       change_year_display()
       

@@ -124,18 +124,40 @@ describe "Events Index", :js => true do
     end
   end
   
-  it "changes display years relatively" do
-    start_event = create :start_event, world: @world
-    visit world_events_path(@world)
+  describe "changing years" do
+    before :each do
+      start_event = create :start_event, world: @world
       
-    click_on "2009"
-    within "#year_display" do
-      fill_in "year_as", with: "0"
-      click_on "Set"
     end
     
-    10.times do |i|
-      expect(page).to have_content i
+    it "changes display years relatively" do
+      visit world_events_path(@world)
+      
+      click_on "2009"
+      within "#year_display" do
+        fill_in "year_as", with: "0"
+        click_on "Set"
+      end
+    
+      10.times do |i|
+        expect(page).to have_content i
+      end
+    end
+    
+    it "changes display years relatively" do
+      @char = create :character, world: @world, age: 20
+      visit world_events_path(@world)
+      
+      click_on "2009"
+      within "#year_display" do
+        click_on "Use Character Ages"
+        click_on "#{@char.name} (#{@char.age})"
+        click_on "Set"
+      end
+    
+      10.times do |i|
+        expect(page).to have_content i
+      end
     end
   end
   

@@ -1,0 +1,19 @@
+.modal.fade#year_display
+  .modal-dialog.modal-sm
+    .modal-content
+      .modal-header
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+        h4.modal-title Display years as
+          
+      .modal-body
+        form.form-inline
+          span#original_year
+          |  as 
+          .form-group
+            =number_field :year, :as, class: "form-control col-sm-2"
+          =submit_tag "Set", class: "btn btn-primary"
+        =link_to "&#9654; Use Character Ages".html_safe, "#char_age_list", data: {toggle: "collapse"}
+        ul.collapse.list-group#char_age_list data-start==(@start_event.happened_on.year if @start_event.happened_on)
+          -@world.characters.where.not(age: nil).each do |c|
+            li.list-group-item=link_to "#{c.name} (#{c.age})", "#", data: {age: c.age}

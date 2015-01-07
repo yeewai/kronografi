@@ -40,22 +40,7 @@
 ==render "start_form"
 ==render "form_modal", kind: "New"
 ==render "form_modal", kind: "Edit"
-
-.modal.fade#year_display
-  .modal-dialog.modal-sm
-    .modal-content
-      .modal-header
-        button type="button" class="close" data-dismiss="modal" aria-label="Close"
-          span aria-hidden="true" &times;
-        h4.modal-title Display years as
-          
-      .modal-body
-        form.form-inline
-        span#original_year
-        |  as 
-        .form-group
-          =number_field :year, :as, class: "form-control col-sm-2"
-        =submit_tag "Set", class: "btn btn-primary"
+==render "display_year_modal"
 
 
   

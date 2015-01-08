@@ -70,7 +70,7 @@ set_droppable = (target) ->
       merge_timeslots()
       
       #Update item
-      $.post( $("ul.years").data("update-happened"), {id: item.data("id"), happened_on: $(this).data("date")}).fail ->
+      $.post( $(".years").data("update-happened"), {id: item.data("id"), happened_on: $(this).data("date")}).fail ->
         alert "error"
         load_remote_parts()
       item.find(".when").text($(this).data("date"))

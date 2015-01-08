@@ -1,0 +1,20 @@
+ul.nav.nav-pills.nav-justified.white
+  li =link_to "<<", world_events_path(@world, @year - 1)
+  li 
+    p.large.text-center="Year: #{@year}"
+  li =link_to ">>", world_events_path(@world, @year + 1)
+p.text-center=link_to "View all years",  world_events_path(@world)
+ul.years
+  -(1..12).to_a.each do |m|
+    li id=="month#{m}" data-month=m
+      .col-md-1 
+        h3= m
+      .col-md-11
+        ul.months
+          li.month 
+            =link_to "", "#", class: "timeslot", data: {date: format_date(@year,m,"1"), toggle: "modal", target: "#new_event_modal", e_url: new_world_event_path(@world)} 
+            -Array(@events[m]).each do |e|
+              ==render "event_panel", e: e
+        
+              =link_to "", "#", class: "timeslot", data: {date: format_date(e.happened_on + 1.hour), toggle: "modal", target: "#new_event_modal", e_url: new_world_event_path(@world)}
+  

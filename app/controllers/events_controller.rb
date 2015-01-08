@@ -10,11 +10,12 @@ class EventsController < ApplicationController
     @event = Event.new
     @tags = @world.tags
     @characters = @world.characters
+    @year = params[:this_year]
   end
   
   def years
     @start_event = @world.events.find_by_kind "start"
-    @events = @world.events.all.includes(:tags, :characters).group_by(&:happened_key)
+    @events = @world.events.all.order(:happened_on).includes(:tags, :characters).group_by(&:happened_key)
     if params[:start_year] && params[:end_year]
       @year_range = params[:start_year].to_i..params[:end_year].to_i
     elsif @start_event
@@ -24,6 +25,17 @@ class EventsController < ApplicationController
     else
       @year_range = []
     end
+    
+    render layout: false
+  end
+  
+  def months
+    @start_event = @world.events.find_by_kind "start"
+    @year = params[:year].to_i
+    #For PG
+    #@world.events.where('extract(year from happened_on) = ?', @year)
+    #for sqlite
+    @events = @world.events.where("strftime('%Y', happened_on)= ?", @year.to_s).order(:happened_on).includes(:tags, :characters).group_by{|e| e.happened_on.month}
     
     render layout: false
   end

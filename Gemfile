@@ -6,6 +6,8 @@ gem 'rails', '4.2.0'
 
 group :production do 
   gem 'pg'
+  # heroku stuff
+  gem 'rails_12factor'
 end
 group :development, :test do 
   # Use sqlite3 as the database for Active Record
@@ -79,6 +81,3 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'faker'
 end
-
-# heroku stuff
-gem 'rails_12factor'

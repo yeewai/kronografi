@@ -70,10 +70,12 @@ describe "Characters", js: true do
       @char = create :character, world: @world
       @event = create :event, world: @world
       visit world_events_path(@world)
-      
+
+      save_screenshot("/Users/yeeeeeeeee/Documents/plotter_beforee.png")
       within "#e_#{@event.id}" do
         click_link "Edit"
       end
+      save_screenshot("/Users/yeeeeeeeee/Documents/plotter_aftere.png")
     end
     
     it "links to events by mentioning character name in the details" do
@@ -88,7 +90,6 @@ describe "Characters", js: true do
       @event.save!
       
       visit world_character_path(@world, @char)
-      
       within "#e_#{@event.id} .char_list" do
         expect(page).to have_content @char.name
       end

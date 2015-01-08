@@ -13,9 +13,12 @@ Rails.application.routes.draw do
     get 'aliases/edit/:id/:what' => 'aliases#edit', as: "edit_aliases"
     resources :characters
     get 'tags/index'
-    get "events/years"
     post "events/update_happened"
-    resources :events, except: ["show"]
+    resources :events, except: ["show", "index", "create"]
+    get "events/years"
+    get "events/in_year/:year" => "events#months", as: "events_months"
+    get "events/(:this_year)" => "events#index", as: "events"
+    post "events" => "events#create"
   end
 
   post "events/valid_date"

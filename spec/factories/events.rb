@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  sequence(:random_string) {|n| Faker::Lorem.characters(12)}
+  sequence(:random_string) {|n| "#{n}#{Faker::Lorem.characters(12)}"}
   sequence(:random_date) {|n| "2014-12-#{n}"}
   
   factory :event do

@@ -58,4 +58,3 @@ class Event < ActiveRecord::Base
   end
 end
 
-CHAR_PATTERN = /@\[(.*?)\]/

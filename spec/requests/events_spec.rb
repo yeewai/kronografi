@@ -278,9 +278,51 @@ describe "Events Index", :js => true do
         click_link "Remove"
       end
       
-      #save_screenshot("/Users/yeeeeeeeee/Documents/plotter.png")
-      
+      save_screenshot("/Users/yeeeeeeeee/Documents/plotter_remove.png")
       expect(page).to_not have_content @event.summary
+    end
+  end
+  
+  describe "Monthly view" do
+    before :each do
+      @start_event = create :start_event, world: @world
+      @events = create_list :event, 3, world: @world, happened_on: "2014-01-01"
+      @other_events = create_list :event, 3, world: @world, happened_on: "2013-01-01"
+      visit world_events_path(@world, "2014")
+    end
+    
+    it "shows events in a year" do
+      @events.each do |e|
+        expect(page).to have_content e.summary
+      end
+    end
+    
+    it "does not show events that happened in other years" do
+      @other_events.each do |e|
+        expect(page).to_not have_content e.summary
+      end
+    end
+    
+    it "lets me click through to subsequent years" do
+      click_on "<<"
+      expect(page).to have_content "2013"
+      @other_events.each do |e|
+        expect(page).to have_content e.summary
+      end
+    end
+    
+    it "creates events in the year" do
+      find('[data-date="2014-03-01 12:00"]').click
+      summary = Faker::Lorem.characters(12)
+      
+      within "#new_event_modal" do
+        
+        fill_in 'Summary', with: summary
+        
+        click_button "Save Event"
+      end
+      
+      expect(page).to have_content summary
     end
   end
   

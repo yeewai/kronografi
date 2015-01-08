@@ -5,7 +5,11 @@ $red: #a94442;
 
 
 .max_width {width: 100%;}
-
+.large {font-size: 24px;}
+.white{
+  color: white;
+  a { color: white;}
+}
 //.c_characters .mce-edit-area {min-height: 400px !important;}
 
 body {
@@ -40,6 +44,7 @@ ul.years {
   padding-left: 0;
   
   > li {
+    display: flex;
     border-bottom: solid thin #eee;
     
     .year {
@@ -59,6 +64,7 @@ ul.years {
   
     ul.months {
       list-style: inherit;
+      padding-left: 0;
       > li.month {
         border-top: dotted thin #eee;
         

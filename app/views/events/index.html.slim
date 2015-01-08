@@ -5,9 +5,12 @@
     =link_to "Edit World", edit_world_path(@world), class: "btn btn-default btn-xs"
   .world_description = @world.description.html_safe
   -if @start_event
-    =link_to "See 10 years earlier", "#", class: "btn btn-default btn-block", id: "addearlieryears", data: {y_url: world_events_years_path(@world)}
-    = content_tag "ul", "", class: "years", id: "events_years", data: {remote_load: true, remote_url: world_events_years_path(@world), update_happened: world_events_update_happened_path(@world)}
-    =link_to "See 10 years later", "#", class: "btn btn-default btn-block", id: "addlateryears", data: {y_url: world_events_years_path(@world)}
+    -if @year
+      = content_tag "div", "", class: "years", id: "events_months", data: {remote_load: true, remote_url: world_events_months_path(@world, @year), update_happened: world_events_update_happened_path(@world)}
+    -else
+      =link_to "See 10 years earlier", "#", class: "btn btn-default btn-block", id: "addearlieryears", data: {y_url: world_events_years_path(@world)}
+      = content_tag "ul", "", class: "years", id: "events_years", data: {remote_load: true, remote_url: world_events_years_path(@world), update_happened: world_events_update_happened_path(@world)}
+      =link_to "See 10 years later", "#", class: "btn btn-default btn-block", id: "addlateryears", data: {y_url: world_events_years_path(@world)}
     
 .col-lg-3
   #sidenav
@@ -42,7 +45,7 @@
 ==render "start_form"
 ==render "form_modal", kind: "New"
 ==render "form_modal", kind: "Edit"
-==render "display_year_modal"
+==render "display_year_modal" unless @year
 
 
   

@@ -67,4 +67,8 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
   Capybara.javascript_driver = :poltergeist
+  Capybara.default_wait_time = 5
+  
+  config.filter_run focus: true
+  config.run_all_when_everything_filtered = true
 end

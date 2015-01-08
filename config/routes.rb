@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   
+  get 'ads/show'
+  get 'ads/show_leader'
+
   devise_for :users
   resources :worlds, except: ["show", "destroy"] do
     post 'aliases/match', as: "aliases"

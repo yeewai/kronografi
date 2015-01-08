@@ -110,3 +110,12 @@ ul.years {
 #sidenav {
   overflow: auto;
 }
+
+.ads {
+  border: solid thin rgb(119, 119, 119);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  
+  span.label {float: left;}
+}

@@ -28,7 +28,7 @@ describe "Worlds" do
     it "updates" do
       w = create :world, user: @user
       visit worlds_path
-      click_on "Edit"
+      click_on "Edit Description"
       
       n = Faker::Lorem.characters(12)
       d = Faker::Lorem.characters(12)
@@ -146,6 +146,38 @@ describe "Worlds" do
       @t1.each do |t|
         expect(page).to_not have_content t.content
     
+      end
+    end
+  end
+  
+  describe "settings", js: true do
+    before :each do
+      @world = create :world, user: @user
+      @start_event = create :start_event, world: @world
+      @events = create_list :event, 3, world: @world, happened_on: "2014-01-01"
+      @other_events = create_list :event, 3, world: @world, happened_on: "2013-01-01"
+      visit world_settings_path(@world)
+    end
+    
+    it "changes events to relative" do
+      uncheck "world_is_absolute"
+      click_on "Save"
+      
+      (@events + @other_events).each do |e|
+        expect(page).to have_content e.summary
+        expect(page).to_not have_content e.happened_on
+      end
+    end
+    
+    it "defaults the view to months" do
+      select "Months", from: "world_scale"
+      click_on "Save"
+      
+      @events.each do |e|
+        expect(page).to have_content e.summary
+      end
+      @other_events.each do |e|
+        expect(page).to_not have_content e.summary
       end
     end
   end

@@ -6,8 +6,12 @@ ul.worlds_list.list-group
   -@worlds.each do |world|
     li.list-group-item id=="w_#{world.token}"
       h2=link_to world.name, world_events_path(world)
-      = link_to 'Show', world_events_path(world), class: "btn btn-default btn-xs"
-      = link_to 'Edit', edit_world_path(world), class: "btn btn-default btn-xs"
+      -if world.scale == "months" && (start = world.events.find_by_kind("start"))
+        = link_to "Show", world_events_path(world, start.happened_on.year), class: "btn btn-default btn-xs"
+      -else
+        = link_to "Show", world_events_path(world), class: "btn btn-default btn-xs"
+      = link_to 'Edit Description', edit_world_path(world), class: "btn btn-default btn-xs"
+      = link_to 'Edit Settings', world_settings_path(world), class: "btn btn-default btn-xs"
       /= link_to 'Destroy', world, :confirm => 'Are you sure?', :method => :delete, class: "btn btn-default btn-xs"
 
 hr

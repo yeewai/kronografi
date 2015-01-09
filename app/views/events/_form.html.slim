@@ -12,10 +12,13 @@
         | to reference characters you have created
     .col-sm-10
       = f.text_area :details, class: "form-control tinymce", id: "event_details_#{@event.id ? @event.id : "new"}"
-  .form-group
-    = f.label :set_happened, "Happened On", class: "col-sm-2 control-label"
-    .col-sm-10
-      = f.text_field :set_happened, class: "form-control", placeholder: "Preferred format: dd/mm/yyyy hh:mm am/pm (Other formats may be accepted)", data: {:"date-orientation"=>"top auto", validate: "presence remote", remote_url: events_valid_date_path}
+  -if @world.is_absolute
+    .form-group
+      = f.label :set_happened, "Happened On", class: "col-sm-2 control-label"
+      .col-sm-10
+        = f.text_field :set_happened, class: "form-control", placeholder: "Preferred format: dd/mm/yyyy hh:mm am/pm (Other formats may be accepted)", data: {:"date-orientation"=>"top auto", validate: "presence remote", remote_url: events_valid_date_path}
+  -else
+    =f.hidden_field :set_happened
   .form-group
     = f.label :set_tags, "Tags", class: "col-sm-2 control-label"
     .col-sm-10

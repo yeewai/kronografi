@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150106033343) do
+ActiveRecord::Schema.define(version: 20150108224046) do
 
   create_table "aliases", force: :cascade do |t|
     t.string   "name"
@@ -116,9 +116,11 @@ ActiveRecord::Schema.define(version: 20150106033343) do
     t.string   "name"
     t.text     "description"
     t.string   "token"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "user_id"
+    t.string   "scale",       default: "years"
+    t.boolean  "is_absolute", default: true
   end
 
 end

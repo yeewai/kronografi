@@ -39,6 +39,16 @@ class EventsController < ApplicationController
     
     render layout: false
   end
+  
+  def relative
+    unless @world.events.find_by_kind("start") 
+      @world.events.create summary: "Story Starts", happened_on: Date.today(), kind: "start"
+    end
+    
+    @events = @world.events.order(:happened_on).includes(:tags, :characters)
+    @lowest_date = @events.first.happened_on - 1.day
+    render layout: false
+  end
 
   # GET /events/1
   # GET /events/1.json
@@ -78,12 +88,12 @@ class EventsController < ApplicationController
   def update
     respond_to do |format|
       if @event.update(event_params)
-        format.html { redirect_to @event, notice: 'Event was successfully updated.' }
-        format.json { render :show, status: :ok, location: @event }
+        #format.html { redirect_to @event, notice: 'Event was successfully updated.' }
+        #format.json { render :show, status: :ok, location: @event }
         format.js {render "create"}
-      else
-        format.html { render :edit }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
+      #else
+      #  format.html { render :edit }
+      #  format.json { render json: @event.errors, status: :unprocessable_entity }
       end
     end
   end

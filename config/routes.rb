@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'ads/show_leader'
 
   devise_for :users
+  get 'worlds/settings/:id' => "worlds#settings", as: "world_settings"
   resources :worlds, except: ["show", "destroy"] do
     post 'aliases/match', as: "aliases"
     resources :aliases, except: ["show", "edit", "new", "create"]
@@ -16,6 +17,7 @@ Rails.application.routes.draw do
     post "events/update_happened"
     resources :events, except: ["show", "index", "create"]
     get "events/years"
+    get "events/relative"
     get "events/in_year/:year" => "events#months", as: "events_months"
     get "events/(:this_year)" => "events#index", as: "events"
     post "events" => "events#create"

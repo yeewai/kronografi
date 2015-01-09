@@ -11,7 +11,7 @@
         | Tags: 
         =e.tags.map(&:content).join(", ") 
       .pull-right
-        small.when=format_date(e.happened_on)
+        small.when=format_date(e.happened_on) if @world.is_absolute
       .char_list
         | Characters: 
         -e.characters.each do |c|

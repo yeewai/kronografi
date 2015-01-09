@@ -1,0 +1,13 @@
+ul.years
+  li
+    ul.months
+      li.month 
+        =link_to "#", class: "timeslot", data: {date: format_date(@lowest_date), toggle: "modal", target: "#new_event_modal", e_url: new_world_event_path(@world)} do
+          -if @events.any?
+            p.text-right Add an Event
+          -else 
+            p.text-center Click here to create your first event
+        -@events.each do |e|
+          ==render "event_panel", e: e
+          =link_to "#", class: "timeslot", data: {date: format_date(e.happened_on + 1.hour), toggle: "modal", target: "#new_event_modal", e_url: new_world_event_path(@world)} do
+            p.text-right Add an Event

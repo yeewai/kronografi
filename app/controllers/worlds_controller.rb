@@ -1,6 +1,6 @@
 class WorldsController < ApplicationController
   before_action :authenticate_user!
-  before_action only: [:edit, :update, :destroy] {authenticate_world(params[:id])}
+  before_action only: [:edit, :update, :destroy, :settings] {authenticate_world(params[:id])}
 
   # GET /worlds
   # GET /worlds.json
@@ -44,13 +44,22 @@ class WorldsController < ApplicationController
   def update
     respond_to do |format|
       if @world.update(world_params)
-        format.html { redirect_to world_events_path(@world), notice: 'World was successfully updated.' }
+        format.html { 
+          if @world.scale == "months" && (start = @world.events.find_by_kind("start"))
+            redirect_to world_events_path(@world, start.happened_on.year), notice: 'World was successfully updated.'
+          else
+            redirect_to world_events_path(@world), notice: 'World was successfully updated.' 
+          end
+        }
         format.json { render :show, status: :ok, location: @world }
       else
         format.html { render :edit }
         format.json { render json: @world.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  def settings
   end
 
   # DELETE /worlds/1
@@ -66,6 +75,6 @@ class WorldsController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def world_params
-      params.require(:world).permit(:name, :description)
+      params.require(:world).permit(:name, :description, :is_absolute, :scale)
     end
 end

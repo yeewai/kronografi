@@ -32,11 +32,13 @@ class EventsController < ApplicationController
   def months
     @start_event = @world.events.find_by_kind "start"
     @year = params[:year].to_i
-    #For PG
-    #@world.events.where('extract(year from happened_on) = ?', @year)
-    #for sqlite
-    @events = @world.events.where("strftime('%Y', happened_on)= ?", @year.to_s).order(:happened_on).includes(:tags, :characters).group_by{|e| e.happened_on.month}
-    
+    if Rails.env.production?
+      #For PG
+      @events = @world.events.where('extract(year from happened_on) = ?', @year.to_s).order(:happened_on).includes(:tags, :characters).group_by{|e| e.happened_on.month}
+    else
+      #for sqlite
+      @events = @world.events.where("strftime('%Y', happened_on)= ?", @year.to_s).order(:happened_on).includes(:tags, :characters).group_by{|e| e.happened_on.month}
+    end
     render layout: false
   end
   

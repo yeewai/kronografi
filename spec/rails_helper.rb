@@ -7,6 +7,7 @@ require 'rspec/rails'
 require 'capybara/rails'
 require 'capybara/poltergeist'
 require 'simplecov'
+require 'paper_trail/frameworks/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -54,21 +55,73 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include Capybara::DSL
   
-  DatabaseCleaner.strategy = :transaction
-  DatabaseCleaner.clean_with :truncation
   Capybara.register_driver :poltergeist do |app|
     Capybara::Poltergeist::Driver.new(app, {js_errors: false, window_size: [1280, 1024]})
   end
-  config.before :each do
+  # Original Attempt
+  #DatabaseCleaner.strategy = :transaction
+  #DatabaseCleaner.clean_with :truncation
+  #config.before :each do
+  #  DatabaseCleaner.strategy = :truncation
+  #end
+  #
+  #config.after :each do
+  #  DatabaseCleaner.clean
+  #end
+  
+  #Attempt 2
+  #config.use_transactional_fixtures = false
+  #
+  #config.before(:suite) do
+  #  DatabaseCleaner.strategy = :truncation
+  #end
+  #
+  #config.before(:each) do
+  #  DatabaseCleaner.start
+  #end
+  #
+  #config.after(:each) do
+  #  DatabaseCleaner.clean
+  #end
+  
+  #Attempt 4 
+  config.use_transactional_fixtures = false
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each, :js => true) do
     DatabaseCleaner.strategy = :truncation
   end
 
-  config.after :each do
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
     DatabaseCleaner.clean
   end
+  
   Capybara.javascript_driver = :poltergeist
   Capybara.default_wait_time = 5
   
   config.filter_run focus: true
   config.run_all_when_everything_filtered = true
 end
+
+#class ActiveRecord::Base
+#  mattr_accessor :shared_connection
+#  @@shared_connection = nil
+#
+#  def self.connection
+#    @@shared_connection || retrieve_connection
+#  end
+#end
+#
+## Forces all threads to share the same connection. This works on
+## Capybara because it starts the web server in a thread.
+#ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection

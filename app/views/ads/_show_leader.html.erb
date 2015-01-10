@@ -1,3 +1,4 @@
+<% unless Rails.env.test?%>
 <div class="ads"><span class="label label-default">Ads</span><br>
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- Kronography leader -->
@@ -8,3 +9,5 @@
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script></div>
+
+<% end %>

@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :update_happened, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :update_happened, :revert, :destroy]
   before_action :authenticate_user!
   before_action except: ["valid_date"] {authenticate_world(params[:world_id])}
 
@@ -54,8 +54,11 @@ class EventsController < ApplicationController
 
   # GET /events/1
   # GET /events/1.json
-  # def show
-  # end
+  def show
+    @event = @event.versions[params[:version].to_i].reify if params[:version]
+  
+    render layout: false
+  end
 
   # GET /events/new
   def new
@@ -103,6 +106,14 @@ class EventsController < ApplicationController
   def update_happened
     @event.update_attribute :happened_on, params["happened_on"]
     head :ok, content_type: "text/html"
+  end
+  
+  def revert
+    respond_to do |format|
+      if @event.versions[params[:version].to_i].reify.save
+        format.js {render "create"}
+      end
+    end
   end
 
   # DELETE /events/1

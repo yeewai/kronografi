@@ -67,6 +67,9 @@ gem 'select2-rails'
 gem 'tinymce-rails'
 gem 'tinymce-rails-imageupload', '~> 4.0.0.beta'
 
+#versioning
+gem 'paper_trail', '~> 3.0.6'
+
 #TDD/BDD
 group :development, :test do
   gem 'rspec-rails'#, '~> 2.0'

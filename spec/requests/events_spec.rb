@@ -120,6 +120,7 @@ describe "Events Index", :js => true do
     
     it "adds 10 years after the timeline" do
       click_on "See 10 years later"
+      #save_screenshot("/Users/yeeeeeeeee/Documents/plotter.png", full: true)
       expect(page).to have_css "a[data-date='2019-01-01 12:00']"
     end
   end
@@ -278,7 +279,7 @@ describe "Events Index", :js => true do
         click_link "Remove"
       end
       
-      save_screenshot("/Users/yeeeeeeeee/Documents/plotter_remove.png")
+      #save_screenshot("/Users/yeeeeeeeee/Documents/plotter_remove.png")
       expect(page).to_not have_content @event.summary
     end
   end
@@ -326,5 +327,44 @@ describe "Events Index", :js => true do
     end
   end
   
-  it "versioning"
+  with_versioning do
+    describe "previous" do
+      before :each do
+        @start_event = create :start_event, world: @world
+        @event = create :event, world: @world, happened_on: "2014-01-01"
+        @old_summary = @event.summary
+        visit world_events_path(@world)
+        
+        within "#e_#{@event.id}" do
+          click_on "Edit"
+        end
+        
+        within "#edit_event_modal" do
+          fill_in 'Summary', with: "New Summary"
+          click_on "Save Event"
+        end
+      end
+      
+      it "lets me see previous versions" do 
+        within "#e_#{@event.id}" do
+          click_on "<"
+          expect(page).to have_content @old_summary
+        end
+      end
+      
+      it "reverts back to a previous version" do
+        within "#e_#{@event.id}" do
+          click_on "<"
+          click_on "Revert to this version"
+        end
+        visit world_events_path(@world)
+        expect(page).to have_content @old_summary
+      end
+    end
+    
+    describe "deleted" do
+      it "lets me see deleted events"
+      it "restores a deleted event"
+    end
+  end
 end

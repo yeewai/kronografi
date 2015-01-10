@@ -4,6 +4,8 @@ class Event < ActiveRecord::Base
   has_and_belongs_to_many :characters
   before_save :cache_data
   
+  has_paper_trail :on => [:update, :destroy]
+  
   
   def set_happened=(s)
     if d = DateTime.parse(s)

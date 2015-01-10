@@ -42,9 +42,12 @@ body {
 ul.years {
   list-style: none;
   padding-left: 0;
+  display: table;
+  width: 100%;
   
   > li {
-    display: flex;
+    display: table;
+    width: 100%;
     border-bottom: solid thin #eee;
     
     .year {
@@ -125,4 +128,27 @@ ul.years {
   border-radius: 5px;
   
   span.label {float: left;}
+}
+
+.event_content{padding-bottom: 0;}
+.versions {
+  font-size: 12px;
+  border-top: solid thin #ddd;
+  color: #aaa;
+  ul {
+    li {
+      width: 10%;
+      line-height: 1em;
+      min-height: 1em;
+      text-align: center;
+      margin: 0;
+      &:nth-child(3) { 
+        width: 60%;
+      }
+      
+      &.disabled a:hover{
+        cursor: default;
+      }
+    }
+  }
 }

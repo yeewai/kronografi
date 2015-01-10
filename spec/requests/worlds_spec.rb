@@ -124,9 +124,9 @@ describe "Worlds" do
         end
         
         within "#e_#{e.id}" do
-          expect(page).to_not have_content @c1.first.name
-          expect(page).to have_content @c2.first.name
+          click_on @c1.first.name
         end
+        expect(page).to have_content "New character"
       end
     end
     

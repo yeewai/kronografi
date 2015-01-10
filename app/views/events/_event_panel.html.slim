@@ -17,5 +17,21 @@
         -e.characters.each do |c|
           =link_to c.name, world_character_path(@world, c)
   -unless e.kind == "start"
-    .panel-body.collapse id=="ebody_#{e.id}" 
+    .panel-body.collapse.in.event_content id=="ebody_#{e.id}" 
       =replace_chars(e.details).html_safe
+      p.text-right.small= "Last edited on #{e.created_at}"
+      .versions
+        ul.nav.nav-pills
+          li=link_to "<<", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_event_path(@world, e, e.versions.first.index), replace: ".panel"} if e.previous_version
+          li=link_to "<", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_event_path(@world, e, e.previous_version.version.index), replace: ".panel"} if e.previous_version
+          -if e.live? 
+            li.disabled=link_to "Current Version", "#", class: "disabled"
+          -else
+            li
+              =form_tag world_events_revert_path(@world), method: "post", remote: true do 
+                =hidden_field_tag :id, e.id
+                =hidden_field_tag :version, e.version.index
+                =submit_tag "Revert to this version", class: "btn btn-link"
+                /=link_to("Revert to this version", "#")
+          li=link_to ">", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_event_path(@world, e, (e.next_version.version.index unless e.next_version.live?)), replace: ".panel"} if e.next_version
+          li=link_to ">>", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_event_path(@world, e), replace: ".panel"} if e.next_version

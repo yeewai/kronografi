@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     get 'tags/index'
     post "events/update_happened"
     resources :events, except: ["show", "index", "create"]
+    get "events/show/:id/(:version)" => "events#show", as: "show_event"
+    post "events/revert"
     get "events/years"
     get "events/relative"
     get "events/in_year/:year" => "events#months", as: "events_months"

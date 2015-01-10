@@ -14,6 +14,15 @@ window.load_remote_parts = ->
       set_event_filters()
       set_scroll()
       change_year_display()
+      set_remote_replace()
+      
+set_remote_replace = -> 
+  $("[data-remote-replace=true]").unbind()
+  $("[data-remote-replace=true]").click ->
+    div = $(this).closest($(this).data("replace"))
+    $.get $(this).data("remote-url"), (data) ->
+      div.replaceWith(data)
+      set_remote_replace()
       
 load_add_years_buttons = ->
   $("#addearlieryears, #addlateryears").unbind "click"
@@ -214,7 +223,6 @@ $(document).ready ->
       change_year_display()
       
     load_remote_parts()
-    
     
     
     

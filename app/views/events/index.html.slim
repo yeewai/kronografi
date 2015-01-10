@@ -2,7 +2,6 @@
 .col-lg-9
   h1 
     =@world.name
-    /=link_to "Edit World", edit_world_path(@world), class: "btn btn-default btn-xs"
   .world_description = @world.description.html_safe
   -if !@world.is_absolute
     = content_tag "div", "", class: "years", id: "events_relative", data: {remote_load: true, remote_url: world_events_relative_path(@world), update_happened: world_events_update_happened_path(@world)}
@@ -41,12 +40,20 @@
               ul.scroll_to
                 -@world.events.where(kind: ["milestone", "start"]).each do |e|
                   li=link_to e.summary, "#e_#{e.id}"
+        li =link_to "See Deleted Events", "#", data: {toggle: "modal", target: "#deleted_events", remote_url: world_events_show_deleted_path(@world)}
     = content_tag "div", "", class: "ads", data: {remote_load: true, remote_url: ads_show_path}
         
 ==render "start_form" if @world.is_absolute
 ==render "form_modal", kind: "New"
 ==render "form_modal", kind: "Edit"
 ==render "display_year_modal" unless @year
-
+.modal.fade#deleted_events
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+        h4.modal-title ="Deleted Events"
+      .modal-body
 
   

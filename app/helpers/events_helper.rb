@@ -30,6 +30,10 @@ module EventsHelper
     end
   end
   
+  def is_destroyed(e)
+    e.version && e.version.event == "destroy"
+  end
+  
   def replace_chars(text)
     text.gsub(CHAR_PATTERN){ generate_link_for($1)}
   end

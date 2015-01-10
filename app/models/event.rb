@@ -43,6 +43,11 @@ class Event < ActiveRecord::Base
     end
   end
   
+  def self.destroyed_models(world)
+    events = PaperTrail::Version.where(event: "destroy", item_type: "Event").where("object LIKE ?", "%world_id: #{world.id}%")
+    events.map(&:reify).reverse if events.any?
+  end
+  
   private
   def cache_data
     self.happened_key = Event.generate_key(happened_on.year, happened_on.month)

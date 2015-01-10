@@ -1,0 +1,5 @@
+-if @events
+  -@events.each do |e|
+    ==render "event_panel", e: e, deleted: true
+-else
+  h3 There are no deleted events. 

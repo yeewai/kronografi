@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :update_happened, :revert, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :update_happened, :destroy]
   before_action :authenticate_user!
   before_action except: ["valid_date"] {authenticate_world(params[:world_id])}
 
@@ -59,6 +59,12 @@ class EventsController < ApplicationController
   
     render layout: false
   end
+  
+  def show_deleted
+    @events = Event.destroyed_models(@world)
+    
+    render layout: false
+  end
 
   # GET /events/new
   def new
@@ -109,8 +115,10 @@ class EventsController < ApplicationController
   end
   
   def revert
+    version = PaperTrail::Version.find(params[:version].to_i)
     respond_to do |format|
-      if @event.versions[params[:version].to_i].reify.save
+      if version.reify.save
+        version.delete
         format.js {render "create"}
       end
     end

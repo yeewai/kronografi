@@ -363,8 +363,36 @@ describe "Events Index", :js => true do
     end
     
     describe "deleted" do
-      it "lets me see deleted events"
-      it "restores a deleted event"
+      before :each do
+        @start_event = create :start_event, world: @world
+        @events = create_list :event, 3, world: @world, happened_on: "2014-01-01"
+        visit world_events_path(@world)
+        
+        @events.each do |e|
+          within "#e_#{e.id}" do
+            click_on "Remove"
+          end
+        end
+      end
+      
+      it "lets me see deleted events" do
+        click_on "See Deleted Events"
+        @events.each do |e|
+          expect(page).to have_content e.summary
+        end
+      end
+      
+      it "restores a deleted event" do
+        click_on "See Deleted Events"
+        
+        within "#e_#{@events.first.id}" do
+          click_on "Restore this version"
+        end
+        visit world_events_path(@world)
+        within "#e_#{@events.first.id}" do
+          expect(page).to have_content "Current Version"
+        end
+      end
     end
   end
 end

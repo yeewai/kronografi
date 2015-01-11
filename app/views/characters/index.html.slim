@@ -5,18 +5,17 @@ h1
 
 ul.char_list.list-group
   -@characters.each do |char|
-    li.list-group-item
-      .row
-        .col-sm-2
-          =link_to world_character_path(@world, char) do
-            =image_tag char.avatar, class: "img-responsive"
-        .col-sm-10
-          h2
-            =link_to char.name, world_character_path(@world, char)
-            |    
-            small=char.nicknames
-          = link_to 'Edit', edit_world_character_path(@world, char), class: "btn btn-default btn-xs"
-          = link_to 'Destroy', world_character_path(@world, char), data: {:confirm => 'Are you sure?'}, :method => :delete, class: "btn btn-default btn-xs"
-        
+    ==render 'char_index_li', char: char
+
+=link_to "See Deleted Characters", "#", class: "btn btn-default", data: {toggle: "modal", target: "#deleted_chars", remote_url: world_characters_show_deleted_path(@world)}
 hr
 ==render "ads/show_leader"
+
+.modal.fade#deleted_chars
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+        h4.modal-title ="Deleted Characters"
+      .modal-body

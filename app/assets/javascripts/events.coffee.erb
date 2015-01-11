@@ -90,7 +90,7 @@ set_droppable = (target) ->
       })
       
 drag_events = ->
-  $(".event").draggable({ revert: "invalid" })
+  $(".event").draggable({ revert: "invalid", handle: ".panel-heading" })
   set_droppable($(".timeslot"))
       
 #Validations
@@ -202,6 +202,15 @@ $(document).ajaxStop ->
     first_load = true
     
 $(document).ready ->
+  set_remote_replace()
+  load_remote_parts()
+  
+  $(".modal").on "show.bs.modal", (event) ->
+    if (url = $(event.relatedTarget).data("remote-url"))
+      modal = $(this)
+      $.get url, (data) ->
+        modal.find(".modal-body").html(data)
+        set_remote_replace()
   if $("#events_index").length > 0
     #Show start date modal if it doesn't already exist
     $("#start_event[data-new='true']").modal()
@@ -221,16 +230,6 @@ $(document).ready ->
       e.preventDefault()
       year_diff = parseInt($(this).closest(".modal").find("#original_year").text()) - parseInt($("#year_display #year_as").val())
       change_year_display()
-      
-    load_remote_parts()
-    
-    $(".modal").on "show.bs.modal", (event) ->
-      if (url = $(event.relatedTarget).data("remote-url"))
-        modal = $(this)
-        $.get url, (data) ->
-          modal.find(".modal-body").html(data)
-          set_remote_replace()
-    
       
     $("#sidenav").sticky({topSpacing: "100px"});
     $("#sidenav").css({height: $(window).height() - $(".navbar").height() - 50})

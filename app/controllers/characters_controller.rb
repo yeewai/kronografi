@@ -1,5 +1,5 @@
 class CharactersController < ApplicationController
-  before_action :set_character, only: [:show, :edit, :update, :destroy]
+  before_action :set_character, only: [:show, :show_info, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action {authenticate_world(params[:world_id])}
 
@@ -12,7 +12,18 @@ class CharactersController < ApplicationController
   # GET /characters/1
   # GET /characters/1.json
   def show
-    @events = (@character.events + @world.events.where(kind: ["milestone", "start"]))
+  end
+  
+  def show_deleted
+    @chars = Character.destroyed_models(@world)
+    
+    render layout: false
+  end
+  
+  def show_info
+    @char_name = @character.name
+    @character = @character.versions[params[:version].to_i].reify if params[:version]
+    render layout: false
   end
 
   # GET /characters/new

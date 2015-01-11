@@ -5,25 +5,27 @@ class Tag < ActiveRecord::Base
   before_save :generate_slug
   
   def self.sanitize(str)
-    s = str.dup
+    if str
+      s = str.dup
     
-    #blow away apostrophes
-    s.gsub! /['`]/,""
+      #blow away apostrophes
+      s.gsub! /['`]/,""
 
-    # @ --> at, and & --> and
-    s.gsub! /\s*@\s*/, " at "
-    s.gsub! /\s*&\s*/, " and "
+      # @ --> at, and & --> and
+      s.gsub! /\s*@\s*/, " at "
+      s.gsub! /\s*&\s*/, " and "
 
-    #replace all non alphanumeric, underscore or periods with underscore
-    s.gsub! /\s*[^A-Za-z0-9\.\-]\s*/, '_'  
+      #replace all non alphanumeric, underscore or periods with underscore
+      s.gsub! /\s*[^A-Za-z0-9\.\-]\s*/, '_'  
 
-    #convert double underscores to single
-    s.gsub! /_+/,"_"
+      #convert double underscores to single
+      s.gsub! /_+/,"_"
 
-    #strip off leading/trailing underscore
-    s.gsub! /\A[_\.]+|[_\.]+\z/,""
+      #strip off leading/trailing underscore
+      s.gsub! /\A[_\.]+|[_\.]+\z/,""
 
-    s
+      s
+    end
   end
   
   private

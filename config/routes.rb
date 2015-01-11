@@ -12,8 +12,12 @@ Rails.application.routes.draw do
     post 'aliases/match', as: "aliases"
     resources :aliases, except: ["show", "edit", "new", "create"]
     get 'aliases/edit/:id/:what' => 'aliases#edit', as: "edit_aliases"
+    
+    get 'characters/show_info/:id/(:version)' => 'characters#show_info', as: 'show_character_info'
+    get "characters/show_deleted"
     resources :characters
     get 'tags/index'
+    
     post "events/update_happened"
     resources :events, except: ["show", "index", "create"]
     get "events/show_deleted"

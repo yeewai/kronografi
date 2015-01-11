@@ -47,7 +47,13 @@ class EventsController < ApplicationController
       @world.events.create summary: "Story Starts", happened_on: Date.today(), kind: "start"
     end
     
-    @events = @world.events.order(:happened_on).includes(:tags, :characters)
+    if params[:character] && @character = Character.find_by_id( params[:character])
+      @events = @character.events.includes(:tags, :characters) + @world.events.where(kind: ["milestone", "start"]).includes(:tags, :characters)
+    else
+      @events = @world.events.includes(:tags, :characters)
+    end
+      
+    @events = @events.sort_by(&:happened_on)
     @lowest_date = @events.first.happened_on - 1.day
     render layout: false
   end
@@ -116,10 +122,19 @@ class EventsController < ApplicationController
   
   def revert
     version = PaperTrail::Version.find(params[:version].to_i)
+    reified = version.reify
+    name_is_changed = ((version.item_type == "Character") && reified.name_changed? && (version.event != "destroy"))
     respond_to do |format|
-      if version.reify.save
+      if reified.save
+        if name_is_changed
+          pv = reified.previous_version
+          Event.change_names(@world, pv.name_change[1], pv.name_change[0])
+        end
         version.delete
         format.js {render "create"}
+        format.html {
+          redirect_to world_characters_path(@world) if version.item_type == "Character"
+        }
       end
     end
   end

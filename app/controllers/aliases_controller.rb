@@ -1,16 +1,16 @@
 class AliasesController < ApplicationController
-  before_action except: ["match"] {authenticate_world(params[:world_id])}
+  before_action {authenticate_world(params[:world_id])}
   before_action :set_alias, only: [:update, :destroy]
   def match
-    @world = World.find_by_token(params[:world_id])
+    #@world = World.find_by_token(params[:world_id])
     
     char = Character.find_by_id params[:id]
     bad_names = []
     names = params[:val]
   
     names.squish.split(",").each do |name|
-      unless c = Character.find_by_name(name.squish)
-        n = Alias.find_by_name(name.squish)
+      unless c = @world.characters.find_by_name(name.squish)
+        n = @world.aliases.find_by_name(name.squish)
         c = n.character if n
       end
     

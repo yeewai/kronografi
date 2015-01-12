@@ -9,8 +9,16 @@ h2 Edit User Information
       = f.email_field :email, autofocus: true, class: "form-control"
   
   -if devise_mapping.confirmable? && resource.pending_reconfirmation? 
-    .alert.alert-warning Currently waiting confirmation for: <%= resource.unconfirmed_email %>
-
+    .alert.alert-warning ="Currently waiting confirmation for: #{resource.unconfirmed_email}" 
+  .form-group
+    = f.label :name, class: "col-sm-2 control-label"
+    .col-sm-4
+      = f.text_field :name, class: "form-control"
+  .form-group
+    = f.label :avatar, class: "col-sm-2 control-label"
+    .col-sm-10
+      =image_tag @user.avatar
+      = f.file_field :avatar
   .form-group
     = f.label :password, class: "col-sm-2 control-label"
     .col-sm-4

@@ -61,6 +61,14 @@ class WorldsController < ApplicationController
   
   def settings
   end
+  
+  def collaborators
+    @rulings = @world.rulings.includes(:user)
+    @ruling = @world.rulings.new
+  end
+  
+  def update_collaborators
+  end
 
   # DELETE /worlds/1
   # DELETE /worlds/1.json

@@ -1,0 +1,25 @@
+h2 Manage Collaborators
+p.pull-left = link_to '+ New User', "#newUser", :class=>"btn", :data=>{:toggle => "modal"}
+table.table.table-striped#listUsers
+  thead
+    tr
+      th Name
+      th NetId
+      th Privilege
+  tbody
+    -@rulings.each do |r|
+      tr id=="user_#{r.user.id}"
+        td = r.user.name
+        td = r.user.email
+        td 
+          -if r.user==current_user 
+            = r.role
+          -else
+            =form_for r do |f|
+              =f.select_tag "role", options_for_select(["Can edit world settings", "admin"], 
+                ["Can contribute content", "write"], 
+                ["Can view", "view"]])}
+            
+.alert.alert-success#savecat Saved!
+==render 'new_user_form'
+        

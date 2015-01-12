@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   devise_for :users
   get 'worlds/settings/:id' => "worlds#settings", as: "world_settings"
+  get 'worlds/collaborators/:id' => "worlds#collaborators", as: 'world_collaborators'
+  post 'worlds/collaborators' => 'worlds#update_collaborators', as: 'world_update_collaborators'
   resources :worlds, except: ["show", "destroy"] do
     post 'aliases/match', as: "aliases"
     resources :aliases, except: ["show", "edit", "new", "create"]

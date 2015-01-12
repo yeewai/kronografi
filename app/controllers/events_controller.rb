@@ -2,6 +2,7 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :update_happened, :destroy]
   before_action :authenticate_user!
   before_action except: ["valid_date"] {authenticate_world(params[:world_id])}
+  before_action only: ["new", "edit", "create", "update", "update_happened", "destroy"] {authenticate_world(params[:world_id], "write")}
 
   # GET /events
   # GET /events.json
@@ -172,6 +173,6 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:summary, :details, :set_happened, :happened_on, :set_tags, :kind)
+      params.require(:event).permit(:summary, :details, :set_happened, :happened_on, :set_tags, :kind, :user_id)
     end
 end

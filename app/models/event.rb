@@ -1,5 +1,6 @@
 class Event < ActiveRecord::Base
   belongs_to :world
+  belongs_to :user
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :characters
   before_save :cache_data

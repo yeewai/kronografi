@@ -1,5 +1,6 @@
 class Character < ActiveRecord::Base
   belongs_to :world
+  belongs_to :user
   has_many :aliases, :dependent => :delete_all
   has_and_belongs_to_many :events
   

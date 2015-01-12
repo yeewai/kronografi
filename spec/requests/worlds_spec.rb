@@ -181,4 +181,29 @@ describe "Worlds" do
       end
     end
   end
+  
+  describe "collaboration", focus: true do
+    it "does not let unpermitted users to view" do
+      world = create :world
+      visit world_events_path world
+      expect(page).to have_content "Sorry. We couldn't find that world and its related content."
+    end
+    
+    it "does not let unpermitted users to edit event"
+    
+    it "does not let unpermitted users to edit character" do
+      world = create :world
+      ruling = create :ruling, world: world, user: @user, role: "view"
+      char = create :character, world: world
+      visit edit_world_character_path(world,char)
+      expect(page).to have_content "Sorry. You don't have permission to do that."
+    end
+    
+    it "lets admin CRUD collaborators" do
+      world = create :world, user: @user
+      visit world_collaborators_path world
+      
+    end
+    it "adds collaborators who are not yet registered"
+  end
 end

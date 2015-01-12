@@ -19,7 +19,7 @@
   -unless e.kind == "start"
     .panel-body.collapse.in.event_content id=="ebody_#{e.id}" 
       =replace_chars(e.details).html_safe
-      p.text-right.small= "Last edited on #{e.created_at}"
+      p.text-right.small= "Last edited on #{e.created_at} by #{(e.user.email if e.user)}"
       .versions
         ul.nav.nav-pills
           li=link_to "<<", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_event_path(@world, e, e.versions.first.index), replace: ".panel"} if e.previous_version && !is_destroyed(e)

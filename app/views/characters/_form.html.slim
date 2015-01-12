@@ -31,5 +31,6 @@
   
   .form-group
     .col-md-offset-2.col-sm-10
+      = f.hidden_field :user_id, value: current_user.id
       = f.submit 'Save', class: "btn btn-primary"
 = tinymce

@@ -182,7 +182,7 @@ describe "Worlds" do
     end
   end
   
-  describe "collaboration", focus: true do
+  describe "collaboration", js: true do
     it "does not let unpermitted users to view" do
       world = create :world
       visit world_events_path world
@@ -199,11 +199,28 @@ describe "Worlds" do
       expect(page).to have_content "Sorry. You don't have permission to do that."
     end
     
-    it "lets admin CRUD collaborators" do
-      world = create :world, user: @user
-      visit world_collaborators_path world
-      
+    it "does not let unpermitted users to add collaborators" do
+      world = create :world
+      ruling = create :ruling, world: world, user: @user, role: "write"
+      visit world_rulings_path(world)
+      expect(page).to have_content "Sorry. You don't have permission to do that."
     end
+    
+    it "creates collaborators" do
+      user2 = create :user, email: "#{Faker::Lorem.characters(12)}@a.com"
+      world = create :world, user: @user
+      
+      visit world_rulings_path world
+      save_screenshot("/Users/yeeeeeeeee/Documents/plotter_beforee.png")
+      fill_in "ruling[email]", with: user2.email
+      click_on "Add New Collaborator"
+      
+      visit world_rulings_path world
+      expect(page).to have_content user.name
+      expect(page).to have_content user.email
+    end
+    
+    it "deletes collaborators"
     it "adds collaborators who are not yet registered"
   end
 end

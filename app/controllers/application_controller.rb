@@ -12,6 +12,8 @@ class ApplicationController < ActionController::Base
       redirect_to worlds_path, notice: "Sorry. We couldn't find that world and its related content." if !current_user.worlds.include?(@world)
     elsif mode == "write"
       redirect_to worlds_path, notice: "Sorry. You don't have permission to do that." if !((r = current_user.rulings.find_by_world_id(@world.id)) && ["admin", "write"].include?(r.role))
+    elsif mode == "admin"
+      redirect_to worlds_path, notice: "Sorry. You don't have permission to do that." if !((r = current_user.rulings.find_by_world_id(@world.id)) && r.role == "admin")
     end
   end
   

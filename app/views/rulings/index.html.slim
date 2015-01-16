@@ -1,0 +1,29 @@
+h2 ="Manage Collaborators for #{@world.name}"
+table.table#listUsers
+  thead
+    tr
+      th Name
+      th Email
+      th Privilege
+      th
+  tbody
+    tr
+      =form_for [@world, @ruling], class: "form" do |f|
+        td
+        td = f.text_field :email, class: "form-control", placeholder: "Email Address"
+        td = f.select "role", [[translate_rulingrole("admin"), "admin"], [translate_rulingrole("write"), "write"], [translate_rulingrole("view"), "view"]], {}, class: "form-control"
+        td =f.submit "Add New Collaborator", class: "btn btn-primary"
+        
+    -@rulings.each do |r|
+      tr id=="r_#{r.id}"
+        td = r.user ? r.user.name : "Not yet signed up"
+        td = r.email
+        td 
+          -if r.user==current_user 
+            = translate_rulingrole r.role
+          -else
+            =form_for [@world, r], remote: true do |f|
+              =f.select "role", [[translate_rulingrole("admin"), "admin"], [translate_rulingrole("write"), "write"], [translate_rulingrole("view"), "view"]], {}, class: "form-control"
+        td = link_to 'Remove User',  [@world, r],  method: :delete, class: "btn btn-danger btn-xs", data: { confirm: 'Are you sure?' } unless r.user == current_user
+        
+.alert.alert-success#savecat Saved!

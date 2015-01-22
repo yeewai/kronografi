@@ -123,9 +123,11 @@ describe "Worlds" do
           click_on "Show"
         end
         
-        within "#e_#{e.id}" do
-          click_on @c1.first.name
-        end
+        #within "#e_#{e.id}" do
+        expect(page).to have_content @c1.first.name
+        click_on @c1.first.name
+          #end
+        save_screenshot("/Users/yeeeeeeeee/Documents/plotter_uhhhhh.png", full: true)
         expect(page).to have_content "New character"
       end
     end
@@ -179,6 +181,91 @@ describe "Worlds" do
       @other_events.each do |e|
         expect(page).to_not have_content e.summary
       end
+    end
+  end
+  
+  describe "collaboration", js: true do
+    it "does not let unpermitted users to view" do
+      world = create :world
+      visit world_events_path world
+      expect(page).to have_content "Sorry. We couldn't find that world and its related content."
+    end
+    
+    it "does not let unpermitted users to edit event" do
+      world = create :world
+      ruling = create :ruling, world: world, user: @user, role: "view"
+      create :start_event, world: world
+      e = create :event, world: world
+      visit world_events_path(world)
+    
+      within "#e_#{e.id}" do
+        expect(page).to_not have_content "Edit"
+        expect(page).to_not have_content "Remove"
+      end
+    end
+    
+    it "does not let unpermitted users to edit character" do
+      world = create :world
+      ruling = create :ruling, world: world, user: @user, role: "view"
+      char = create :character, world: world
+      visit edit_world_character_path(world,char)
+      expect(page).to have_content "Sorry. You don't have permission to do that."
+    end
+    
+    it "does not let unpermitted users to add collaborators" do
+      world = create :world
+      ruling = create :ruling, world: world, user: @user, role: "write"
+      visit world_rulings_path(world)
+      expect(page).to have_content "Sorry. You don't have permission to do that."
+    end
+    
+    it "creates collaborators" do
+      user2 = create :user, email: "#{Faker::Lorem.characters(12)}@a.com"
+      world = create :world, user: @user
+      
+      visit world_rulings_path world
+      fill_in "ruling[email]", with: user2.email
+      click_on "Add New Collaborator"
+      
+      visit world_rulings_path world
+      expect(page).to have_content user2.name
+      expect(page).to have_content user2.email
+    end
+    
+    it "deletes collaborators" do
+      user2 = create :user, email: "#{Faker::Lorem.characters(12)}@a.com"
+      world = create :world, user: @user
+      r = create :ruling, user: user2, world: world
+      
+      visit world_rulings_path world
+      save_screenshot("/Users/yeeeeeeeee/Documents/plotter.png", full: true)
+      #within "#tr_#{r.id}" do
+        click_on "Remove User"
+        #end
+      visit world_rulings_path world
+      expect(page).to_not have_content user2.email
+      
+    end
+    it "adds collaborators who are not yet registered" do
+      email = "#{Faker::Lorem.characters(12)}@a.com"
+      world = create :world, user: @user
+      
+      visit world_rulings_path world
+      fill_in "ruling[email]", with: email
+      click_on "Add New Collaborator"
+      
+      visit world_rulings_path world
+      expect(page).to have_content "Not yet signed up"
+      expect(page).to have_content email
+      
+      click_on "Log Out"
+      user2 = create :user, email: email
+      user2.confirm!
+      visit new_user_session_path
+      fill_in "Email", with: @user.email
+      fill_in "Password", with: "12345678"
+      click_on "Log in"
+      expect(page).to have_content world.name
     end
   end
 end

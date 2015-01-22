@@ -59,15 +59,15 @@ RSpec.configure do |config|
     Capybara::Poltergeist::Driver.new(app, {js_errors: false, window_size: [1280, 1024]})
   end
   # Original Attempt
-  #DatabaseCleaner.strategy = :transaction
-  #DatabaseCleaner.clean_with :truncation
-  #config.before :each do
-  #  DatabaseCleaner.strategy = :truncation
-  #end
-  #
-  #config.after :each do
-  #  DatabaseCleaner.clean
-  #end
+  DatabaseCleaner.strategy = :transaction
+  DatabaseCleaner.clean_with :truncation
+  config.before :each do
+    DatabaseCleaner.strategy = :truncation
+  end
+  
+  config.after :each do
+    DatabaseCleaner.clean
+  end
   
   #Attempt 2
   #config.use_transactional_fixtures = false
@@ -85,26 +85,26 @@ RSpec.configure do |config|
   #end
   
   #Attempt 4 
-  config.use_transactional_fixtures = false
-  config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation)
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.strategy = :transaction
-  end
-
-  config.before(:each, :js => true) do
-    DatabaseCleaner.strategy = :truncation
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
+  #config.use_transactional_fixtures = false
+  #config.before(:suite) do
+  #  DatabaseCleaner.clean_with(:truncation)
+  #end
+  #
+  #config.before(:each) do
+  #  DatabaseCleaner.strategy = :transaction
+  #end
+  #
+  #config.before(:each, :js => true) do
+  #  DatabaseCleaner.strategy = :truncation
+  #end
+  #
+  #config.before(:each) do
+  #  DatabaseCleaner.start
+  #end
+  #
+  #config.after(:each) do
+  #  DatabaseCleaner.clean
+  #end
   
   Capybara.javascript_driver = :poltergeist
   Capybara.default_wait_time = 5

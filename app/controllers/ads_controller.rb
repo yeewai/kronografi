@@ -1,10 +1,6 @@
 class AdsController < ApplicationController
   def show
-    if Rails.env.test?
-      render nothing: true, :status => 200, :content_type => 'text/html'
-    else
-      render layout: false
-    end
+    render layout: false
   end
   
   def show_leader

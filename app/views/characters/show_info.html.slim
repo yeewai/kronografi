@@ -2,10 +2,10 @@
   h1#char_name 
     span.name=@character.name
     |   
-    =link_to "Change Name", "#", data: {toggle: "modal", target: "#edit_name_modal", e_url: world_edit_aliases_path(@world, @character, "name")}, class: "btn btn-default btn-xs"
+    =link_to "Change Name", "#", data: {toggle: "modal", target: "#edit_name_modal", e_url: world_edit_aliases_path(@world, @character, "name")}, class: "btn btn-default btn-xs" if can_do("write", @world)
 
   hr
-  = link_to 'Edit Info', edit_world_character_path(@world, @character), class: "btn btn-default btn-xs pull-right"
+  = link_to 'Edit Info', edit_world_character_path(@world, @character), class: "btn btn-default btn-xs pull-right" if can_do("write", @world)
   .row
     .col-sm-3
       =image_tag @character.avatar, class: "img-responsive"
@@ -17,11 +17,12 @@
               -@character.aliases.each do |a|
                 li id=="a_#{a.id}"
                   = a.name
-                  br
-                  small
-                    =link_to "Edit ", "#", data: {toggle: "modal", target: "#edit_name_modal", e_url: world_edit_aliases_path(@world, a, "edit")}
-                    =link_to "Remove", "#", data: {toggle: "modal", target: "#edit_name_modal", action: "Removing ", e_url: world_edit_aliases_path(@world, a, "remove")}
-              li=link_to "+ Add nickname(s)", "#", data: {toggle: "modal", target: "#new_name_modal"}, class: "btn btn-default btn-sm"
+                  -if can_do("write", @world)
+                    br
+                    small
+                      =link_to "Edit ", "#", data: {toggle: "modal", target: "#edit_name_modal", e_url: world_edit_aliases_path(@world, a, "edit")}
+                      =link_to "Remove", "#", data: {toggle: "modal", target: "#edit_name_modal", action: "Removing ", e_url: world_edit_aliases_path(@world, a, "remove")}
+              li=link_to "+ Add nickname(s)", "#", data: {toggle: "modal", target: "#new_name_modal"}, class: "btn btn-default btn-sm" if can_do("write", @world)
         tr
           td Age
           td=@character.age

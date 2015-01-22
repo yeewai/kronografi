@@ -1,5 +1,6 @@
 class Event < ActiveRecord::Base
   belongs_to :world
+  belongs_to :user
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :characters
   before_save :cache_data
@@ -46,6 +47,10 @@ class Event < ActiveRecord::Base
   def self.destroyed_models(world)
     events = PaperTrail::Version.where(event: "destroy", item_type: "Event").where("object LIKE ?", "%world_id: #{world.id}%")
     events.map(&:reify).reverse if events.any?
+  end
+  
+  def can_be_edited_by(user)
+    (r = user.rulings.find_by_world_id(self.world.id)) && ["admin", "write"].include?(r.role)
   end
   
   private

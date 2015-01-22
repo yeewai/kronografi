@@ -2,6 +2,7 @@ class CharactersController < ApplicationController
   before_action :set_character, only: [:show, :show_info, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action {authenticate_world(params[:world_id])}
+  before_action only: ["new", "edit", "create", "update", "destroy"] {authenticate_world(params[:world_id], "write")}
 
   # GET /characters
   # GET /characters.json
@@ -94,6 +95,6 @@ class CharactersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def character_params
-      params.require(:character).permit(:name, :slug, :description, :age, :nicknames, :avatar)
+      params.require(:character).permit(:name, :slug, :description, :age, :nicknames, :avatar, :user_id)
     end
 end

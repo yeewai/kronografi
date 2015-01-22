@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150109214254) do
+ActiveRecord::Schema.define(version: 20150116014037) do
 
   create_table "aliases", force: :cascade do |t|
     t.string   "name"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20150109214254) do
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.integer  "world_id",            default: 1, null: false
+    t.integer  "user_id"
   end
 
   add_index "characters", ["world_id"], name: "index_characters_on_world_id"
@@ -57,6 +58,7 @@ ActiveRecord::Schema.define(version: 20150109214254) do
     t.string   "happened_key"
     t.integer  "world_id",     default: 1,         null: false
     t.string   "kind",         default: "regular", null: false
+    t.integer  "user_id"
   end
 
   add_index "events", ["world_id"], name: "index_events_on_world_id"
@@ -76,6 +78,15 @@ ActiveRecord::Schema.define(version: 20150109214254) do
     t.string   "content_content_type"
     t.integer  "content_file_size"
     t.datetime "content_updated_at"
+  end
+
+  create_table "rulings", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "world_id"
+    t.string   "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "email"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -106,6 +117,11 @@ ActiveRecord::Schema.define(version: 20150109214254) do
     t.string   "unconfirmed_email"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
+    t.string   "name"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true

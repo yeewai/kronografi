@@ -84,11 +84,11 @@ describe "Characters", js: true do
       @event = create :event, world: @world
       visit world_events_path(@world)
 
-      save_screenshot("/Users/yeeeeeeeee/Documents/plotter_beforee.png")
+      #save_screenshot("/Users/yeeeeeeeee/Documents/plotter_beforee.png")
       within "#e_#{@event.id}" do
         click_link "Edit"
       end
-      save_screenshot("/Users/yeeeeeeeee/Documents/plotter_aftere.png")
+      #save_screenshot("/Users/yeeeeeeeee/Documents/plotter_aftere.png")
     end
     
     it "links to events by mentioning character name in the details" do
@@ -109,6 +109,7 @@ describe "Characters", js: true do
     end
     
     it "links to events by mentioning character name in the summary" do
+      #save_screenshot("/Users/yeeeeeeeee/Documents/plotter.png", full: true)
       within "#edit_event_modal" do
         fill_in 'Summary', with: "@[#{@char.name}]"
         click_on "Save Event"

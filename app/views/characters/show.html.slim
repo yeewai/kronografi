@@ -14,60 +14,61 @@ p#notice = notice
 
 hr
 .row
-  =link_to "Delete Character", "#", data: {toggle: "modal", target: "#destroy_char_modal"}, class: "btn btn-danger btn-sm pull-right"
+  =link_to "Delete Character", "#", data: {toggle: "modal", target: "#destroy_char_modal"}, class: "btn btn-danger btn-sm pull-right" if can_do("write", @world)
 hr
 ==render "ads/show_leader"
 
-==render "events/form_modal", kind: "Edit"
+-if can_do("write", @world)
+  ==render "events/form_modal", kind: "Edit"
 
-.modal.fade id=="edit_name_modal"
-  .modal-dialog.modal-sm
-    .modal-content
-      .modal-header
-        button type="button" class="close" data-dismiss="modal" aria-label="Close"
-          span aria-hidden="true" &times;
-        h4.modal-title
-          span.action Editing 
-          | Name
-      .modal-body
+  .modal.fade id=="edit_name_modal"
+    .modal-dialog.modal-sm
+      .modal-content
+        .modal-header
+          button type="button" class="close" data-dismiss="modal" aria-label="Close"
+            span aria-hidden="true" &times;
+          h4.modal-title
+            span.action Editing 
+            | Name
+        .modal-body
 
-.modal.fade id=="new_name_modal"
-  .modal-dialog
-    .modal-content
-      .modal-header
-        button type="button" class="close" data-dismiss="modal" aria-label="Close"
-          span aria-hidden="true" &times;
-        h4.modal-title Adding Nickname(s)
-      .modal-body
-        = form_for [@world, @character], html: {class: "form-horizontal"} do |f|
-          .form-group
-            = f.label :nicknames, class: "col-sm-2 control-label"
-            .col-sm-10
-              = f.text_field :nicknames, class: "form-control", placeholder: "Comma separated list of names.", data: {validate: "remote", remote_url: world_aliases_path(@world), id: @character.id}
-          .form-group
-            .col-md-offset-2.col-sm-10
-              = f.submit 'Add nickname(s)', class: "btn btn-primary"
+  .modal.fade id=="new_name_modal"
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button type="button" class="close" data-dismiss="modal" aria-label="Close"
+            span aria-hidden="true" &times;
+          h4.modal-title Adding Nickname(s)
+        .modal-body
+          = form_for [@world, @character], html: {class: "form-horizontal"} do |f|
+            .form-group
+              = f.label :nicknames, class: "col-sm-2 control-label"
+              .col-sm-10
+                = f.text_field :nicknames, class: "form-control", placeholder: "Comma separated list of names.", data: {validate: "remote", remote_url: world_aliases_path(@world), id: @character.id}
+            .form-group
+              .col-md-offset-2.col-sm-10
+                = f.submit 'Add nickname(s)', class: "btn btn-primary"
               
               
-.modal.fade id=="destroy_char_modal"
-  .modal-dialog
-    .modal-content
-      .modal-header
-        button type="button" class="close" data-dismiss="modal" aria-label="Close"
-          span aria-hidden="true" &times;
-        h4.modal-title ="You sure you want to delete #{@character.name}"
-      .modal-body
-        = form_for [@world, @character], html: {class: "form-horizontal"}, method: "delete" do |f|
-          .checkbox
-            label
-              =check_box_tag "persist", 1, true
-              ="Change this character's nicknames in events to #{@character.name} before deleting"
-          .checkbox
-            label
-              =check_box_tag "confirm", 1, false, data: {validate: "checked"}
-              ="Yes, I'm sure I want to delete them"
-          .form-group
-            .col-md-offset-2.col-sm-10
-              = f.submit "Delete #{@character.name}", class: "btn btn-danger", disabled: true
+  .modal.fade id=="destroy_char_modal"
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button type="button" class="close" data-dismiss="modal" aria-label="Close"
+            span aria-hidden="true" &times;
+          h4.modal-title ="You sure you want to delete #{@character.name}"
+        .modal-body
+          = form_for [@world, @character], html: {class: "form-horizontal"}, method: "delete" do |f|
+            .checkbox
+              label
+                =check_box_tag "persist", 1, true
+                ="Change this character's nicknames in events to #{@character.name} before deleting"
+            .checkbox
+              label
+                =check_box_tag "confirm", 1, false, data: {validate: "checked"}
+                ="Yes, I'm sure I want to delete them"
+            .form-group
+              .col-md-offset-2.col-sm-10
+                = f.submit "Delete #{@character.name}", class: "btn btn-danger", disabled: true
 
   

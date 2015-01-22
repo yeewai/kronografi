@@ -1,0 +1,16 @@
+// Place all the styles related to the Rulings controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.alert#savecat {
+  position: fixed;
+  top: 65px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px;
+  text-align: center;
+  font-weight: bold;
+  z-index: 9999;
+  display: none;
+}

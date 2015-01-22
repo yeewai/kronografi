@@ -191,7 +191,18 @@ describe "Worlds" do
       expect(page).to have_content "Sorry. We couldn't find that world and its related content."
     end
     
-    it "does not let unpermitted users to edit event"
+    it "does not let unpermitted users to edit event" do
+      world = create :world
+      ruling = create :ruling, world: world, user: @user, role: "view"
+      create :start_event, world: world
+      e = create :event, world: world
+      visit world_events_path(world)
+    
+      within "#e_#{e.id}" do
+        expect(page).to_not have_content "Edit"
+        expect(page).to_not have_content "Remove"
+      end
+    end
     
     it "does not let unpermitted users to edit character" do
       world = create :world
@@ -213,7 +224,6 @@ describe "Worlds" do
       world = create :world, user: @user
       
       visit world_rulings_path world
-      #save_screenshot("/Users/yeeeeeeeee/Documents/plotter_beforee.png")
       fill_in "ruling[email]", with: user2.email
       click_on "Add New Collaborator"
       
@@ -222,7 +232,40 @@ describe "Worlds" do
       expect(page).to have_content user2.email
     end
     
-    it "deletes collaborators"
-    it "adds collaborators who are not yet registered"
+    it "deletes collaborators" do
+      user2 = create :user, email: "#{Faker::Lorem.characters(12)}@a.com"
+      world = create :world, user: @user
+      r = create :ruling, user: user2, world: world
+      
+      visit world_rulings_path world
+      save_screenshot("/Users/yeeeeeeeee/Documents/plotter.png", full: true)
+      #within "#tr_#{r.id}" do
+        click_on "Remove User"
+        #end
+      visit world_rulings_path world
+      expect(page).to_not have_content user2.email
+      
+    end
+    it "adds collaborators who are not yet registered" do
+      email = "#{Faker::Lorem.characters(12)}@a.com"
+      world = create :world, user: @user
+      
+      visit world_rulings_path world
+      fill_in "ruling[email]", with: email
+      click_on "Add New Collaborator"
+      
+      visit world_rulings_path world
+      expect(page).to have_content "Not yet signed up"
+      expect(page).to have_content email
+      
+      click_on "Log Out"
+      user2 = create :user, email: email
+      user2.confirm!
+      visit new_user_session_path
+      fill_in "Email", with: @user.email
+      fill_in "Password", with: "12345678"
+      click_on "Log in"
+      expect(page).to have_content world.name
+    end
   end
 end

@@ -12,4 +12,14 @@ class User < ActiveRecord::Base
   
   has_attached_file :avatar, :default_url => "/images/avatar.png"
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
+  
+  after_create :set_rulings
+  
+  private
+  def set_rulings
+    Ruling.where(email: self.email).each do |r|
+      r.user = self
+      r.save
+    end
+  end
 end

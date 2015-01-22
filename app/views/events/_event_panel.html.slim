@@ -3,8 +3,8 @@
     =replace_chars(e.summary).html_safe
     -unless e.kind == "start"
       small.pull-right.actions
-        = link_to 'Remove',  world_event_path(@world, e), method: :delete, data: { confirm: 'Are you sure?', remote: true }
-        =link_to "Edit", "#" , data: {toggle: "modal", target: "#edit_event_modal", e_url: edit_world_event_path(@world, e)}
+        = link_to 'Remove',  world_event_path(@world, e), method: :delete, data: { confirm: 'Are you sure?', remote: true } if e.can_be_edited_by current_user
+        =link_to "Edit", "#" , data: {toggle: "modal", target: "#edit_event_modal", e_url: edit_world_event_path(@world, e)} if e.can_be_edited_by current_user
         =link_to "Details", "#ebody_#{e.id}" , data: { toggle: "collapse"}
         
       .tags
@@ -20,20 +20,21 @@
     .panel-body.collapse.in.event_content id=="ebody_#{e.id}" 
       =replace_chars(e.details).html_safe
       p.text-right.small= "Last edited on #{e.created_at} by #{(e.user.email if e.user)}"
-      .versions
-        ul.nav.nav-pills
-          li=link_to "<<", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_event_path(@world, e, e.versions.first.index), replace: ".panel"} if e.previous_version && !is_destroyed(e)
-          li=link_to "<", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_event_path(@world, e, e.previous_version.version.index), replace: ".panel"} if e.previous_version && !is_destroyed(e)
-          -if e.live? 
-            li.disabled=link_to "Current Version", "#", class: "disabled"
-          -else
-            li
-              =form_tag world_events_revert_path(@world), method: "post", remote: true do 
-                =hidden_field_tag :version, e.version.id
-                -if is_destroyed(e)
-                  =submit_tag "Restore this version", class: "btn btn-link"
-                -else
-                  =submit_tag "Revert to this version", class: "btn btn-link"
-                /=link_to("Revert to this version", "#")
-          li=link_to ">", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_event_path(@world, e, (e.next_version.version.index unless e.next_version.live?)), replace: ".panel"} if e.next_version && !is_destroyed(e)
-          li=link_to ">>", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_event_path(@world, e), replace: ".panel"} if e.next_version && !is_destroyed(e)
+      -if e.can_be_edited_by current_user
+        .versions
+          ul.nav.nav-pills
+            li=link_to "<<", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_event_path(@world, e, e.versions.first.index), replace: ".panel"} if e.previous_version && !is_destroyed(e)
+            li=link_to "<", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_event_path(@world, e, e.previous_version.version.index), replace: ".panel"} if e.previous_version && !is_destroyed(e)
+            -if e.live? 
+              li.disabled=link_to "Current Version", "#", class: "disabled"
+            -else
+              li
+                =form_tag world_events_revert_path(@world), method: "post", remote: true do 
+                  =hidden_field_tag :version, e.version.id
+                  -if is_destroyed(e)
+                    =submit_tag "Restore this version", class: "btn btn-link"
+                  -else
+                    =submit_tag "Revert to this version", class: "btn btn-link"
+                  /=link_to("Revert to this version", "#")
+            li=link_to ">", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_event_path(@world, e, (e.next_version.version.index unless e.next_version.live?)), replace: ".panel"} if e.next_version && !is_destroyed(e)
+            li=link_to ">>", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_event_path(@world, e), replace: ".panel"} if e.next_version && !is_destroyed(e)

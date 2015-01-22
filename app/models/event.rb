@@ -49,6 +49,10 @@ class Event < ActiveRecord::Base
     events.map(&:reify).reverse if events.any?
   end
   
+  def can_be_edited_by(user)
+    (r = user.rulings.find_by_world_id(self.world.id)) && ["admin", "write"].include?(r.role)
+  end
+  
   private
   def cache_data
     self.happened_key = Event.generate_key(happened_on.year, happened_on.month)

@@ -26,7 +26,7 @@ module EventsHelper
     if c
       link_to char, world_character_path(@world, c), class: "valid"
     else
-      link_to char, new_world_character_path(@world, name: char), class: "invalid"
+      link_to_if can_do("write", @world), char, new_world_character_path(@world, name: char), class: "invalid"
     end
   end
   

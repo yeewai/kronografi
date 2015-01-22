@@ -123,9 +123,11 @@ describe "Worlds" do
           click_on "Show"
         end
         
-        within "#e_#{e.id}" do
-          click_on @c1.first.name
-        end
+        #within "#e_#{e.id}" do
+        expect(page).to have_content @c1.first.name
+        click_on @c1.first.name
+          #end
+        save_screenshot("/Users/yeeeeeeeee/Documents/plotter_uhhhhh.png", full: true)
         expect(page).to have_content "New character"
       end
     end
@@ -211,13 +213,13 @@ describe "Worlds" do
       world = create :world, user: @user
       
       visit world_rulings_path world
-      save_screenshot("/Users/yeeeeeeeee/Documents/plotter_beforee.png")
+      #save_screenshot("/Users/yeeeeeeeee/Documents/plotter_beforee.png")
       fill_in "ruling[email]", with: user2.email
       click_on "Add New Collaborator"
       
       visit world_rulings_path world
-      expect(page).to have_content user.name
-      expect(page).to have_content user.email
+      expect(page).to have_content user2.name
+      expect(page).to have_content user2.email
     end
     
     it "deletes collaborators"

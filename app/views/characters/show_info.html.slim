@@ -20,7 +20,7 @@
                   -if can_do("write", @world)
                     br
                     small
-                      =link_to "Edit ", "#", data: {toggle: "modal", target: "#edit_name_modal", e_url: world_edit_aliases_path(@world, a, "edit")}
+                      =link_to "Edit ", "#", data: {toggle: "modal", target: "#edit_name_modal", action: "Editing ", e_url: world_edit_aliases_path(@world, a, "edit")}
                       =link_to "Remove", "#", data: {toggle: "modal", target: "#edit_name_modal", action: "Removing ", e_url: world_edit_aliases_path(@world, a, "remove")}
               li=link_to "+ Add nickname(s)", "#", data: {toggle: "modal", target: "#new_name_modal"}, class: "btn btn-default btn-sm" if can_do("write", @world)
         tr

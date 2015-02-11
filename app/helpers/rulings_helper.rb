@@ -2,7 +2,7 @@ module RulingsHelper
   def translate_rulingrole(role)
     case role
     when "admin"
-      "Can edit world settings"
+      "Can edit world settings and content"
     when "write"
       "Can contribute content"
     when "view"

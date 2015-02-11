@@ -49,7 +49,7 @@ class EventsController < ApplicationController
     end
     
     if params[:character] && @character = Character.find_by_id( params[:character])
-      @events = @character.events.includes(:tags, :characters) + @world.events.where(kind: ["milestone", "start"]).includes(:tags, :characters)
+      @events = (@character.events.includes(:tags, :characters) + @world.events.where(kind: ["milestone", "start"]).includes(:tags, :characters)).uniq
     else
       @events = @world.events.includes(:tags, :characters)
     end

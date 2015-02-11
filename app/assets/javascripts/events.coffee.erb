@@ -187,7 +187,7 @@ change_year_display = (diff) ->
     $(this).after( "<small class='o_year'>" + $(this).closest("li").data("year") + "</small>") if !$(this).next().hasClass("o_year")
   $("#year_display").modal('hide')
   
-scroll_here = (to_here) ->
+window.scroll_here = (to_here) ->
   $("html, body").animate
     scrollTop: $(to_here).offset().top - ($( window ).height()/ 2 ) + 100
   , 500

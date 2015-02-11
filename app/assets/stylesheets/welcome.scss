@@ -12,6 +12,7 @@
 .carousel {
   height: 500px;
   margin-bottom: 60px;
+  top: -10px;
 }
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
@@ -38,14 +39,14 @@
 -------------------------------------------------- */
 
 /* Center align the text within the three columns below the carousel */
-.marketing .col-lg-4 {
+.marketing .col-md-4 {
   margin-bottom: 20px;
   text-align: center;
 }
 .marketing h2 {
   font-weight: normal;
 }
-.marketing .col-lg-4 p {
+.marketing .col-md-4 p {
   margin-right: 10px;
   margin-left: 10px;
 }

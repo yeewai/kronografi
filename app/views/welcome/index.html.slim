@@ -9,29 +9,29 @@
     li data-slide-to="2" data-target="#myCarousel" 
   .carousel-inner role="listbox" 
     .item.active
-      / img alt=("First slide") src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" /
+      =image_tag "whatiskronografi.png"
       .container
         .carousel-caption
           h1 What is Kronografi?
-          p Kronografi is a simple writing assistant that helps you develop your stories. 
-          p = link_to "Sign up now", new_user_registration_path, class: "btn btn-lg btn-primary"
+          p Kronografi is a free to use simple writing assistant that helps you develop your stories. 
+          p 
+            = link_to "Sign up now", new_user_registration_path, class: "btn btn-lg btn-primary"
+            /br
+            /small=link_to "Or sign in", new_user_session_path
     .item
       =image_tag "dreamytimeline.png"
-      / img alt=("Second slide") src="data:image/gif;base64,R0lGODlhAQABAIAAAGZmZgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" /
       .container
         .carousel-caption
           h1 What does Kronografi do?
-          p Kronography lets you build a timeline of a world and assign events to characters you have developed to dynamically generate their biographies. 
+          p Kronography lets you build a timeline of a world and assign events to characters you are developing to dynamically generate their biographies. 
           p= link_to "Learn more", welcome_help_path, class: "btn btn-large btn-primary"
     .item
       =image_tag "dreamybiography.png"
-      / img alt=("Third slide") src="data:image/gif;base64,R0lGODlhAQABAIAAAFVVVQAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" /
       .container
         .carousel-caption
           h1 Why do I need Kronografi
           p Kronografi will help you to never miss or forget an important event in your character's story progression.
-          p
-            a.btn.btn-lg.btn-primary href="#" role="button"  See an example timeline
+          p = link_to "See an example world", (world_events_path(@exampleworld) if @exampleworld), class: "btn btn-large btn-primary"
   a.left.carousel-control data-slide="prev" href="#myCarousel" role="button" 
     | <
     span.sr-only Previous
@@ -47,18 +47,21 @@
   /! Three columns of text below the carousel
   .row
     h1 How do I get started?
-    .col-lg-4
-      img.img-circle alt=("Generic placeholder image") src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" style=("width: 140px; height: 140px;") /
+    .col-md-4
+      =image_tag "octopus-1.png"
       h2 Sign up!
-      p= link_to "Sign up now", new_user_registration_path, class: "btn btn-primary"
+      p
+        = link_to "Sign up now", new_user_registration_path, class: "btn btn-primary"
+        br
+        small=link_to "Or sign in", new_user_session_path
     /! /.col-lg-4
-    .col-lg-4
-      img.img-circle alt=("Generic placeholder image") src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" style=("width: 140px; height: 140px;") /
+    .col-md-4
+      =image_tag "octopus-2.png"
       h2 Confirm email!
       p= link_to "Resend confirmation email", new_user_confirmation_path, class: "btn btn-default"
     /! /.col-lg-4
-    .col-lg-4
-      img.img-circle alt=("Generic placeholder image") src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" style=("width: 140px; height: 140px;") /
+    .col-md-4
+      =image_tag "octopus-3.png"
       h2 Start building worlds!
       p= link_to "Learn how to use Kronografi &raquo;".html_safe, welcome_help_path, class: "btn btn-default"
     /! /.col-lg-4

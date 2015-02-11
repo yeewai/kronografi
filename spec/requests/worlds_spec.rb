@@ -124,7 +124,9 @@ describe "Worlds" do
         end
         
         #within "#e_#{e.id}" do
+        save_screenshot("/Users/yeeeeeeeee/Documents/plotter_uhhhhh1.png", full: true)
         expect(page).to have_content @c1.first.name
+        sleep(1)
         click_on @c1.first.name
           #end
         save_screenshot("/Users/yeeeeeeeee/Documents/plotter_uhhhhh.png", full: true)

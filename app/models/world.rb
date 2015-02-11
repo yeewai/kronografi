@@ -16,6 +16,11 @@ class World < ActiveRecord::Base
   def set_creator_ruling
     self.rulings.create user_id: self.user_id, role: "admin", email: self.user.email
   end
+  
+  def can_be_edited_by(user)
+    user && (r = user.rulings.find_by_world_id(self.id)) && ["admin", "write"].include?(r.role)
+  end
+  
   private
   def generate_token
     self.token = loop do

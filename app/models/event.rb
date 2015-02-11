@@ -50,7 +50,7 @@ class Event < ActiveRecord::Base
   end
   
   def can_be_edited_by(user)
-    (r = user.rulings.find_by_world_id(self.world.id)) && ["admin", "write"].include?(r.role)
+    self.world.can_be_edited_by user
   end
   
   private

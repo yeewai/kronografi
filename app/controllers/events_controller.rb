@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :update_happened, :destroy]
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: ["index", "years", "months", "relative", "milestones"]
   before_action except: ["valid_date"] {authenticate_world(params[:world_id])}
   before_action only: ["new", "edit", "create", "update", "update_happened", "destroy"] {authenticate_world(params[:world_id], "write")}
 
@@ -149,6 +149,11 @@ class EventsController < ApplicationController
       #format.json { head :no_content }
       format.js
     end
+  end
+  
+  def milestones
+    @events = @world.events.where(kind: ["milestone", "start"])
+    render layout: false
   end
   
   def valid_date

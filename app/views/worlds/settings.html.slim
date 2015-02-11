@@ -20,6 +20,10 @@ h2="Settings for #{@world.name}"
     .col-sm-10
       =f.check_box :is_absolute
   .form-group
+    = f.label :is_public, "Is publicly viewable?", class: "col-sm-2 control-label"
+    .col-sm-10
+      =f.check_box :is_public
+  .form-group
     .col-md-offset-2.col-sm-10
       = f.submit 'Save', class: "btn btn-primary"
 = tinymce

@@ -6,14 +6,17 @@ class ApplicationController < ActionController::Base
   
   def authenticate_world(world_token, mode='read')
     @world = World.find_by_token world_token
-    if !@world || !user_signed_in?
+    if !@world 
       redirect_to worlds_path, notice: "Sorry. We couldn't find that world and its related content."
-    elsif mode == "read"
-      redirect_to worlds_path, notice: "Sorry. We couldn't find that world and its related content." if !current_user.worlds.include?(@world)
-    elsif mode == "write"
-      redirect_to worlds_path, notice: "Sorry. You don't have permission to do that." if !((r = current_user.rulings.find_by_world_id(@world.id)) && ["admin", "write"].include?(r.role))
-    elsif mode == "admin"
-      redirect_to worlds_path, notice: "Sorry. You don't have permission to do that." if !((r = current_user.rulings.find_by_world_id(@world.id)) && r.role == "admin")
+    else
+      case mode
+      when "read"
+        redirect_to worlds_path, notice: "Sorry. We couldn't find that world and its related content." if !@world.is_public && !(user_signed_in? && current_user.worlds.include?(@world))
+      when "write"
+        redirect_to worlds_path, notice: "Sorry. You don't have permission to do that." if !user_signed_in? || !((r = current_user.rulings.find_by_world_id(@world.id)) && ["admin", "write"].include?(r.role))
+      when "admin"
+        redirect_to worlds_path, notice: "Sorry. You don't have permission to do that." if !user_signed_in? || !((r = current_user.rulings.find_by_world_id(@world.id)) && r.role == "admin")
+      end
     end
   end
   

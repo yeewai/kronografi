@@ -4,7 +4,7 @@ module ApplicationHelper
   end
   
   def can_do(action, world)
-    if (r = current_user.rulings.find_by_world_id(world.id))
+    if current_user && (r = current_user.rulings.find_by_world_id(world.id))
       case action
       when "view"
         true

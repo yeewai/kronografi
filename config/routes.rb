@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     
     post "events/update_happened"
     resources :events, except: ["show", "index", "create"]
+    get 'events/milestones'
     get "events/show_deleted"
     get "events/show/:id/(:version)" => "events#show", as: "show_event"
     post "events/revert"

@@ -1,6 +1,6 @@
 class CharactersController < ApplicationController
   before_action :set_character, only: [:show, :show_info, :edit, :update, :destroy]
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: ["index", "show", "show_info"]
   before_action {authenticate_world(params[:world_id])}
   before_action only: ["new", "edit", "create", "update", "destroy"] {authenticate_world(params[:world_id], "write")}
 

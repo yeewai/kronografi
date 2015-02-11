@@ -78,6 +78,6 @@ class WorldsController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def world_params
-      params.require(:world).permit(:name, :description, :is_absolute, :scale)
+      params.require(:world).permit(:name, :description, :is_absolute, :scale, :is_public)
     end
 end

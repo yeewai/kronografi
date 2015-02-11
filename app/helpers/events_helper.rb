@@ -37,4 +37,8 @@ module EventsHelper
   def replace_chars(text)
     text.gsub(CHAR_PATTERN){ generate_link_for($1)}
   end
+  
+  def replace_chars_nolink(text)
+    text.gsub(CHAR_PATTERN){ $1}
+  end
 end

@@ -185,6 +185,13 @@ describe "Worlds" do
   end
   
   describe "collaboration", js: true do
+    it "lets not logged in users view public worlds" do
+      world = create :world, is_public: true
+      click_on "Log Out"
+      visit world_events_path world
+      expect(page).to have_content world.name
+    end
+    
     it "does not let unpermitted users to view" do
       world = create :world
       visit world_events_path world

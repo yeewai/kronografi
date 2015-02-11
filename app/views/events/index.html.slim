@@ -1,5 +1,5 @@
 =content_for(:title, "#{@world.name} | #{app_name}")
-.col-lg-9
+.col-md-8
   h1 
     =@world.name
   .world_description = @world.description.html_safe
@@ -13,7 +13,7 @@
       = content_tag "ul", "", class: "years", id: "events_years", data: {remote_load: true, remote_url: world_events_years_path(@world), update_happened: world_events_update_happened_path(@world)}
       =link_to "See 10 years later", "#", class: "btn btn-default btn-block", id: "addlateryears", data: {y_url: world_events_years_path(@world)}
     
-.col-lg-3
+.col-md-3
   #sidenav
     .well.sidebar-nav
       ul.nav.nav-list
@@ -30,22 +30,21 @@
                 label
                   =check_box_tag char.name, 1, false, data: {slug: char.slug}
                   =char.name
-        li
-          small=link_to "Expand All Events", "#", id: "expand_event_button", class: "event_button"
-          small=link_to "Collapse All Events", "#", id: "collapse_event_button", class: "event_button"
         -unless @year
           li
             =link_to "&#9654; Scroll to".html_safe, "#scrollto_list", data: {toggle: "collapse"}
             #scrollto_list.collapse
-              ul.scroll_to
-                -@world.events.where(kind: ["milestone", "start"]).each do |e|
-                  li=link_to e.summary, "#e_#{e.id}"
+              = content_tag "ul", "", class: "scroll_to", id: "milestone_list", data: {remote_load: true, remote_url: world_events_milestones_path}
         li =link_to "See Deleted Events", "#", data: {toggle: "modal", target: "#deleted_events", remote_url: world_events_show_deleted_path(@world)}
+        li
+          small=link_to "Expand All Events", "#", id: "expand_event_button", class: "event_button"
+          small=link_to "Collapse All Events", "#", id: "collapse_event_button", class: "event_button"
     = content_tag "div", "", class: "ads", data: {remote_load: true, remote_url: ads_show_path}
-        
-==render "start_form" if @world.is_absolute
-==render "form_modal", kind: "New"
-==render "form_modal", kind: "Edit"
+
+-if @world.can_be_edited_by current_user        
+  ==render "start_form" if @world.is_absolute
+  ==render "form_modal", kind: "New"
+  ==render "form_modal", kind: "Edit"
 ==render "display_year_modal" unless @year
 .modal.fade#deleted_events
   .modal-dialog.modal-lg

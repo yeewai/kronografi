@@ -260,12 +260,10 @@ describe "Worlds" do
         expect(page).to have_content @user2.email
       end
       
-      #it "email notifies the new collab", focus: true do
-      #  sleep 1
-      #  open_email(@user2.email)
-      #  current_email.save_and_open
-      #  expect(current_email).to have_content 'You\'ve been added as a collaborator on Kronografi'
-      #end
+      it "email notifies the new collab" do
+        open_email(@user2.email)
+        expect(current_email).to have_content 'You\'ve been added as a collaborator on Kronografi'
+      end
     end
     
     describe "adds collaborators who are not yet registered" do
@@ -285,7 +283,11 @@ describe "Worlds" do
         expect(page).to have_content @email
       end
       
-      it "email notifies the new user"
+      it "email notifies the new user" do
+        open_email(@email)
+        expect(current_email).to have_content 'You\'ve been invited to Kronografi'
+        expect(current_email).to have_content new_user_registration_path
+      end
       
       it "automatically links the user to the world when the sign up" do
         click_on "Log Out"

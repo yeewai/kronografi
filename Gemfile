@@ -74,6 +74,7 @@ gem 'paper_trail', '~> 3.0.6'
 group :development, :test do
   gem 'rspec-rails'#, '~> 2.0'
   gem 'capybara'
+  gem 'capybara-email'
   gem 'poltergeist'
   gem "factory_girl_rails"#, "~> 4.0"
   gem 'simplecov', :require => false

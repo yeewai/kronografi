@@ -228,19 +228,6 @@ describe "Worlds" do
       expect(page).to have_content "Sorry. You don't have permission to do that."
     end
     
-    it "creates collaborators" do
-      user2 = create :user, email: "#{Faker::Lorem.characters(12)}@a.com"
-      world = create :world, user: @user
-      
-      visit world_rulings_path world
-      fill_in "ruling[email]", with: user2.email
-      click_on "Add New Collaborator"
-      
-      visit world_rulings_path world
-      expect(page).to have_content user2.name
-      expect(page).to have_content user2.email
-    end
-    
     it "deletes collaborators" do
       user2 = create :user, email: "#{Faker::Lorem.characters(12)}@a.com"
       world = create :world, user: @user
@@ -255,26 +242,61 @@ describe "Worlds" do
       expect(page).to_not have_content user2.email
       
     end
-    it "adds collaborators who are not yet registered" do
-      email = "#{Faker::Lorem.characters(12)}@a.com"
-      world = create :world, user: @user
+    
+    describe "creates collaborators" do
+      before :each do
+        clear_emails
+        @user2 = create :user, email: "#{Faker::Lorem.characters(12)}@a.com"
+        @world = create :world, user: @user
       
-      visit world_rulings_path world
-      fill_in "ruling[email]", with: email
-      click_on "Add New Collaborator"
+        visit world_rulings_path @world
+        fill_in "ruling[email]", with: @user2.email
+        click_on "Add New Collaborator"
+      end
       
-      visit world_rulings_path world
-      expect(page).to have_content "Not yet signed up"
-      expect(page).to have_content email
+      it "shows the new collab on the screen" do
+        visit world_rulings_path @world
+        expect(page).to have_content @user2.name
+        expect(page).to have_content @user2.email
+      end
       
-      click_on "Log Out"
-      user2 = create :user, email: email
-      user2.confirm!
-      visit new_user_session_path
-      fill_in "Email", with: @user.email
-      fill_in "Password", with: "12345678"
-      click_on "Log in"
-      expect(page).to have_content world.name
+      #it "email notifies the new collab", focus: true do
+      #  sleep 1
+      #  open_email(@user2.email)
+      #  current_email.save_and_open
+      #  expect(current_email).to have_content 'You\'ve been added as a collaborator on Kronografi'
+      #end
+    end
+    
+    describe "adds collaborators who are not yet registered" do
+      before :each do
+        clear_emails
+        @email = "#{Faker::Lorem.characters(12)}@a.com"
+        @world = create :world, user: @user
+      
+        visit world_rulings_path @world
+        fill_in "ruling[email]", with: @email
+        click_on "Add New Collaborator"
+      end
+      
+      it "shows the new collab on the screen" do
+        visit world_rulings_path @world
+        expect(page).to have_content "Not yet signed up"
+        expect(page).to have_content @email
+      end
+      
+      it "email notifies the new user"
+      
+      it "automatically links the user to the world when the sign up" do
+        click_on "Log Out"
+        user2 = create :user, email: @email
+        user2.confirm!
+        visit new_user_session_path
+        fill_in "Email", with: @user.email
+        fill_in "Password", with: "12345678"
+        click_on "Log in"
+        expect(page).to have_content @world.name
+      end
     end
   end
 end

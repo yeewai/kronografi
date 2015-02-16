@@ -10,6 +10,11 @@ class RulingsController < ApplicationController
     @ruling.world = @world
     respond_to do |format|
       if @ruling.save
+        if @ruling.user
+          UserMailer.collaborating(@ruling.user, current_user, @world).deliver_later
+        else
+          UserMailer.invite(@ruling.email, current_user, @world).deliver_later
+        end
         format.html { redirect_to world_rulings_path(@world), notice: 'Collaborator was successfully added.' }
       else
         format.html { render :index }

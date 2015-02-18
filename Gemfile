@@ -5,8 +5,9 @@ ruby "2.1.5"
 gem 'rails', '4.2.0'
 
 group :production do 
-  gem 'pg'
+  gem 'mysql2'
   # heroku stuff
+  gem 'pg'
   gem 'rails_12factor'
 end
 group :development, :test do 

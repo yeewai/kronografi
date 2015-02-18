@@ -22,7 +22,7 @@ html lang="en"
 
 
   body id=="#{controller.controller_name}_#{controller.action_name}" class==" c_#{controller.controller_name}"
-    .navbar.navbar-default.navbar-fixed-top
+    .navbar.navbar-default.navbar-fixed-top.hidden-xs.hidden-sm
         .container
           button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse"
             span.icon-bar
@@ -65,9 +65,14 @@ html lang="en"
               
 
     .container
-      .row
+      .row.hidden-xs.hidden-sm
       	= bootstrap_flash
       	= yield
+      .hidden-md.hidden-lg
+        h1 Welcome to Kronografi
+        p.lead Unfortunately, we are not equipped to work on mobile/tablet/other smaller screens (yet!). Please come back on a computer (or a higher resolution).
+        p.text-center=image_tag "octopus-1.png"
+        hr
 
       footer
         p 

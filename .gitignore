@@ -22,3 +22,6 @@ config/database.yml
 
 # Ignore precompiled assets
 /public/assets/*
+
+# Ignore application configuration
+/config/application.yml

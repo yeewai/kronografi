@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get 'welcome/index'
   get 'welcome/help'
+  get 'tos' => 'welcome#tos', as: 'tos'
+  get 'privacy' => 'welcome#privacy', as: 'privacypolicy'
 
   get 'ads/show'
   get 'ads/show_leader'

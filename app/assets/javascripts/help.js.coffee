@@ -9,6 +9,7 @@
 #    $(":animated").promise().done -> location.hash = id
 #
 $(window).load ->
+  $('#content').css("min-height", $(window).height() - $('footer').height())
   if $("#welcome_help").length > 0
     $("#help_nav a").click (e) -> 
       scroll_here($(this).attr("href"))

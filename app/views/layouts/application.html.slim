@@ -55,6 +55,7 @@ html lang="en"
                 li= link_to "Characters", world_characters_path(@world)
 
             ul.nav.navbar-nav.navbar-right
+              li=link_to "Site Status", "https://twitter.com/kronografiApp"
               li=link_to "Help", welcome_help_path
               -if user_signed_in?
                 li=link_to "Settings", edit_user_registration_path
@@ -64,7 +65,7 @@ html lang="en"
                 li=link_to "Log In", new_user_session_path
               
 
-    .container
+    .container#content
       .row.hidden-xs.hidden-sm
       	= bootstrap_flash
       	= yield
@@ -74,8 +75,21 @@ html lang="en"
         p.text-center=image_tag "octopus-1.png"
         hr
 
-      footer
-        p 
-          | Kronografi &copy; 
-          =link_to "Yee W ", "http://emihaumut.com" 
-          | 2014
+    footer
+      .container
+        .row
+          .col-md-4
+            ul
+              li.header Kronografi
+              li =link_to "Home", root_path
+              li =link_to "Help & FAQ", welcome_help_path
+          .col-md-4 
+            ul
+              li.header Connect
+              li =link_to "Twitter", "https://twitter.com/kronografiApp"
+          .col-md-4 
+            ul
+              li.header Official
+              li Kronografi &copy; YAK IT 2015
+              li =link_to "Terms of Service", tos_path
+              li =link_to "Privacy Policy", privacypolicy_path

@@ -104,7 +104,9 @@ clearInputHelp = (input) ->
   $(input).closest(".form-group").removeClass "has-error"
   $(input).closest("form").find("[type=submit]").prop "disabled", false      
 window.setValidationCheck = ->
+  console.log "Ohai"
   $("[data-validate]").on "keyup change", ->
+    console.log "Suuuup"
     clearInputHelp this
     $(this).closest("form").find("[data-validate]").each ->
       input = this

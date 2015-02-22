@@ -1,0 +1,22 @@
+footer {
+  width: 100%;
+  background-color: white;
+  display: table;
+  color: rgb(51, 51, 51);
+  padding-top: 1em;
+  padding-bottom: .5em;
+  
+  ul {
+    list-style: none;
+    
+    li {
+      padding: .4em;
+      
+      &.header{
+        text-transform: uppercase;
+        font-size: 18px;
+        padding-left: 0;
+      }
+    }
+  }
+}

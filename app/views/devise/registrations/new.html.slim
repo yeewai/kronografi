@@ -7,6 +7,7 @@ h2 Sign up
     = f.label :email, class: "col-sm-2 control-label"
     .col-sm-4
       = f.email_field :email, autofocus: true, class: "form-control"
+      /, data: {validate: "presence remote", remote_url: world_aliases_path(@world), id: @character.id}
   .form-group
     = f.label :password, class: "col-sm-2 control-label"
     -if @validatable
@@ -20,9 +21,16 @@ h2 Sign up
     = f.label :password_confirmation, class: "col-sm-2 control-label"
     .col-sm-4
       = f.password_field :password_confirmation, autocomplete: "off", class: "form-control"
+      
+  .form-group.checkbox
+    .col-sm-offset-2.col-sm-4
+      =label_tag do
+        =check_box_tag :tos_confirm, 1, false, data: {validate: "checked"}
+        | I have read and agree with the 
+        =link_to "terms of service", tos_path
   .form-group
      .col-md-offset-2.col-sm-4
-       = f.submit "Sign up", class: "btn btn-primary"
+       = f.submit "Sign up", class: "btn btn-primary", disabled: true
   .form-group
     .col-md-offset-2.col-sm-4
       = render "devise/shared/links"

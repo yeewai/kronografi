@@ -126,6 +126,8 @@ ul.years {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+  position: relative;
+  z-index: 100;
   
   span.label {float: left;}
 }

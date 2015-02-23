@@ -13,6 +13,8 @@ $(window).load ->
   if $("#welcome_help").length > 0
     $("#help_nav a").click (e) -> 
       scroll_here($(this).attr("href"))
+      
+    $("#sticky").sticky({topSpacing: "120px"});
     #
     #$(".scroll_nav").sticky({topSpacing: "120px"});
     #

@@ -21,8 +21,8 @@ describe "Events Index", :js => true do
     end
     
     it "creates the starting event" do
-      within("#start_event") do
-        fill_in 'event_set_happened', :with => '01/01/0001'
+      within("#new_event") do
+        fill_in 'event_set_happened', :with => '01-01-0001'
         click_on "Set Date"
       end
       
@@ -36,7 +36,7 @@ describe "Events Index", :js => true do
     click_on "Change Start Date"
     
     within "#start_event" do
-      fill_in 'event_set_happened', :with => '01/01/0100'
+      fill_in 'event_set_happened', :with => '01-01-0100'
       click_on "Set Date"
     end
     

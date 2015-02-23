@@ -9,4 +9,5 @@
           =f.hidden_field :kind, value: "start"
           =f.hidden_field :user_id, value: current_user.id
           = f.text_field :set_happened, class: "form-control", placeholder: "Preferred format: dd/mm/yyyy hh:mm am/pm (Other formats may be accepted)", data: {:"date-orientation"=>"top auto", validate: "presence remote", remote_url: events_valid_date_path}
+          br
           =f.submit 'Set Date', class: "btn btn-primary"

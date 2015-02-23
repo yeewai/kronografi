@@ -5,6 +5,9 @@ footer {
   color: rgb(51, 51, 51);
   padding-top: 1em;
   padding-bottom: .5em;
+  margin-top: 2em;
+  position: relative;
+  z-index: 1000;
   
   ul {
     list-style: none;

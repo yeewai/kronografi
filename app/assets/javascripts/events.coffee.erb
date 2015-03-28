@@ -201,16 +201,62 @@ $(document).ajaxStop ->
     scroll_here(".start_story")
     first_load = true
     
+set_modal_lock = ->
+  # save the original function object
+  _superModal = $.fn.modal
+  # add locked as a new option
+  $.extend _superModal.Constructor.DEFAULTS, locked: false
+  # capture the original hide
+  _hide = _superModal.Constructor::hide
+  # add the lock, unlock and override the hide of modal
+  $.extend _superModal.Constructor.prototype,
+    lock: ->
+      @options.locked = true
+      return
+    unlock: ->
+      @options.locked = false
+      return
+    hide: ->
+      if @options.locked
+        return
+      _hide.apply this, arguments
+      return
+  
+lock_modal = (modal) ->
+  #modal_content_changed = false
+  #modal.on 'keypress', -> 
+  #  if !modal_content_changed
+  #    modal_content_changed = true
+  modal.unbind "click"
+  modal.on 'click', (e) ->
+    #do nothing if you're clicking inside the actual modal      
+    if (' ' + e.target.className + ' ').indexOf(' ' + 'modal-dialog' + ' ') > -1 or $(e.target).closest('.modal-dialog').length
+      modal.modal('unlock')
+      e.target.click()
+    else
+      modal.modal 'lock'
+      #if modal_content_changed
+      result = confirm('Discard changes?')
+      if result == true
+        modal.modal('unlock').modal('hide').off 'click'
+      #else
+      #  modal.modal('unlock').modal('hide').off 'click'
+    
 $(document).ready ->
+  set_modal_lock()
   set_remote_replace()
   load_remote_parts()
   
   $(".modal").on "show.bs.modal", (event) ->
+    modal = $(this)
     if (url = $(event.relatedTarget).data("remote-url"))
-      modal = $(this)
       $.get url, (data) ->
         modal.find(".modal-body").html(data)
         set_remote_replace()
+    #set lock
+    lock_modal(modal)
+      
+      
   if $("#events_index").length > 0
     setValidationCheck()
     #Show start date modal if it doesn't already exist

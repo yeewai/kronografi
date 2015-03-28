@@ -31,6 +31,6 @@
     .col-md-offset-2.col-sm-10
       =f.hidden_field :user_id, value: current_user.id
       =f.submit 'Save Event', class: "btn btn-primary"
-      =link_to "Cancel Edit", "#", class: "btn btn-danger", data: {dismiss: "modal"}, :"aria-label"=> "Close"
+      =link_to "Cancel Edit", 'javascript:void(0)', class: "btn btn-danger pull-right", data: {dismiss: "modal"}, :"aria-label"=> "Close"
       
 = tinymce

@@ -4,7 +4,7 @@
     -unless e.kind == "start"
       small.pull-right.actions
         = link_to 'Remove',  world_event_path(@world, e), method: :delete, data: { confirm: 'Are you sure?', remote: true } if e.can_be_edited_by current_user
-        =link_to "Edit", "#" , data: {toggle: "modal", target: "#edit_event_modal", e_url: edit_world_event_path(@world, e)} if e.can_be_edited_by current_user
+        =link_to "Edit", "#ebody_#{e.id}" , data: {toggle: "modal", target: "#edit_event_modal", e_url: edit_world_event_path(@world, e)} if e.can_be_edited_by current_user
         =link_to "Details", "#ebody_#{e.id}" , data: { toggle: "collapse"}
         
       .tags

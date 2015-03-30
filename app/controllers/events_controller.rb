@@ -105,7 +105,14 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1.json
   def update
     respond_to do |format|
+      original_date = @event.happened_on
       if @event.update(event_params)
+        if @event.kind == "start" && params[:persist]
+          diff = original_date - @event.happened_on
+          @world.events.each do |e|
+            e.update_attributes happened_on: e.happened_on - diff if e != @event
+          end
+        end
         #format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         #format.json { render :show, status: :ok, location: @event }
         format.js {render "create"}

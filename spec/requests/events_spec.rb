@@ -23,25 +23,55 @@ describe "Events Index", :js => true do
     it "creates the starting event" do
       within("#new_event") do
         fill_in 'event_set_happened', :with => '01-01-0001'
-        click_on "Set Date"
+        #click_on "Set Date"
+        page.execute_script("$('#start_event form').submit()")
       end
       
       expect(page).to have_content '1'
     end
   end
   
-  it "changes start date" do
-    start_event = create :start_event, world: @world
-    visit world_events_path(@world)
-    click_on "Change Start Date"
-    
-    within "#start_event" do
-      fill_in 'event_set_happened', :with => '01-01-0100'
-      click_on "Set Date"
+  describe 'start date' do
+    before :each do 
+      start_event = create :start_event, world: @world, happened_on: "01-01-2014"
+      @event = create :event, happened_on: "01-01-2015", world: @world
+      visit world_events_path(@world)
+      click_on "Change Start Date"
     end
     
-    within "#year100" do
-      expect(page).to have_content 'Story Starts'
+    it "changes just the start" do
+      within "#start_event" do
+        expect(page).to have_content "When does the story start?"
+        fill_in 'event_set_happened', :with => '01-01-0100'
+        #click_on "Set Date"
+        page.execute_script("$('#start_event form').submit()")
+      end
+    
+      within "#year100" do
+        expect(page).to have_content 'Story Starts'
+      end
+      
+      within "#year2015" do
+        expect(page).to have_content @event.summary
+      end
+    end
+    
+    it 'changes all events to match the start' do
+      within "#start_event" do
+        expect(page).to have_content "When does the story start?"
+        fill_in 'event_set_happened', :with => '01-01-0100'
+        check('Change dates for all events')
+        #click_on "Set Date"
+        page.execute_script("$('#start_event form').submit()")
+      end
+    
+      within "#year100" do
+        expect(page).to have_content 'Story Starts'
+      end
+      
+      within "#year101" do
+        expect(page).to have_content @event.summary
+      end
     end
   end
   

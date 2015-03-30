@@ -232,7 +232,8 @@ lock_modal = (modal) ->
     #do nothing if you're clicking inside the actual modal      
     if (' ' + e.target.className + ' ').indexOf(' ' + 'modal-dialog' + ' ') > -1 or $(e.target).closest('.modal-dialog').length
       modal.modal('unlock')
-      e.target.click()
+      if $(e.target).is("a")
+        e.target.click()
     else
       modal.modal 'lock'
       #if modal_content_changed

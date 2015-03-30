@@ -8,8 +8,8 @@
       = f.label :details, class: "control-label max_width"
       .text-right
         | Use
-        code @[Character Name]
-        | to reference characters you have created
+        code @[concept Name]
+        | to reference concepts you have created
     .col-sm-10
       = f.text_area :details, class: "form-control tinymce", id: "event_details_#{@event.id ? @event.id : "new"}"
   -if @world.is_absolute

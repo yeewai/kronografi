@@ -18,15 +18,15 @@ module EventsHelper
   end
   
   def generate_link_for(char)
-    unless c = @world.characters.where('lower(name) = ?', char.downcase).first
+    unless c = @world.concepts.where('lower(name) = ?', char.downcase).first
       n = @world.aliases.where('lower(name) = ?', char.downcase).first
-      c = n.character if n
+      c = n.concept if n
     end
     
     if c
-      link_to char, world_character_path(@world, c), class: "valid"
+      link_to char, world_concept_path(@world, c), class: "valid"
     else
-      link_to_if can_do("write", @world), char, new_world_character_path(@world, name: char), class: "invalid"
+      link_to_if can_do("write", @world), char, new_world_concept_path(@world, name: char), class: "invalid"
     end
   end
   

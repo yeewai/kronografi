@@ -4,14 +4,14 @@ class AliasesController < ApplicationController
   def match
     #@world = World.find_by_token(params[:world_id])
     
-    char = Character.find_by_id params[:id]
+    char = Concept.find_by_id params[:id]
     bad_names = []
     names = params[:val]
   
     names.squish.split(",").each do |name|
-      unless c = @world.characters.find_by_name(name.squish)
+      unless c = @world.concepts.find_by_name(name.squish)
         n = @world.aliases.find_by_name(name.squish)
-        c = n.character if n
+        c = n.concept if n
       end
     
       if c && char != c
@@ -28,8 +28,8 @@ class AliasesController < ApplicationController
   
   def edit
     if params[:what] == "name"
-      @character = @world.characters.find params[:id]
-      render "character_name", layout: false
+      @concept = @world.concepts.find params[:id]
+      render "concept_name", layout: false
     elsif params[:what] == "edit"
       @alias = @world.aliases.find params[:id]
       render layout: false
@@ -39,8 +39,8 @@ class AliasesController < ApplicationController
     end
   end
   
-  # PATCH/PUT /characters/1
-  # PATCH/PUT /characters/1.json
+  # PATCH/PUT /concepts/1
+  # PATCH/PUT /concepts/1.json
   def update
     respond_to do |format|
       old_name = @alias.name if params[:persist]
@@ -48,7 +48,7 @@ class AliasesController < ApplicationController
       if @alias.update(alias_params)
         Event.change_names(@world, old_name, @alias.name) if params[:persist]
         
-        format.html { redirect_to world_character_path(@world, @alias.character), notice: 'Name was successfully updated.' }
+        format.html { redirect_to world_concept_path(@world, @alias.concept), notice: 'Name was successfully updated.' }
         format.json { render :show, status: :ok, location: @alias }
         #format.js{}
       else
@@ -59,10 +59,10 @@ class AliasesController < ApplicationController
   end
   
   def destroy
-    Event.change_names(@world, @alias.name, @alias.character.name) if params[:persist]
+    Event.change_names(@world, @alias.name, @alias.concept.name) if params[:persist]
     @alias.destroy
     respond_to do |format|
-      format.html { redirect_to world_character_path(@world, @alias.character), notice: 'Nickname was successfully removed.' }
+      format.html { redirect_to world_concept_path(@world, @alias.concept), notice: 'Nickname was successfully removed.' }
       format.json { head :no_content }
     end
   end
@@ -75,6 +75,6 @@ class AliasesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def alias_params
-      params.require(:alias).permit(:name, :character_id)
+      params.require(:alias).permit(:name, :concept_id)
     end
 end

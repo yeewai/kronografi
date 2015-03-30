@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   has_many :rulings
   has_many :worlds, through: :rulings
   has_many :createdworlds, class_name: "World", foreign_key: "user_id"
-  has_many :characters
+  has_many :concepts
   has_many :events
   
   has_attached_file :avatar, :default_url => "/images/avatar.png"

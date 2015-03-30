@@ -13,7 +13,7 @@
           .form-group
             =number_field :year, :as, class: "form-control col-sm-2"
           =submit_tag "Set", class: "btn btn-primary"
-        =link_to "&#9654; Use Character Ages".html_safe, "#char_age_list", data: {toggle: "collapse"}
+        =link_to "&#9654; Use concept Ages".html_safe, "#char_age_list", data: {toggle: "collapse"}
         ul.collapse.list-group#char_age_list data-start==(@start_event.happened_on.year if @start_event.happened_on)
-          -@world.characters.where.not(age: nil).each do |c|
+          -@world.concepts.where.not(age: nil).each do |c|
             li.list-group-item=link_to "#{c.name} (#{c.age})", "#", data: {age: c.age}

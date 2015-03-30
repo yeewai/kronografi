@@ -1,4 +1,4 @@
-.panel.panel-default.event id=="e_#{e.id}" data-id==e.id class=="#{("panel-primary start_story" if e.kind == "start")} #{("panel-info milestone" if e.kind == "milestone")}" data-tags==e.tags.map(&:slug).join(" ") data-chars==e.characters.map(&:slug).join(" ")
+.panel.panel-default.event id=="e_#{e.id}" data-id==e.id class=="#{("panel-primary start_story" if e.kind == "start")} #{("panel-info milestone" if e.kind == "milestone")}" data-tags==e.tags.map(&:slug).join(" ") data-chars==e.concepts.map(&:slug).join(" ")
   .panel-heading 
     =replace_chars(e.summary).html_safe
     -unless e.kind == "start"
@@ -14,8 +14,8 @@
         small.when=format_date(e.happened_on) if @world.is_absolute
       .char_list
         | Characters: 
-        -e.characters.each do |c|
-          =link_to c.name, world_character_path(@world, c)
+        -e.concepts.each do |c|
+          =link_to c.name, world_concept_path(@world, c)
   -unless e.kind == "start"
     .panel-body.collapse.in.event_content id=="ebody_#{e.id}" 
       =replace_chars(e.details).html_safe

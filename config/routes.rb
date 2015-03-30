@@ -17,9 +17,9 @@ Rails.application.routes.draw do
     resources :aliases, except: ["show", "edit", "new", "create"]
     get 'aliases/edit/:id/:what' => 'aliases#edit', as: "edit_aliases"
     
-    get 'characters/show_info/:id/(:version)' => 'characters#show_info', as: 'show_character_info'
-    get "characters/show_deleted"
-    resources :characters
+    get 'concepts/show_info/:id/(:version)' => 'concepts#show_info', as: 'show_concept_info'
+    get "concepts/show_deleted"
+    resources :concepts
     get 'tags/index'
     
     post "events/update_happened"

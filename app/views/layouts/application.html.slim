@@ -52,7 +52,7 @@ html lang="en"
                     = link_to "Timeline", world_events_path(@world, start.happened_on.year)
                   -else
                     = link_to "Timeline", world_events_path(@world)
-                li= link_to "Characters", world_characters_path(@world)
+                li= link_to "Concepts", world_concepts_path(@world)
 
             ul.nav.navbar-nav.navbar-right
               li=link_to "Site Status", "https://twitter.com/kronografiApp"

@@ -1,14 +1,14 @@
-= form_for [@world, @character], html: {class: "form-horizontal"} do |f|    
+= form_for [@world, @concept], html: {class: "form-horizontal"} do |f|    
   .form-group
     = f.label :name, class: "col-sm-2 control-label"
     .col-sm-10
-      = f.text_field :name, class: "form-control", data: {validate: "presence remote", remote_url: world_aliases_path(@world), id: @character.id}
+      = f.text_field :name, class: "form-control", data: {validate: "presence remote", remote_url: world_aliases_path(@world), id: @concept.id}
   .form-group
     .col-md-offset-2.col-sm-10
       .checkbox
         label
           =check_box_tag "persist", 1, true
-          | Change this character's name in all events too
+          | Change this concept's name in all events too
   .form-group
     .col-md-offset-2.col-sm-10
       = f.submit 'Save', class: "btn btn-primary"

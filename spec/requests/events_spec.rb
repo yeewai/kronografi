@@ -176,12 +176,12 @@ describe "Events Index", :js => true do
     end
     
     it "changes display years relatively" do
-      @char = create :character, world: @world, age: 20
+      @char = create :concept, world: @world, age: 20
       visit world_events_path(@world)
       
       click_on "2009"
       within "#year_display" do
-        click_on "Use Character Ages"
+        click_on "Use concept Ages"
         click_on "#{@char.name} (#{@char.age})"
         click_on "Set"
       end
@@ -268,7 +268,7 @@ describe "Events Index", :js => true do
     end
     
     it "wysiwig editor"
-    it "parses text for characters (waaaaaay later)"
+    it "parses text for concepts (waaaaaay later)"
   end
   
   describe "editing an event" do

@@ -1,20 +1,20 @@
-= form_for [@world, @character], html: {class: "form-horizontal"} do |f|
-  -if @character.errors.any?
+= form_for [@world, @concept], html: {class: "form-horizontal"} do |f|
+  -if @concept.errors.any?
     #error_explanation
-      h2 = "#{pluralize(@character.errors.count, "error")} prohibited this character from being saved:"
+      h2 = "#{pluralize(@concept.errors.count, "error")} prohibited this concept from being saved:"
       ul
-        - @character.errors.full_messages.each do |msg|
+        - @concept.errors.full_messages.each do |msg|
           li= msg
           
-  -if @character.new_record?        
+  -if @concept.new_record?        
     .form-group
       = f.label :name, class: "col-sm-2 control-label"
       .col-sm-10
-        = f.text_field :name, class: "form-control", data: {validate: "presence remote", remote_url: world_aliases_path(@world), id: @character.id}
+        = f.text_field :name, class: "form-control", data: {validate: "presence remote", remote_url: world_aliases_path(@world), id: @concept.id}
     .form-group
       = f.label :nicknames, class: "col-sm-2 control-label"
       .col-sm-10
-        = f.text_field :nicknames, class: "form-control", placeholder: "Comma separated list of names. Include their first name (if you refer to them by it)", data: {validate: "remote", remote_url: world_aliases_path(@world), id: @character.id}
+        = f.text_field :nicknames, class: "form-control", placeholder: "Comma separated list of names. Include their first name (if you refer to them by it)", data: {validate: "remote", remote_url: world_aliases_path(@world), id: @concept.id}
   .form-group
     = f.label :age, class: "col-sm-2 control-label"
     .col-sm-1
@@ -22,7 +22,7 @@
   .form-group
     = f.label :avatar, class: "col-sm-2 control-label"
     .col-sm-10
-      =image_tag @character.avatar
+      =image_tag @concept.avatar
       = f.file_field :avatar
   .form-group
     = f.label :description, class: "col-sm-2 control-label"

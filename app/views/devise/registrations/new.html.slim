@@ -7,14 +7,14 @@ h2 Sign up
     = f.label :email, class: "col-sm-2 control-label"
     .col-sm-4
       = f.email_field :email, autofocus: true, class: "form-control"
-      /, data: {validate: "presence remote", remote_url: world_aliases_path(@world), id: @character.id}
+      /, data: {validate: "presence remote", remote_url: world_aliases_path(@world), id: @concept.id}
   .form-group
     = f.label :password, class: "col-sm-2 control-label"
     -if @validatable
       em
         | (
         = @minimum_password_length
-        |  characters minimum)
+        |  concepts minimum)
     .col-sm-4
       = f.password_field :password, autocomplete: "off", class: "form-control"
   .form-group

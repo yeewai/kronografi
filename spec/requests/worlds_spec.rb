@@ -94,17 +94,17 @@ describe "Worlds" do
       end
     end
     
-    describe "characters" do
+    describe "Characters" do
       before :each do
-        @c1 = create_list :character, 3, world: @w1
-        @c2 = create_list :character, 3, world: @w2
+        @c1 = create_list :concept, 3, world: @w1
+        @c2 = create_list :concept, 3, world: @w2
         visit worlds_path
         within "#w_#{@w2.token}" do
           click_on "Show"
         end
       end
       
-      it "shows characters only in that world" do
+      it "shows concepts only in that world" do
         within "#sidenav" do
           click_on "Characters"
         end
@@ -116,7 +116,7 @@ describe "Worlds" do
         end
       end
       
-      it "parses for only characters in that world" do
+      it "parses for only concepts in that world" do
         e = create :event, details: "@[#{@c1.first.name}] @[#{@c2.first.name}]", world: @w2
         visit worlds_path
         within "#w_#{@w2.token}" do
@@ -130,7 +130,7 @@ describe "Worlds" do
         click_on @c1.first.name
           #end
         save_screenshot("/Users/yeeeeeeeee/Documents/plotter_uhhhhh.png", full: true)
-        expect(page).to have_content "New character"
+        expect(page).to have_content "New concept"
       end
     end
     
@@ -213,11 +213,11 @@ describe "Worlds" do
       end
     end
     
-    it "does not let unpermitted users to edit character" do
+    it "does not let unpermitted users to edit concept" do
       world = create :world
       ruling = create :ruling, world: world, user: @user, role: "view"
-      char = create :character, world: world
-      visit edit_world_character_path(world,char)
+      char = create :concept, world: world
+      visit edit_world_concept_path(world,char)
       expect(page).to have_content "Sorry. You don't have permission to do that."
     end
     

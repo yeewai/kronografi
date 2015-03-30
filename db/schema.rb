@@ -11,20 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150210230100) do
+ActiveRecord::Schema.define(version: 20150330210707) do
 
   create_table "aliases", force: :cascade do |t|
     t.string   "name"
-    t.integer  "character_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.integer  "world_id",     default: 1, null: false
+    t.integer  "concept_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "world_id",   default: 1, null: false
   end
 
-  add_index "aliases", ["character_id"], name: "index_aliases_on_character_id"
+  add_index "aliases", ["concept_id"], name: "index_aliases_on_concept_id"
   add_index "aliases", ["world_id"], name: "index_aliases_on_world_id"
 
-  create_table "characters", force: :cascade do |t|
+  create_table "concepts", force: :cascade do |t|
     t.string   "name"
     t.string   "slug"
     t.text     "description"
@@ -39,15 +39,15 @@ ActiveRecord::Schema.define(version: 20150210230100) do
     t.integer  "user_id"
   end
 
-  add_index "characters", ["world_id"], name: "index_characters_on_world_id"
+  add_index "concepts", ["world_id"], name: "index_concepts_on_world_id"
 
-  create_table "characters_events", id: false, force: :cascade do |t|
-    t.integer "character_id"
+  create_table "concepts_events", id: false, force: :cascade do |t|
+    t.integer "concept_id"
     t.integer "event_id"
   end
 
-  add_index "characters_events", ["character_id"], name: "index_characters_events_on_character_id"
-  add_index "characters_events", ["event_id"], name: "index_characters_events_on_event_id"
+  add_index "concepts_events", ["concept_id"], name: "index_concepts_events_on_concept_id"
+  add_index "concepts_events", ["event_id"], name: "index_concepts_events_on_event_id"
 
   create_table "events", force: :cascade do |t|
     t.text     "summary"

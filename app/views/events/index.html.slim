@@ -25,7 +25,7 @@
         li
           =link_to "&#9654; Characters".html_safe, "#char_list", data: {toggle: "collapse"}
           form.collapse.filter_list#char_list
-            -@characters.each do |char|
+            -@concepts.each do |char|
               .checkbox
                 label
                   =check_box_tag char.name, 1, false, data: {slug: char.slug}

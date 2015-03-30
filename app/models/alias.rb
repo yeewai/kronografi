@@ -1,5 +1,5 @@
 class Alias < ActiveRecord::Base
-  belongs_to :character
+  belongs_to :concept
   belongs_to :world
   
   after_save :link_events
@@ -7,6 +7,6 @@ class Alias < ActiveRecord::Base
   private
   def link_events
     Event.where("summary like ? OR details like ?", "%@[#{self.name}]%", "%@[#{self.name}]%").each(&:save!)
-    self.character.events.each(&:save!) if self.character
+    self.concept.events.each(&:save!) if self.concept
   end
 end

@@ -97,10 +97,10 @@ describe "Tagging Events", :js => true do
       end
     end
     
-    describe "characters" do
+    describe "concepts" do
       before :each do
-        @c1 = create :character, world: @world
-        @c2 = create :character, world: @world
+        @c1 = create :concept, world: @world
+        @c2 = create :concept, world: @world
         @e1 = create :event, details: "@[#{@c1.name}]", world: @world
         @e2 = create :event, details: "@[#{@c2.name}]", world: @world
         @e12 = create :event, details: "@[#{@c1.name}] @[#{@c2.name}]", world: @world
@@ -117,7 +117,7 @@ describe "Tagging Events", :js => true do
         expect(page).to_not have_content @e2.summary
       end
     
-      it "shows events of any of multiple character" do
+      it "shows events of any of multiple concept" do
         within "#sidenav" do
           click_on "Characters"
           check @c1.name
@@ -132,7 +132,7 @@ describe "Tagging Events", :js => true do
         end
       end
     
-      it "shows all events if no character selected" do
+      it "shows all events if no concept selected" do
         within "#sidenav" do
           click_on "Characters"
           check @c1.name

@@ -1,0 +1,21 @@
+=content_for(:title, "concepts (#{@world.name}) | #{app_name}")
+h1 
+  | Listing concepts
+  = link_to 'New concept', new_world_concept_path(@world), class: "btn btn-primary pull-right"
+
+ul.char_list.list-group
+  -@concepts.each do |char|
+    ==render 'char_index_li', char: char
+
+=link_to "See Deleted concepts", "#", class: "btn btn-default", data: {toggle: "modal", target: "#deleted_chars", remote_url: world_concepts_show_deleted_path(@world)}
+hr
+==render "ads/show_leader"
+
+.modal.fade#deleted_chars
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+        h4.modal-title ="Deleted concepts"
+      .modal-body

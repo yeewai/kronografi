@@ -18,8 +18,8 @@ h2 Help > Getting Started
         li =link_to "Milestones", "#milestones"
         li =link_to "Editing Date", "#date"
         li =link_to "Timeline Years", "#timelines"
-        li.nav-header =link_to "Characters", "#characters"
-        li =link_to "Creating Characters", "#createcharacters"
+        li.nav-header =link_to "concepts", "#concepts"
+        li =link_to "Creating concepts", "#createconcepts"
         li =link_to "Creating Nicknames", "#createnames"
         li =link_to "Editing Nicknames", "#editnames"
         li.nav-header =link_to "Versioning", "#versioning"
@@ -28,7 +28,7 @@ h2 Help > Getting Started
   .col-md-8#spied 
     .topic#worlds
       h3 Worlds
-      p Each story takes place in a world, and so the container for all your characters and plots is the world. 
+      p Each story takes place in a world, and so the container for all your concepts and plots is the world. 
     .topic#createworld
       h4 Creating Worlds
       =image_tag "help/01-newworld.png", :class=>"img-thumbnail", :data=>{:caption=>"Clicking the new world button"}
@@ -40,18 +40,18 @@ h2 Help > Getting Started
       
     .topic#events
       h3 Events
-      p Events in the world lead way to the plot of the story and the development of the characters. Backstory, plot twists, epilogue bits that never quite make it into the story--it's all good. 
+      p Events in the world lead way to the plot of the story and the development of the concepts. Backstory, plot twists, epilogue bits that never quite make it into the story--it's all good. 
     .topic#createevents
       h4 Creating Events
       =image_tag "help/10-newevent.png", :class=>"img-thumbnail", :data=>{:caption=>"Clicking a slot on the timeline to create an event."}
       p There are two ways to create an event, you can click the "New Event" button in the side panel, or click directly on the timeline where you want the event to go (as shown above). 
       =image_tag "help/11-eventmodal.png", :class=>"img-thumbnail", :data=>{:caption=>"Filling out the details of an event."}
       p 
-        | Characters can be referenced in events by wrapping their name in 
-        code @[Character Name]
-        | like above. It doesn't matter if the character exists or not yet on Kronografi. 
+        | concepts can be referenced in events by wrapping their name in 
+        code @[concept Name]
+        | like above. It doesn't matter if the concept exists or not yet on Kronografi. 
       =image_tag "help/12-firstevent.png", :class=>"img-thumbnail", :data=>{:caption=>"The first even added to this timeline."}
-      p After clicking save, the event will show up on the timeline, and all the characters will be highlighted. Red characters are characters that don't yet exist in Kronografi, and blue are ones that do. 
+      p After clicking save, the event will show up on the timeline, and all the concepts will be highlighted. Red concepts are concepts that don't yet exist in Kronografi, and blue are ones that do. 
       
     .topic#milestones
       h4 Milestones
@@ -70,56 +70,56 @@ h2 Help > Getting Started
     .topic#timelines
       h4 Timeline Years
       =image_tag "help/50-displayyear.png", :class=>"img-thumbnail", :data=>{:caption=>"Clicking on a year to change it temporarily."}
-      p The years on the timeline can be changed temporarily for quick references (like checking how old a character is when the even happens). You can do so by clicking on the year you want to change. 
-      =image_tag "help/51-setyear.png", :class=>"img-thumbnail", :data=>{:caption=>"Clicking a character to set the year to their age."}
-      p You can put it in a number or click on a character to set it to their age at that year. 
+      p The years on the timeline can be changed temporarily for quick references (like checking how old a concept is when the even happens). You can do so by clicking on the year you want to change. 
+      =image_tag "help/51-setyear.png", :class=>"img-thumbnail", :data=>{:caption=>"Clicking a concept to set the year to their age."}
+      p You can put it in a number or click on a concept to set it to their age at that year. 
       =image_tag "help/52-displayyearchanged.png", :class=>"img-thumbnail", :data=>{:caption=>"All the years have changed accordingly."}
       p All the years have been changed temporarily, and the in story year is displayed underneath. 
       
-    .topic#characters
-      h3 Characters
-      =image_tag "help/30-characterindex.png", :class=>"img-thumbnail", :data=>{:caption=>"Filling out the form for a new character."}
-      p No story is complete without characters, and so too is your timeline not complete without them. 
-    .topic#createcharacters
-      h4 Creating Characters
-      =image_tag "help/20-newcharacter.png", :class=>"img-thumbnail", :data=>{:caption=>"Clicking a red name in the timeline to create that character."}
-      p Characters can be created by going into the Characters page of the world, or clicking on a red name in the timeline. Red names correspond to characters that haven't been created yet, and blue names correspond to those who have been. 
-      =image_tag "help/21-charform.png", :class=>"img-thumbnail", :data=>{:caption=>"Filling out the form for a new character."}
+    .topic#concepts
+      h3 concepts
+      =image_tag "help/30-conceptindex.png", :class=>"img-thumbnail", :data=>{:caption=>"Filling out the form for a new concept."}
+      p No story is complete without concepts, and so too is your timeline not complete without them. 
+    .topic#createconcepts
+      h4 Creating concepts
+      =image_tag "help/20-newconcept.png", :class=>"img-thumbnail", :data=>{:caption=>"Clicking a red name in the timeline to create that concept."}
+      p concepts can be created by going into the concepts page of the world, or clicking on a red name in the timeline. Red names correspond to concepts that haven't been created yet, and blue names correspond to those who have been. 
+      =image_tag "help/21-charform.png", :class=>"img-thumbnail", :data=>{:caption=>"Filling out the form for a new concept."}
       p 
-        | Fill out the form like you would any other. You can also reference characters using 
-        code @[Character Name]
+        | Fill out the form like you would any other. You can also reference concepts using 
+        code @[concept Name]
         | (not that I myself remembered to do it here, oops).
-      =image_tag "help/22-createdchar.png", :class=>"img-thumbnail", :data=>{:caption=>"Character that has been created."}
-      p The character has been created, and any event that references them is automatically added to their biography. 
-      =image_tag "help/23-linkedevents.png", :class=>"img-thumbnail", :data=>{:caption=>"Event listing of characters."}
-      p Events that reference created characters will list them in blue as shown above and also list them under Characters. 
+      =image_tag "help/22-createdchar.png", :class=>"img-thumbnail", :data=>{:caption=>"concept that has been created."}
+      p The concept has been created, and any event that references them is automatically added to their biography. 
+      =image_tag "help/23-linkedevents.png", :class=>"img-thumbnail", :data=>{:caption=>"Event listing of concepts."}
+      p Events that reference created concepts will list them in blue as shown above and also list them under concepts. 
       
     .topic#createnames
       h4 Creating Nicknames
-      =image_tag "help/60-nicknames.png", :class=>"img-thumbnail", :data=>{:caption=>"An event bearing a nickname for a character instead of the character's name."}
-      p Nicknames can be useful if your characters are referenced by multiple names throughout the story. 
-      =image_tag "help/61-addnickname.png", :class=>"img-thumbnail", :data=>{:caption=>"Clicking the add nickname button on the character profile page."}
-      p Nicknames can be added in as you create the character or after you've created them. 
+      =image_tag "help/60-nicknames.png", :class=>"img-thumbnail", :data=>{:caption=>"An event bearing a nickname for a concept instead of the concept's name."}
+      p Nicknames can be useful if your concepts are referenced by multiple names throughout the story. 
+      =image_tag "help/61-addnickname.png", :class=>"img-thumbnail", :data=>{:caption=>"Clicking the add nickname button on the concept profile page."}
+      p Nicknames can be added in as you create the concept or after you've created them. 
       =image_tag "help/62-setnames.png", :class=>"img-thumbnail", :data=>{:caption=>"Adding in multiple names."}
-      p Names have to be unique to the world. No two characters can share the same name.
+      p Names have to be unique to the world. No two concepts can share the same name.
       =image_tag "help/63-namesadded.png", :class=>"img-thumbnail", :data=>{:caption=>"The nicknames have been added, and events are linked accordingly."}
-      p Events that reference a character by their nickname will now list them by their regular name under Characters. 
+      p Events that reference a concept by their nickname will now list them by their regular name under concepts. 
       
     .topic#editnames
       h4 Editing Nicknames
       =image_tag "help/64-editaliasbutton.png", :class=>"img-thumbnail", :data=>{:caption=>"Clicking edit on a nickname."}
-      p Nicknames (and character names) can be edited.
+      p Nicknames (and concept names) can be edited.
       =image_tag "help/65-editalias.png", :class=>"img-thumbnail", :data=>{:caption=>"Form for editing a name."}
-      p The checkbox dictates whether all events that reference this specific name will be changed to reflect the new name as well or not. Unchecking it may unlink the character from the event. 
-      =image_tag "help/66-namechanged.png", :class=>"img-thumbnail", :data=>{:caption=>"A character's changed name shows up in the events. "}
+      p The checkbox dictates whether all events that reference this specific name will be changed to reflect the new name as well or not. Unchecking it may unlink the concept from the event. 
+      =image_tag "help/66-namechanged.png", :class=>"img-thumbnail", :data=>{:caption=>"A concept's changed name shows up in the events. "}
       p Here you can see the names in the events changed accordingly to the nickname change. 
       
     .topic#versioning
       h3 Versioning
-      =image_tag "help/40-versioning.png", :class=>"img-thumbnail", :data=>{:caption=>"An undesirable edit to a character's description."}
+      =image_tag "help/40-versioning.png", :class=>"img-thumbnail", :data=>{:caption=>"An undesirable edit to a concept's description."}
       p 
-        | Sometimes, we make changes to a character or event that we don't like and want to undo. Good thing Kronografi keeps track of the last few edits you make to them. 
+        | Sometimes, we make changes to a concept or event that we don't like and want to undo. Good thing Kronografi keeps track of the last few edits you make to them. 
         strong Kronografi only tracks the last 10 edits you've made. 
         | Anything farther back than that will get deleted. 
       =image_tag "help/41-reverting.png", :class=>"img-thumbnail", :data=>{:caption=>"Reverting a change."}
-      p Changes can be navigated by the bar at the bottom of a character's description or event description. Changes to a character's description, age, and name is tracked, but not their nicknames. Deleted characters and events and also be retrieved. 
+      p Changes can be navigated by the bar at the bottom of a concept's description or event description. Changes to a concept's description, age, and name is tracked, but not their nicknames. Deleted concepts and events and also be retrieved. 

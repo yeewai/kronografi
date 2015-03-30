@@ -2,7 +2,7 @@ class World < ActiveRecord::Base
   belongs_to :user, class_name: "User"
   has_many :rulings
   has_many :users, through: :rulings
-  has_many :characters
+  has_many :concepts
   has_many :aliases
   has_many :events
   has_many :tags

@@ -1,4 +1,4 @@
-class Character < ActiveRecord::Base
+class Concept < ActiveRecord::Base
   belongs_to :world
   belongs_to :user
   has_many :aliases, :dependent => :delete_all
@@ -27,7 +27,7 @@ class Character < ActiveRecord::Base
   end
   
   def self.destroyed_models(world)
-    chars = PaperTrail::Version.where(event: "destroy", item_type: "Character").where("object LIKE ?", "%world_id: #{world.id}%")
+    chars = PaperTrail::Version.where(event: "destroy", item_type: "Concept").where("object LIKE ?", "%world_id: #{world.id}%")
     chars.map(&:reify).reverse if chars.any?
   end
   

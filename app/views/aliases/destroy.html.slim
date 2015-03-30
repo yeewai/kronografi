@@ -2,7 +2,7 @@
   .checkbox
     label
       =check_box_tag "persist", 1, true
-      ="Change this character's name to #{@alias.character.name} in all events"
+      ="Change this concept's name to #{@alias.concept.name} in all events"
   .form-group
     .col-md-offset-2.col-sm-10
       = f.submit 'Remove nickname', class: "btn btn-danger"

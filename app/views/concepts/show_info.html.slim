@@ -1,0 +1,48 @@
+#show_info
+  h1#char_name 
+    span.name=@concept.name
+    |   
+    =link_to "Change Name", "#", data: {toggle: "modal", target: "#edit_name_modal", e_url: world_edit_aliases_path(@world, @concept, "name")}, class: "btn btn-default btn-xs" if can_do("write", @world)
+
+  hr
+  = link_to 'Edit Info', edit_world_concept_path(@world, @concept), class: "btn btn-default btn-xs pull-right" if can_do("write", @world)
+  .row
+    .col-sm-3
+      =image_tag @concept.avatar, class: "img-responsive"
+      table.table
+        tr
+          td Nicknames
+          td
+            ul.nicknames
+              -@concept.aliases.each do |a|
+                li id=="a_#{a.id}"
+                  = a.name
+                  -if can_do("write", @world)
+                    br
+                    small
+                      =link_to "Edit ", "#", data: {toggle: "modal", target: "#edit_name_modal", action: "Editing ", e_url: world_edit_aliases_path(@world, a, "edit")}
+                      =link_to "Remove", "#", data: {toggle: "modal", target: "#edit_name_modal", action: "Removing ", e_url: world_edit_aliases_path(@world, a, "remove")}
+              li=link_to "+ Add nickname(s)", "#", data: {toggle: "modal", target: "#new_name_modal"}, class: "btn btn-default btn-sm" if can_do("write", @world)
+        tr
+          td Age
+          td=@concept.age
+    .col-sm-9.concept_descriptions
+      ==replace_chars(@concept.description).html_safe
+  .row    
+    .versions
+      ul.nav.nav-pills
+        li=link_to "<<", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_concept_info_path(@world, @concept, @concept.versions.first.index), replace: '#show_info'} if @concept.previous_version && !is_destroyed(@concept)
+        li=link_to "<", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_concept_info_path(@world, @concept, @concept.previous_version.version.index), replace: '#show_info'} if @concept.previous_version && !is_destroyed(@concept)
+        -if @concept.live? 
+          li.disabled=link_to "Current Version", "#", class: "disabled"
+        -else
+          li
+            =form_tag world_events_revert_path(@world), method: "post", remote: true do 
+              =hidden_field_tag :version, @concept.version.id
+              -if is_destroyed(@concept)
+                =submit_tag "Restore this version", class: "btn btn-link"
+              -else
+                =submit_tag "Revert to this version", class: "btn btn-link"
+              /=link_to("Revert to this version", "#")
+        li=link_to ">", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_concept_info_path(@world, @concept, (@concept.next_version.version.index unless @concept.next_version.live?)), replace: '#show_info'} if @concept.next_version && !is_destroyed(@concept)
+        li=link_to ">>", 'javascript:void(0)', data: {remote_replace: true, remote_url: world_show_concept_info_path(@world, @concept), replace: '#show_info'} if @concept.next_version && !is_destroyed(@concept)

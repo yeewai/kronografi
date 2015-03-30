@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :character do
+  factory :concept do
     world
     name {generate(:random_string)}
     description {generate(:random_string)}

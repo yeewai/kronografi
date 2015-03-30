@@ -2,7 +2,7 @@ class Event < ActiveRecord::Base
   belongs_to :world
   belongs_to :user
   has_and_belongs_to_many :tags
-  has_and_belongs_to_many :characters
+  has_and_belongs_to_many :concepts
   before_save :cache_data
   
   has_paper_trail :on => [:update, :destroy]
@@ -58,13 +58,13 @@ class Event < ActiveRecord::Base
     self.happened_key = Event.generate_key(happened_on.year, happened_on.month)
     
     if summary && details
-      self.characters.clear
+      self.concepts.clear
       (summary.scan(CHAR_PATTERN) + details.scan(CHAR_PATTERN)).flatten.each do |name|
-        unless char = self.world.characters.where('lower(name) = ?', name.downcase).first
+        unless char = self.world.concepts.where('lower(name) = ?', name.downcase).first
           n = self.world.aliases.where('lower(name) = ?', name.downcase).first
-          char = n.character if n
+          char = n.concept if n
         end
-        self.characters << char if char && !self.characters.include?(char)
+        self.concepts << char if char && !self.concepts.include?(char)
       end
     end
   end

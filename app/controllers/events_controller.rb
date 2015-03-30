@@ -10,13 +10,13 @@ class EventsController < ApplicationController
     @start_event = @world.events.find_or_initialize_by summary: "Story Starts"
     @event = Event.new
     @tags = @world.tags
-    @characters = @world.characters
+    @concepts = @world.concepts
     @year = params[:this_year]
   end
   
   def years
     @start_event = @world.events.find_by_kind "start"
-    @events = @world.events.all.order(:happened_on).includes(:tags, :characters).group_by(&:happened_key)
+    @events = @world.events.all.order(:happened_on).includes(:tags, :concepts).group_by(&:happened_key)
     if params[:start_year] && params[:end_year]
       @year_range = params[:start_year].to_i..params[:end_year].to_i
     elsif @start_event
@@ -35,10 +35,10 @@ class EventsController < ApplicationController
     @year = params[:year].to_i
     if Rails.env.production?
       #For PG
-      @events = @world.events.where('extract(year from happened_on) = ?', @year.to_s).order(:happened_on).includes(:tags, :characters).group_by{|e| e.happened_on.month}
+      @events = @world.events.where('extract(year from happened_on) = ?', @year.to_s).order(:happened_on).includes(:tags, :concepts).group_by{|e| e.happened_on.month}
     else
       #for sqlite
-      @events = @world.events.where("strftime('%Y', happened_on)= ?", @year.to_s).order(:happened_on).includes(:tags, :characters).group_by{|e| e.happened_on.month}
+      @events = @world.events.where("strftime('%Y', happened_on)= ?", @year.to_s).order(:happened_on).includes(:tags, :concepts).group_by{|e| e.happened_on.month}
     end
     render layout: false
   end
@@ -48,10 +48,10 @@ class EventsController < ApplicationController
       @world.events.create summary: "Story Starts", happened_on: Date.today(), kind: "start"
     end
     
-    if params[:character] && @character = Character.find_by_id( params[:character])
-      @events = (@character.events.includes(:tags, :characters) + @world.events.where(kind: ["milestone", "start"]).includes(:tags, :characters)).uniq
+    if params[:concept] && @concept = Concept.find_by_id( params[:concept])
+      @events = (@concept.events.includes(:tags, :concepts) + @world.events.where(kind: ["milestone", "start"]).includes(:tags, :concepts)).uniq
     else
-      @events = @world.events.includes(:tags, :characters)
+      @events = @world.events.includes(:tags, :concepts)
     end
       
     @events = @events.sort_by(&:happened_on)
@@ -131,7 +131,7 @@ class EventsController < ApplicationController
   def revert
     version = PaperTrail::Version.find(params[:version].to_i)
     reified = version.reify
-    name_is_changed = ((version.item_type == "Character") && reified.name_changed? && (version.event != "destroy"))
+    name_is_changed = ((version.item_type == "Concept") && reified.name_changed? && (version.event != "destroy"))
     respond_to do |format|
       if reified.save
         if name_is_changed
@@ -141,7 +141,7 @@ class EventsController < ApplicationController
         version.delete
         format.js {render "create"}
         format.html {
-          redirect_to world_characters_path(@world) if version.item_type == "Character"
+          redirect_to world_concepts_path(@world) if version.item_type == "Concept"
         }
       end
     end

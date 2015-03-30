@@ -1,20 +1,20 @@
-=content_for(:title, "#{@character.name} (#{@world.name}) | #{app_name}")
+=content_for(:title, "#{@concept.name} (#{@world.name}) | #{app_name}")
 p#notice = notice
 
-= content_tag "div", "", data: {remote_load: true, remote_url: world_show_character_info_path(@world, @character.id)}
+= content_tag "div", "", data: {remote_load: true, remote_url: world_show_concept_info_path(@world, @concept.id)}
 
 .row
   h2 
     | Biography 
     =link_to "Expand All Events", "#", id: "expand_event_button", class: "btn btn-default btn-sm pull-right"
     =link_to "Collapse All Events", "#", id: "collapse_event_button", class: "btn btn-default btn-sm pull-right"
-  = content_tag "div", "", class: "years", id: "events_relative", data: {remote_load: true, remote_url: world_events_relative_path(@world, character: @character.id), update_happened: world_events_update_happened_path(@world)}
+  = content_tag "div", "", class: "years", id: "events_relative", data: {remote_load: true, remote_url: world_events_relative_path(@world, concept: @concept.id), update_happened: world_events_update_happened_path(@world)}
   /-@events.sort_by(&:happened_on).each do |e|
   /  ==render "events/event_panel", e: e
 
 hr
 .row
-  =link_to "Delete Character", "#", data: {toggle: "modal", target: "#destroy_char_modal"}, class: "btn btn-danger btn-sm pull-right" if can_do("write", @world)
+  =link_to "Delete concept", "#", data: {toggle: "modal", target: "#destroy_char_modal"}, class: "btn btn-danger btn-sm pull-right" if can_do("write", @world)
 hr
 ==render "ads/show_leader"
 
@@ -40,11 +40,11 @@ hr
             span aria-hidden="true" &times;
           h4.modal-title Adding Nickname(s)
         .modal-body
-          = form_for [@world, @character], html: {class: "form-horizontal"} do |f|
+          = form_for [@world, @concept], html: {class: "form-horizontal"} do |f|
             .form-group
               = f.label :nicknames, class: "col-sm-2 control-label"
               .col-sm-10
-                = f.text_field :nicknames, class: "form-control", placeholder: "Comma separated list of names.", data: {validate: "remote", remote_url: world_aliases_path(@world), id: @character.id}
+                = f.text_field :nicknames, class: "form-control", placeholder: "Comma separated list of names.", data: {validate: "remote", remote_url: world_aliases_path(@world), id: @concept.id}
             .form-group
               .col-md-offset-2.col-sm-10
                 = f.submit 'Add nickname(s)', class: "btn btn-primary"
@@ -56,19 +56,19 @@ hr
         .modal-header
           button type="button" class="close" data-dismiss="modal" aria-label="Close"
             span aria-hidden="true" &times;
-          h4.modal-title ="You sure you want to delete #{@character.name}"
+          h4.modal-title ="You sure you want to delete #{@concept.name}"
         .modal-body
-          = form_for [@world, @character], html: {class: "form-horizontal"}, method: "delete" do |f|
+          = form_for [@world, @concept], html: {class: "form-horizontal"}, method: "delete" do |f|
             .checkbox
               label
                 =check_box_tag "persist", 1, true
-                ="Change this character's nicknames in events to #{@character.name} before deleting"
+                ="Change this concept's nicknames in events to #{@concept.name} before deleting"
             .checkbox
               label
                 =check_box_tag "confirm", 1, false, data: {validate: "checked"}
                 ="Yes, I'm sure I want to delete them"
             .form-group
               .col-md-offset-2.col-sm-10
-                = f.submit "Delete #{@character.name}", class: "btn btn-danger", disabled: true
+                = f.submit "Delete #{@concept.name}", class: "btn btn-danger", disabled: true
 
   

@@ -31,6 +31,7 @@ class ConceptsController < ApplicationController
   def new
     @concept = Concept.new
     @concept.name = params[:name] 
+    @concept.kind = params[:kind]
   end
 
   # GET /concepts/1/edit
@@ -95,6 +96,6 @@ class ConceptsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def concept_params
-      params.require(:concept).permit(:name, :slug, :description, :age, :nicknames, :avatar, :user_id)
+      params.require(:concept).permit(:name, :slug, :description, :age, :nicknames, :avatar, :user_id, :kind)
     end
 end

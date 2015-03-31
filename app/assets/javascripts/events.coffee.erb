@@ -255,7 +255,8 @@ $(document).ready ->
         modal.find(".modal-body").html(data)
         set_remote_replace()
     #set lock
-    lock_modal(modal)
+    if ($(this).find('form').length > 0)
+      lock_modal(modal)
       
       
   if $("#events_index").length > 0

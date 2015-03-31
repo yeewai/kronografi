@@ -26,6 +26,9 @@
         tr
           td Age
           td=@concept.age
+        tr
+          td Type
+          td =@concept.kind.capitalize
     .col-sm-9.concept_descriptions
       ==replace_chars(@concept.description).html_safe
   .row    

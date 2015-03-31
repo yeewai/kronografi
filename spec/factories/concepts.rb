@@ -5,6 +5,7 @@ FactoryGirl.define do
     description {generate(:random_string)}
     age 1
     nicknames {generate(:random_string)}
+    kind 'character'
   end
 
 end

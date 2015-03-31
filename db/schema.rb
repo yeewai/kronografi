@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150330210707) do
+ActiveRecord::Schema.define(version: 20150330223321) do
 
   create_table "aliases", force: :cascade do |t|
     t.string   "name"
@@ -29,14 +29,15 @@ ActiveRecord::Schema.define(version: 20150330210707) do
     t.string   "slug"
     t.text     "description"
     t.integer  "age"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.string   "avatar_file_name"
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.integer  "world_id",            default: 1, null: false
+    t.integer  "world_id",            default: 1,      null: false
     t.integer  "user_id"
+    t.string   "kind",                default: "misc"
   end
 
   add_index "concepts", ["world_id"], name: "index_concepts_on_world_id"

@@ -14,8 +14,13 @@
         small.when=format_date(e.happened_on) if @world.is_absolute
       .char_list
         | Characters: 
-        -e.concepts.each do |c|
+        -e.concepts.where(kind: "character").each do |c|
           =link_to c.name, world_concept_path(@world, c)
+      -if (concepts = e.concepts.where.not(kind: "character")) && concepts.size > 0
+        .concept_list
+          | Concepts: 
+          -concepts.each do |c|
+            =link_to c.name, world_concept_path(@world, c)
   -unless e.kind == "start"
     .panel-body.collapse.in.event_content id=="ebody_#{e.id}" 
       =replace_chars(e.details).html_safe

@@ -5,7 +5,7 @@ p#notice = notice
 
 .row
   h2 
-    | Biography 
+    =@concept.kind == "character" ? 'Biography' : "Events concerning #{@concept.name}"
     =link_to "Expand All Events", "#", id: "expand_event_button", class: "btn btn-default btn-sm pull-right"
     =link_to "Collapse All Events", "#", id: "collapse_event_button", class: "btn btn-default btn-sm pull-right"
   = content_tag "div", "", class: "years", id: "events_relative", data: {remote_load: true, remote_url: world_events_relative_path(@world, concept: @concept.id), update_happened: world_events_update_happened_path(@world)}

@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     
     get 'concepts/show_info/:id/(:version)' => 'concepts#show_info', as: 'show_concept_info'
     get "concepts/show_deleted"
+    get 'concepts/new/(:kind)' => 'concepts#new'
     resources :concepts
     get 'tags/index'
     

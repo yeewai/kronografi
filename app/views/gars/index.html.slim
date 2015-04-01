@@ -22,6 +22,6 @@ h1 Analytics
       tr
         td=gar.created_at
         td=link_to gar.ipaddress, "http://whatismyipaddress.com/ip/#{gar.ipaddress}"
-        td=gar.referer
+        td=link_to gar.referer, gar.referer
         td=gar.url
       

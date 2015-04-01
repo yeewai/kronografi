@@ -1,0 +1,27 @@
+=content_for(:title, "Analytics | #{app_name}")
+h1 Analytics
+.col-sm-3
+  table.table
+    tr
+      th # Users
+      td =@usersize
+    tr
+      th # Events
+      td =@eventsize
+    tr
+      th # Concepts
+      td =@conceptsize
+.col-sm-8
+  table.table
+    tr
+      th Date
+      th IP Address
+      th Referer
+      th URL
+    -@visits.each do |gar|
+      tr
+        td=gar.created_at
+        td=link_to gar.ipaddress, "http://whatismyipaddress.com/ip/#{gar.ipaddress}"
+        td=gar.referer
+        td=gar.url
+      

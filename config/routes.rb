@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'gars/index'
+
   get 'welcome/index'
   get 'welcome/help'
   get 'tos' => 'welcome#tos', as: 'tos'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150330223321) do
+ActiveRecord::Schema.define(version: 20150401031008) do
 
   create_table "aliases", force: :cascade do |t|
     t.string   "name"
@@ -71,6 +71,17 @@ ActiveRecord::Schema.define(version: 20150330223321) do
 
   add_index "events_tags", ["event_id"], name: "index_events_tags_on_event_id"
   add_index "events_tags", ["tag_id"], name: "index_events_tags_on_tag_id"
+
+  create_table "gars", force: :cascade do |t|
+    t.string   "name"
+    t.text     "value"
+    t.text     "url"
+    t.string   "ipaddress"
+    t.string   "user_agent"
+    t.text     "referer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "media", force: :cascade do |t|
     t.datetime "created_at",           null: false

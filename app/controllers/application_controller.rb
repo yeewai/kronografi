@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :gar_watches_you
   
   def authenticate_world(world_token, mode='read')
     @world = World.find_by_token world_token
@@ -20,7 +21,9 @@ class ApplicationController < ActionController::Base
     end
   end
   
-
+  def gar_watches_you(action='visit', val=nil)
+    m = Gar.create :name => action, :value=>val, :ipaddress => request.remote_ip, :url => request.fullpath, :user_agent => request.user_agent, referer: request.referer unless (request.referer.nil? || request.referer.include?(request.host))
+  end
   protected
 
   def configure_permitted_parameters

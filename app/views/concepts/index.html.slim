@@ -1,11 +1,21 @@
-=content_for(:title, "concepts (#{@world.name}) | #{app_name}")
+=content_for(:title, "Concepts (#{@world.name}) | #{app_name}")
 h1 
-  | Listing concepts
+  | Listing Concepts
   = link_to 'New concept', new_world_concept_path(@world), class: "btn btn-primary pull-right"
 
-ul.char_list.list-group
-  -@concepts.each do |char|
-    ==render 'char_index_li', char: char
+small.pull-right
+  =link_to "Expand All Types", "#", id: "expand_event_button"
+  |  
+  =link_to "Collapse All Types", "#", id: "collapse_event_button"
+-@concepts.each do |kind, concept_arr|
+  .panel.panel-default
+    .panel-heading 
+      h4.panel-title=link_to kind.capitalize, "##{kind}", data: {toggle: "collapse"}
+    .panel-body.collapse.in id==kind
+      ul.concept_list
+        -concept_arr.each do |char|
+          ==render 'char_index_li', char: char
+
 
 =link_to "See Deleted concepts", "#", class: "btn btn-default", data: {toggle: "modal", target: "#deleted_chars", remote_url: world_concepts_show_deleted_path(@world)}
 hr

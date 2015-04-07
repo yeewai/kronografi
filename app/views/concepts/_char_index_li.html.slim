@@ -1,23 +1,20 @@
-li.list-group-item id=="c_#{char.id}"
+li id=="c_#{char.id}"
   .row
-    .col-sm-2
-      -if is_destroyed(char)
+    -if is_destroyed(char)
+      =image_tag char.avatar, class: "img-responsive"
+    -else
+      =link_to world_concept_path(@world, char) do
         =image_tag char.avatar, class: "img-responsive"
+    h2
+      =link_to_if !is_destroyed(char), char.name, world_concept_path(@world, char)
+      |    
+      small=char.nicknames
+    -if can_do("write", @world)
+      -if is_destroyed(char)
+        =form_tag world_events_revert_path(@world), method: "post" do 
+          =hidden_field_tag :version, char.version.id
+          =submit_tag "Restore this concept", class: "btn btn-default"
       -else
-        =link_to world_concept_path(@world, char) do
-          =image_tag char.avatar, class: "img-responsive"
-      p.dark=char.kind.capitalize
-    .col-sm-10
-      h2
-        =link_to_if !is_destroyed(char), char.name, world_concept_path(@world, char)
-        |    
-        small=char.nicknames
-      -if can_do("write", @world)
-        -if is_destroyed(char)
-          =form_tag world_events_revert_path(@world), method: "post" do 
-            =hidden_field_tag :version, char.version.id
-            =submit_tag "Restore this concept", class: "btn btn-default"
-        -else
-          = link_to 'Edit', edit_world_concept_path(@world, char), class: "btn btn-default btn-xs"
-          = link_to 'Destroy', world_concept_path(@world, char), data: {:confirm => 'Are you sure?'}, :method => :delete, class: "btn btn-default btn-xs"
-    
+        = link_to 'Edit', edit_world_concept_path(@world, char), class: "btn btn-default btn-xs"
+        = link_to 'Destroy', world_concept_path(@world, char), data: {:confirm => 'Are you sure?'}, :method => :delete, class: "btn btn-default btn-xs"
+  

@@ -24,7 +24,7 @@
   -unless e.kind == "start"
     .panel-body.collapse.in.event_content id=="ebody_#{e.id}" 
       =replace_chars(e.details).html_safe
-      p.text-right.small= "Last edited on #{e.created_at} by #{(e.user.email if e.user)}"
+      p.text-right.small= "Last edited on #{e.created_at} by #{(e.user.display_name if e.user)}"
       -if e.can_be_edited_by current_user
         .versions
           ul.nav.nav-pills

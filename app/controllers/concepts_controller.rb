@@ -7,7 +7,7 @@ class ConceptsController < ApplicationController
   # GET /concepts
   # GET /concepts.json
   def index
-    @concepts = @world.concepts
+    @concepts = @world.concepts.group_by(&:kind)
   end
 
   # GET /concepts/1

@@ -15,6 +15,10 @@ class User < ActiveRecord::Base
   
   after_create :set_rulings
   
+  def display_name
+    name ? name : email
+  end
+  
   private
   def set_rulings
     Ruling.where(email: self.email).each do |r|
